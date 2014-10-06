@@ -1,0 +1,16 @@
+<div class="nav-bar" ng-controller="NavbarController">
+    <div class="tabbable">
+        <ul class="nav nav-tabs" ng-class="{'nav-stacked': isStacked}">
+            <li ng-repeat="tab in tabs track by tab.id" ng-class="{'active': isActive($index), 'disabled': tab.disabled}" ng-click="setActiveTab($index)">
+                <a href="#{{ tab.id }}">
+                    <i ng-if="tab.icon" class="{{ tab.icon }}"></i>{{ tab.name }}
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="{{ tab.id }}" class="tab-pane" ng-repeat="tab in tabs track by tab.id" ng-class="{'active': isActive($index)}">
+                {{ tab.content }}
+            </div>
+        </div>
+    </div>
+</div>

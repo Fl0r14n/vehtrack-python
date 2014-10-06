@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Vehtrack</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap{% if not DEBUG %}.min{% endif %}.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap-theme{% if not DEBUG %}.min{% endif %}.css"/>
+</head>
+<body ng-app="app">
+    <header ng-include="'{{ STATIC_URL }}html/header.html'"></header>
+    <div ng-view></div>
+    <footer ng-include="'{{ STATIC_URL }}html/footer.html'"></footer>
+
+    {#Libs#}
+    <script src="{{ STATIC_URL }}lib/jquery/dist/jquery{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/bootstrap/dist/js/bootstrap{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular/angular{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-route/angular-route{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap-tpls{% if not DEBUG %}.min{% endif %}.js"></script>
+    {#Project#}
+    <script src="{{ STATIC_URL }}js/directive.js"></script>
+    <script src="{{ STATIC_URL }}js/filter.js"></script>
+    <script src="{{ STATIC_URL }}js/service.js"></script>
+    <script src="{{ STATIC_URL }}js/controller.js"></script>
+    <script src="{{ STATIC_URL }}js/app.js"></script>
+</body>
+</html>
