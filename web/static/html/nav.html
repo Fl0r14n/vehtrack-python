@@ -1,15 +1,19 @@
-<div class="nav-bar" ng-controller="NavbarController">
+<div class="tab-panel" ng-controller="NavbarController as tabPanel">
+    <!--ng-init="addTab({id: 'tab1', name: 'Section1', content:'Howdy, I\'m in Section 1.'})"-->
     <div class="tabbable">
-        <ul class="nav nav-tabs" ng-class="{'nav-stacked': isStacked}">
-            <li ng-repeat="tab in tabs track by tab.id" ng-class="{'active': isActive($index), 'disabled': tab.disabled}" ng-click="setActiveTab($index)">
-                <a href="#{{ tab.id }}">
-                    <i ng-if="tab.icon" class="{{ tab.icon }}"></i>{{ tab.name }}
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div id="{{ tab.id }}" class="tab-pane" ng-repeat="tab in tabs track by tab.id" ng-class="{'active': isActive($index)}">
-                {{ tab.content }}
+        <div ng-class="{'col-xs-3': tabPanel.isStacked}">
+            <ul class="nav nav-tabs" ng-class="{'nav-stacked nav-pills': tabPanel.isStacked}">
+                <li ng-repeat="tab in tabs" ng-class="{'active': tabPanel.isActiveTab(tab), 'disabled': tab.disabled}"
+                    ng-click="tabPanel.setActiveTab(tab)" ng-init="tabPanel.setActiveTab(tabs[0])">
+                    <a><i ng-if="tab.icon" class="{{ tab.icon }}"></i>{{ tab.name }}</a>
+                </li>
+            </ul>
+        </div>
+        <div ng-class="{'col-xs-9': tabPanel.isStacked}">
+            <div class="tab-content col-xs-9">
+                <div class="tab-pane fade" ng-repeat="tab in tabs" ng-class="{'active in': tabPanel.isActiveTab(tab)}">
+                    {{ tab.content }}
+                </div>
             </div>
         </div>
     </div>

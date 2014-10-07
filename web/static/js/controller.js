@@ -5,21 +5,26 @@ controllers.controller('MainController', function($scope) {
 });
 
 controllers.controller('NavbarController', function($scope) {
-    $scope.isStacked = false;
-    $scope.activeTab = 0;
-    $scope.tabs = [
+    var isStacked = false,
+        activeTab = null;
+
+    var tabs = $scope.tabs = [
         {id: 'tab1', name: 'Section1', content:'Howdy, I\'m in Section 1.'},
         {id: 'tab2', name: 'Section2', content:'Howdy, I\'m in Section 2.', icon:'glyphicon glyphicon-bell'},
         {id: 'tab3', name: 'Section3', content:'Howdy, I\'m in Section 3.', disabled:true},
     ];
 
-    $scope.isActiveTab = function(tabId) {
-        console.log($scope.activeTab === tabId);
-        return $scope.activeTab === tabId;
+    this.isActiveTab = function(tab) {
+        return activeTab === tab.id && !tab.disabled;
     };
 
-    $scope.setActiveTab = function(tabId) {
-        console.log(tabId);
-        $scope.activeTab = tabId;
+    this.setActiveTab = function(tab) {
+        if(!tab.disabled) {
+            activeTab = tab.id;
+        }
+    };
+
+    this.addTab = function(tab) {
+        tabs.push(tab)
     }
 });
