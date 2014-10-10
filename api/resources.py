@@ -53,6 +53,10 @@ class JourneyResource(ModelResource):
         paginator_class = Paginator
         authentication = AppAuthentication()
         authorization = AppAuthorization()
+        filtering = {
+            'start_timestamp': ['gte'],
+            'stop_timestamp': ['lte'],
+        }
 
 
 class PositionResource(ModelResource):
@@ -63,6 +67,9 @@ class PositionResource(ModelResource):
         paginator_class = Paginator
         authentication = AppAuthentication()
         authorization = AppAuthorization()
+        filtering = {
+            'timestamp': ['gte', 'lte'],
+        }
 
 
 class LogResource(ModelResource):
@@ -73,3 +80,6 @@ class LogResource(ModelResource):
         paginator_class = Paginator
         authentication = AppAuthentication()
         authorization = AppAuthorization()
+        filtering = {
+            'timestamp': ['gte', 'lte'],
+        }

@@ -50,7 +50,6 @@ stop_date = timezone.make_aware(datetime.strptime(STOP_DATE, '%Y-%m-%d'), timezo
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         fleets = None
         devices = None
@@ -88,12 +87,13 @@ class Command(BaseCommand):
 
         def _generate_fleet(root, depth=-1):
             sibling = 0
-            #add child siblings
+            # add child siblings
             while bool(random.getrandbits(1)):
                 child = {
                     'data': {
-                        'name': '{}_(d:{depth}_s:{sibling})'.
-                            format(root['data']['name'], sibling=sibling, depth=depth)},
+                        'name': '{}_(d:{depth}_s:{sibling})'.format(root['data']['name'],
+                                                                    sibling=sibling,
+                                                                    depth=depth)},
                     'children': []}
                 root['children'].append(child)
                 sibling += 1
@@ -122,12 +122,12 @@ class Command(BaseCommand):
             user.email = user.name + DOMAIN
             user.password = 'pass_{}'.format(len(users))
             if depth == 0:
-                #fleet admin
+                # fleet admin
                 user.roles = ROLES.FLEET_ADMIN
             else:
                 user.roles = ROLES.USER
             if WRITE_TO_DATABASE:
-                user.fleet = Fleet.objects.get(name=fleet['data']['name'])
+                user.fleet = Fleet.objects.filter(name=fleet['data']['name']).distinct().get()
                 user.save()
             L.debug('User: {}'.format(user))
             users.append(user)
@@ -153,9 +153,9 @@ class Command(BaseCommand):
             device.description = 'This is a mock device'
             device.email = 'device_{}{}'.format(id, DOMAIN)
             device.password = 'device_'.format(id)
-            device.roles = ROLES[3]
+            device.roles = ROLES.DEVICE
             if WRITE_TO_DATABASE:
-                device.fleet = Fleet.objects.get(name=fleet['data']['name'])
+                device.fleet = Fleet.objects.filter(name=fleet['data']['name']).distinct().get()
                 device.save()
             L.debug('Device: {}'.format(device))
             devices.append(device)
@@ -178,7 +178,7 @@ class Command(BaseCommand):
             user.name = 'user_{}'.format(i)
             user.email = user.name + DOMAIN
             user.password = 'pass_{}'.format(i)
-            #except admin role
+            # except admin role
             user.roles = ROLES[random.randint(1, len(ROLES) - 1)]
             if WRITE_TO_DATABASE:
                 user.save()
@@ -216,8 +216,10 @@ class Command(BaseCommand):
             L.debug('Journey: {}'.format(journey))
             journeys.append(journey)
             start_point = end_point
-            start_date = timezone.make_aware(datetime.utcfromtimestamp(to_timestamp(start_date) + (journey.duration + 360000) * 1000), timezone.get_current_timezone())
-        #if WRITE_TO_DATABASE:
+            start_date = timezone.make_aware(
+                datetime.utcfromtimestamp(to_timestamp(start_date) + (journey.duration + 360000) * 1000),
+                timezone.get_current_timezone())
+        # if WRITE_TO_DATABASE:
         #    Journey.objects.bulk_create(journeys)
         return journeys
 
@@ -225,13 +227,13 @@ class Command(BaseCommand):
         kml = YourNavigationOrg().get_kml(start_point, stop_point)
         if kml is None:
             return
-        distance = float(kml.Document.distance)  #km
-        travel_time = long(kml.Document.traveltime)  #sec
+        distance = float(kml.Document.distance)  # km
+        travel_time = long(kml.Document.traveltime)  # sec
         if distance == 0 or travel_time == 0:
             return
         points = self._get_points_from_kml(kml)
 
-        #remove some of the points if to many
+        # remove some of the points if to many
         self._trim_points(points)
 
         #generate positions
@@ -248,7 +250,8 @@ class Command(BaseCommand):
             dst = self._calculate_distance(last_point, point)
             speed = dst * 3600 / time_step
             position.speed = speed
-            timestamp = timezone.make_aware(datetime.utcfromtimestamp(to_timestamp(timestamp) + (time_step * 1000)), timezone.get_current_timezone())
+            timestamp = timezone.make_aware(datetime.utcfromtimestamp(to_timestamp(timestamp) + (time_step * 1000)),
+                                            timezone.get_current_timezone())
             last_point = point
             positions.append(position)
         if WRITE_TO_DATABASE:
@@ -313,7 +316,6 @@ class Command(BaseCommand):
 
 
 class YourNavigationOrg(object):
-
     def get_kml(self, start, stop):
         return self._execute(self._build_url(start, stop))
 

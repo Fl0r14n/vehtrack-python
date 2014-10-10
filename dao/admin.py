@@ -9,9 +9,9 @@ class AdminDevice(admin.ModelAdmin):
 
 
 class AdminLog(admin.ModelAdmin):
-    list_display = ('date', 'level', 'message',)
-    list_filter = ('date', 'level', 'message',)
-    search_fields = ('date', 'level', 'message',)
+    list_display = ('timestamp', 'level', 'message',)
+    list_filter = ('timestamp', 'level', 'message',)
+    search_fields = ('timestamp', 'level', 'message',)
 
 
 class AdminPosition(admin.ModelAdmin):

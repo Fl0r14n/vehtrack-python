@@ -1,3 +1,5 @@
+'use strict';
+
 var controllers = angular.module('controller', []);
 
 controllers.controller('MainController', function($scope) {

@@ -131,7 +131,7 @@ LEVEL = Choices(
 
 
 class Log(models.Model):
-    date = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True) #ms
     level = models.CharField(max_length=1, choices=LEVEL, default=LEVEL.DEBUG)
     message = models.TextField(max_length=2048, default='', blank=True)
 
@@ -140,7 +140,7 @@ class Log(models.Model):
 
     class Meta:
         db_table = 'logs'
-        ordering = ['-date']
+        ordering = ['-timestamp']
 
     def __unicode__(self):
         return to_string(self)
