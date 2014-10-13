@@ -219,8 +219,6 @@ class Command(BaseCommand):
             start_date = timezone.make_aware(
                 datetime.utcfromtimestamp(to_timestamp(start_date) + (journey.duration + 360000) * 1000),
                 timezone.get_current_timezone())
-        # if WRITE_TO_DATABASE:
-        #    Journey.objects.bulk_create(journeys)
         return journeys
 
     def _generate_journey(self, device, start_date, start_point, stop_point):
@@ -307,8 +305,8 @@ class Command(BaseCommand):
         for i in range(random.randrange(MAX_LOGS_JOURNEY)):
             log = Log()
             log.device = device
-            log.level = LEVEL[random.randrange(len(LEVEL))][0]
-            log.message = 'Message: {}'.format(LEVEL[log.level][1])
+            log.level = LEVEL.get_label(random.randrange(len(LEVEL)))[0]
+            log.message = 'Message: {}'.format(LEVEL.get_label(log.level)[1])
             if WRITE_TO_DATABASE:
                 log.save()
             logs.append(log)
