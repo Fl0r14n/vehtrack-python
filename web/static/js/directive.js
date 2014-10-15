@@ -35,7 +35,7 @@ directives.directive('uiTabList', function() {
             };
 
             this.setActiveTab = function(tab) {
-                if(!tab.disabled) {
+                if(!angular.isUndefined(tab) && !tab.disabled) {
                     activeTab = tab.id;
                 }
             };

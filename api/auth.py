@@ -115,7 +115,7 @@ class AppAuthorization(Authorization):
 
     def check_permissions(self, object_list, bundle, permission):
         model_class, roles = self.base_check(object_list, bundle)
-        if int(roles[1:-1].split(',')[0]) in self.AUTHORIZATION_MATRIX[model_class][permission]:
+        if int(roles) in self.AUTHORIZATION_MATRIX[model_class][permission]:
             return True
         else:
             raise Unauthorized('Not enough roles!')

@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('app',['ngRoute', 'ui.bootstrap', 'controller', 'service', 'filter', 'directive']);
+var app = angular.module('app',['ngRoute', /*'ui.bootstrap',*/ 'controller', 'service', 'filter', 'directive']);
 
 app.config(['$routeProvider', '$logProvider', function($routeProvider, $logProvider) {
     $logProvider.debugEnabled(true);
