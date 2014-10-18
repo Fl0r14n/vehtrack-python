@@ -12,5 +12,5 @@ v1_api.register(PositionResource())
 v1_api.register(LogResource())
 
 urlpaterns = patterns('',
-    url(r'api/', include(v1_api.urls)),
+    url(r'^api/', include(v1_api.urls)),
 )

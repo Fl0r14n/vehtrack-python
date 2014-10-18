@@ -2,42 +2,66 @@
 
 var controllers = angular.module('controller', ['service']);
 
-controllers.controller('MainController', [function($scope) {
+controllers.controller('MainController', [function ($scope) {
 
 }]);
 
-controllers.controller('LoginController', function($modal) {
+controllers.controller('LoginController', ['$modal', 'dgAuthService', function ($modal, dgAuthService) {
 
-    this.open = function(size) {
+    //open modal window function
+    this.open = function (size) {
         var modalWindow = $modal.open({
             templateUrl: 'login_modal.html',
             size: size,
-            controller: function($scope, $modalInstance) {
-                $scope.login = function() {
-                    //TODO login
-                    //pass the user to close method
-                    $modalInstance.close();
+            controller: function ($scope, $modalInstance) {
+
+                this.isFailedLogin = false;
+                this.isFailedAttempts = false;
+
+                $scope.submit = function (user) {
+                    dgAuthService.setCredentials(user.username, user.password);
+                    dgAuthService.signin();
                 };
 
-                $scope.cancel = function() {
+                $scope.cancel = function () {
                     $modalInstance.dismiss('cancel');
-                }
+                };
+
+                $scope.$on('LOGIN_SUCCESS', function(event, data) {
+                    console.log('LOGIN_SUCCESS');
+                    console.log(event);
+                    console.log(data);
+                    $modalInstance.close();
+                });
+
+                $scope.$on('LOGIN_ERROR', function(event, data) {
+                    console.log('LOGIN_ERROR');
+                    console.log(event);
+                    console.log(data);
+                    this.isFailedAttempts = true;
+                });
+
+                $scope.$on('LOGIN_LIMIT', function(event, data) {
+                    console.log('LOGIN_LIMIT');
+                    console.log(event);
+                    console.log(data);
+                    this.isFailedAttempts = true;
+                });
             }
         });
 
-        modalWindow.result.then(function() {
-
-        }, function() {
-            //dismiss modal
+        modalWindow.result.then(function (obj) {
+            //on close
+        }, function () {
+            //on dismiss
         })
     };
+}]);
 
-});
 
-
-controllers.controller('DeviceController', ['DeviceService', function(deviceService) {
+controllers.controller('DeviceController', ['DeviceService', function (deviceService) {
     var self = this;
-    deviceService.q.get({}, function(data) {
+    deviceService.q.get({}, function (data) {
         self.devices = data.objects;
     });
 }]);

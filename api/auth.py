@@ -1,10 +1,40 @@
+from django.conf import settings
 from tastypie.authentication import DigestAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
+from tastypie.http import HttpUnauthorized
+import uuid
+import hmac
+import time
+try:
+    from hashlib import sha1
+except ImportError:
+    import sha
+    sha1 = sha.sha
+try:
+    import python_digest
+except ImportError:
+    python_digest = None
 from dao.models import *
 
 
 class AppAuthentication(DigestAuthentication):
+
+    auth_header = 'WWW-Authenticate{}'.format('-Vehtrack')
+
+    #override this to set custom auth header to avoid browser login popup
+    def _unauthorized(self):
+        response = HttpUnauthorized()
+        new_uuid = uuid.uuid4()
+        opaque = hmac.new(str(new_uuid).encode('utf-8'), digestmod=sha1).hexdigest()
+        response[self.auth_header] = python_digest.build_digest_challenge(
+            timestamp=time.time(),
+            secret=getattr(settings, 'SECRET_KEY', ''),
+            realm=self.realm,
+            opaque=opaque,
+            stale=False
+        )
+        return response
 
     def get_user(self, username):
         try:
