@@ -15,7 +15,7 @@
 
                 <div class="form-group has-feedback" ng-class="{'has-warning': loginForm.password.$dirty && loginForm.password.$invalid, 'has-success': loginForm.password.$valid}">
                     <label class="control-label" for="email">Password</label>
-                    <input class="form-control" type="password" name="password" placeholder="********" ng-model="user.password" ng-minlength=8 required>
+                    <input class="form-control" type="password" name="password" placeholder="********" ng-model="user.password" ng-minlength=6 required>
                     <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-warning-sign': loginForm.password.$dirty && loginForm.password.$invalid, 'glyphicon-ok': loginForm.password.$valid}"></span>
                 </div>
 

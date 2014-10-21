@@ -14,12 +14,12 @@ controllers.controller('LoginController', ['$modal', 'dgAuthService', function (
             templateUrl: 'login_modal.html',
             size: size,
             controller: function ($scope, $modalInstance) {
-
-                this.isFailedLogin = false;
-                this.isFailedAttempts = false;
+                var self = this;
+                self.isFailedLogin = false;
+                self.isFailedAttempts = false;
 
                 $scope.submit = function (user) {
-                    dgAuthService.setCredentials(user.username, user.password);
+                    dgAuthService.setCredentials(user.email, user.password);
                     dgAuthService.signin();
                 };
 
@@ -38,14 +38,14 @@ controllers.controller('LoginController', ['$modal', 'dgAuthService', function (
                     console.log('LOGIN_ERROR');
                     console.log(event);
                     console.log(data);
-                    this.isFailedAttempts = true;
+                    self.isFailedAttempts = true;
                 });
 
                 $scope.$on('LOGIN_LIMIT', function(event, data) {
                     console.log('LOGIN_LIMIT');
                     console.log(event);
                     console.log(data);
-                    this.isFailedAttempts = true;
+                    self.isFailedAttempts = true;
                 });
             }
         });
