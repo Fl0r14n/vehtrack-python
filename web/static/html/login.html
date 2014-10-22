@@ -7,25 +7,24 @@
         <form name="loginForm">
             <div class="modal-body">
 
-                <div class="form-group has-feedback" ng-class="{'has-warning': loginForm.email.$dirty && loginForm.email.$invalid, 'has-success': loginForm.email.$valid}">
+                <div class="form-group has-feedback" ng-class="{'has-warning': loginForm.email.$dirty && loginForm.email.$invalid, 'has-success': loginForm.email.$valid, 'has-error': isFailedLogin || isLimitLogin}">
                     <label class="control-label" for="email">Email</label>
                     <input class="form-control" type="email" name="email" placeholder="user@domain.com" ng-minlength=8 ng-model="user.email" required>
-                    <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-warning-sign': loginForm.email.$dirty && loginForm.email.$invalid, 'glyphicon-ok': loginForm.email.$valid}"></span>
+                    <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-warning-sign': loginForm.email.$dirty && loginForm.email.$invalid, 'glyphicon-ok': loginForm.email.$valid, 'has-error': isFailedLogin || isLimitLogin}"></span>
                 </div>
 
-                <div class="form-group has-feedback" ng-class="{'has-warning': loginForm.password.$dirty && loginForm.password.$invalid, 'has-success': loginForm.password.$valid}">
+                <div class="form-group has-feedback" ng-class="{'has-warning': loginForm.password.$dirty && loginForm.password.$invalid, 'has-success': loginForm.password.$valid, 'has-error': isFailedLogin || isLimitLogin}">
                     <label class="control-label" for="email">Password</label>
                     <input class="form-control" type="password" name="password" placeholder="********" ng-model="user.password" ng-minlength=6 required>
-                    <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-warning-sign': loginForm.password.$dirty && loginForm.password.$invalid, 'glyphicon-ok': loginForm.password.$valid}"></span>
+                    <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-warning-sign': loginForm.password.$dirty && loginForm.password.$invalid, 'glyphicon-ok': loginForm.password.$valid, 'has-error': isFailedLogin || isLimitLogin}"></span>
                 </div>
 
-                <div class="alert alert-error" ng-show="isFailedLogin">
-                    <small>Wrong username or password!</small>
-                </div>
+                <ui-alert type="danger" show-close="true" bool-variable="isFailedLogin">Wrong username or password!</ui-alert>
+                <ui-alert type="danger" show-close="true" bool-variable="isLimitLogin">Login limit reached!</ui-alert>
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" ng-disabled="loginForm.$invalid" ng-click="login(user)">Login</button>
+                <button class="btn btn-primary" ng-disabled="loginForm.$invalid || isLimitLogin" ng-click="login(user)">Login</button>
                 <button class="btn btn-primary" ng-click="logout()">Logout</button>
             </div>
         </form>
