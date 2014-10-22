@@ -18,7 +18,7 @@ controllers.controller('LoginController', ['$modal', 'dgAuthService', function (
                 self.isFailedLogin = false;
                 self.isFailedAttempts = false;
 
-                $scope.submit = function (user) {
+                $scope.login = function (user) {
                     dgAuthService.setCredentials(user.email, user.password);
                     dgAuthService.signin();
                 };
@@ -47,6 +47,34 @@ controllers.controller('LoginController', ['$modal', 'dgAuthService', function (
                     console.log(data);
                     self.isFailedAttempts = true;
                 });
+
+                //-----------------------------------------------------------
+
+                $scope.logout = function() {
+                    dgAuthService.signout();
+                };
+
+                $scope.$on('LOGOUT_SUCCESS', function(event, data) {
+                    console.log('LOGOUT_SUCCESS');
+                    console.log(event);
+                    console.log(data);
+                    $modalInstance.close();
+                });
+
+                $scope.$on('LOGOUT_ERROR', function(event, data) {
+                    console.log('LOGOUT_ERROR');
+                    console.log(event);
+                    console.log(data);
+                    self.isFailedAttempts = true;
+                });
+
+                $scope.$on('LOGOUT_LIMIT', function(event, data) {
+                    console.log('LOGOUT_LIMIT');
+                    console.log(event);
+                    console.log(data);
+                    self.isFailedAttempts = true;
+                });
+
             }
         });
 

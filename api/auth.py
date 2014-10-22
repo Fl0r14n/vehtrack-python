@@ -2,7 +2,7 @@ from django.conf import settings
 from tastypie.authentication import DigestAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
-from tastypie.http import HttpUnauthorized
+from tastypie.http import HttpUnauthorized, HttpResponse
 import uuid
 import hmac
 import time
@@ -20,11 +20,11 @@ from dao.models import *
 
 class AppAuthentication(DigestAuthentication):
 
-    auth_header = 'WWW-Authenticate{}'.format('-Vehtrack')
+    def __init__(self, auth_header='', **kwargs):
+        super(AppAuthentication, self).__init__(**kwargs)
+        self.auth_header = 'WWW-Authenticate'+auth_header
 
-    #override this to set custom auth header to avoid browser login popup
-    def _unauthorized(self):
-        response = HttpUnauthorized()
+    def _generate_header(self, response):
         new_uuid = uuid.uuid4()
         opaque = hmac.new(str(new_uuid).encode('utf-8'), digestmod=sha1).hexdigest()
         response[self.auth_header] = python_digest.build_digest_challenge(
@@ -35,6 +35,15 @@ class AppAuthentication(DigestAuthentication):
             stale=False
         )
         return response
+
+    def logout(self):
+        response = HttpResponse()
+        return self._generate_header(response)
+
+    # override this to set custom auth header to avoid browser login popup
+    def _unauthorized(self):
+        response = HttpUnauthorized()
+        return self._generate_header(response)
 
     def get_user(self, username):
         try:

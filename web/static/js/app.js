@@ -24,11 +24,11 @@ app.config(['dgAuthServiceProvider', function(dgAuthServiceProvider) {
     dgAuthServiceProvider.setConfig({
         login: {
             method: 'POST',
-            url: '/api/v1/user/'
+            url: '/login/'
         },
         logout: {
             method: 'POST',
-            url: '/signout'
+            url: '/logout/'
         }
     });
 
