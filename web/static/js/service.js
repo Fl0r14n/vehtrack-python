@@ -5,17 +5,17 @@ var services = angular.module('service', ['ngResource']);
 services.api = '/api/v1/';
 
 services.endpoint = function(resource) {
-    return services.api+resource+'\\/';
+    return services.api+resource+'/';
 };
 
 services.schema = function(endpoint) {
-    return services.endpoint(endpoint)+'schema\\/';
+    return services.endpoint(endpoint)+'schema/';
 };
 
 services.factory('AccountService', function($resource) {
     var url = services.endpoint('account');
     return {
-        id: $resource(url+':id\\/', {id:'@id'}),
+        id: $resource(url+':id/', {id:'@id'}),
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset'
@@ -26,7 +26,7 @@ services.factory('AccountService', function($resource) {
 services.factory('UserService', function($resource) {
     var url = services.endpoint('user');
     return {
-        id: $resource(url+':id\\/', {id:'@id'}),
+        id: $resource(url+':id/', {id:'@id'}),
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset',
@@ -38,7 +38,7 @@ services.factory('UserService', function($resource) {
 services.factory('DeviceService', function($resource) {
     var url = services.endpoint('device');
     return {
-        id: $resource(url+':id\\/', {id:'@id'}),
+        id: $resource(url+':id/', {id:'@id'}),
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset',
@@ -50,7 +50,7 @@ services.factory('DeviceService', function($resource) {
 services.factory('FleetService', function($resource) {
     var url = services.endpoint('fleet');
     return {
-        id: $resource(url+':id\\/', {id:'@id'}),
+        id: $resource(url+':id/', {id:'@id'}),
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset'
@@ -61,7 +61,7 @@ services.factory('FleetService', function($resource) {
 services.factory('JourneyService', function($resource) {
     var url = services.endpoint('journey');
     return {
-        id: $resource(url+':id\\/', {id:'@id'}),
+        id: $resource(url+':id/', {id:'@id'}),
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset',
@@ -75,7 +75,7 @@ services.factory('JourneyService', function($resource) {
 services.factory('PositionService', function($resource) {
     var url = services.endpoint('position');
     return {
-        id: $resource(url+':id\\/', {id:'@id'}),
+        id: $resource(url+':id/', {id:'@id'}),
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset',
@@ -90,7 +90,7 @@ services.factory('PositionService', function($resource) {
 services.factory('LogService', function($resource) {
     var url = services.endpoint('log');
     return {
-        id: $resource(url+':id\\/', {id:'@id'}),
+        id: $resource(url+':id/', {id:'@id'}),
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset',

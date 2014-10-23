@@ -1,4 +1,4 @@
-<div class="login" ng-controller="LoginController as ctrl">
+<div class="login" ng-controller="LoginController as loginCtrl">
     <script type="text/ng-template" id="login_modal.html">
         <div class="modal-header">
             <button type="button" class="close" ng-click="cancel()">&times;</button>
@@ -25,9 +25,9 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" ng-disabled="loginForm.$invalid || isLimitLogin" ng-click="login(user)">Login</button>
-                <button class="btn btn-primary" ng-click="logout()">Logout</button>
             </div>
         </form>
     </script>
-    <button class="btn btn-default" ng-click="ctrl.open('sm')">Open me!</button>
+    <button class="btn btn-default" ng-if="loginCtrl.showLogin" ng-click="loginCtrl.login('sm')">Login</button>
+    <button class="btn btn-default" ng-if="!loginCtrl.showLogin" ng-click="loginCtrl.logout()">Logout</button>
 </div>
