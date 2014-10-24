@@ -85,9 +85,58 @@ controllers.controller('DeviceController', ['$scope', 'DeviceService', function 
 
     $scope.$on('LOGIN_SUCCESSFUL', function (event, data) {
         if (!self.init) {
+            self.init = true;
+            //TODO get for fleet
             deviceService.q.get({}, function (data) {
                 self.devices = data.objects;
             });
         }
     });
+
+    self.getDevicesForFleet = function(fleetId, active, callback) {
+        active = typeof active !== 'undefined' ? active : true;
+        deviceService.q.get({
+            fleet__id: fleetId,
+            active: active
+        }, function(data) {
+           if(callback) {
+               callback(data);
+           }
+        });
+    };
+}]);
+
+controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyService', function($scope, $filter, journeyService) {
+    var self = this;
+    self.init = false;
+    self.journeys = null;
+
+    $scope.$on('LOGIN_SUCCESSFUL', function(event, data) {
+        if(!self.init) {
+            self.init = true;
+            //get last week journeys for device
+            var deviceId = null;
+            self.lastWeekJourneysForDevice(deviceId, function(data) {
+                self.journeys = data.objects;
+            });
+        }
+    });
+
+    self.getJourneysForDevice = function(deviceId, startTimestamp, stopTimestamp, callback) {
+        journeyService.q.get({
+            device__id: deviceId,
+            start_timestamp__gte: startTimestamp,
+            stop_timestamp__lte: stopTimestamp
+        }, function(data) {
+            if(callback) {
+                callback(data);
+            }
+        });
+    };
+
+    self.lastWeekJourneysForDevice = function(deviceId, callback) {
+        var stopTimestamp = Date.now(); //ms
+        var startTimestamp = stopTimestamp -  604800000; //ms
+        return self.getJourneysForDevice(deviceId, startTimestamp, stopTimestamp, callback);
+    };
 }]);

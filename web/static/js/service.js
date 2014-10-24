@@ -30,7 +30,18 @@ services.factory('UserService', function($resource) {
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset',
+            active: '@active',
             fleet__id: '@fleet_id'
+        }, {'get': {method:'GET'}})
+    }
+});
+
+services.factory('FleetService', function($resource) {
+    var url = services.endpoint('fleet');
+    return {
+        id: $resource(url+':id/', {id:'@id'}),
+        q: $resource(url, {
+            name: '@name'
         }, {'get': {method:'GET'}})
     }
 });
@@ -42,6 +53,7 @@ services.factory('DeviceService', function($resource) {
         q: $resource(url, {
             limit: '@limit',
             offset: '@offset',
+            active: '@active',
             fleet__id: '@fleet_id'
         }, {'get': {method:'GET'}})
     }

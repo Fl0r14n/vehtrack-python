@@ -7,6 +7,7 @@ from auth import AppAuthentication, AppAuthorization
 authentication = AppAuthentication('-Vehtrack')
 authorization = AppAuthorization()
 
+
 class AccountResource(ModelResource):
 
     class Meta:
