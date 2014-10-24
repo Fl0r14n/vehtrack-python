@@ -45,9 +45,34 @@ class User(Account):
     def __unicode__(self):
         return to_string(self)
 
-    def get_fleets(self, fleet_name):
+    @classmethod
+    def get_fleets(cls, fleet_name):
         fleet = Fleet.objects.get(name=fleet_name)
         return User.objects.filter(fleet__in=fleet.get_descendants())
+
+
+class Fleet(mp_tree.MP_Node):
+    name = models.CharField(max_length=64, validators=[validators.UsernameValidator])
+
+    class Meta:
+        db_table = 'fleets'
+        ordering = ['name']
+
+    @classmethod
+    def get_fleet(cls, user):
+        if user.roles == ROLES.ADMIN:
+            #return all the root nodes wo children
+            return Fleet.get_root_nodes()
+        elif user.roles == ROLES.FLEET_ADMIN:
+            #return the node + children
+            parent = user.fleet
+            return parent.get_tree(parent)
+        elif user.roles == ROLES.USER:
+            #has only one fleet
+            return user.fleet
+        else:
+            #no use for devices
+            return None
 
 
 class Device(Account):
@@ -70,17 +95,10 @@ class Device(Account):
     def __unicode__(self):
         return to_string(self)
 
-    def get_fleets(self, fleet_name):
+    @classmethod
+    def get_fleets(cls, fleet_name):
         fleet = Fleet.objects.get(name=fleet_name)
         return Device.objects.filter(fleet__in=fleet.get_descendants())
-
-
-class Fleet(mp_tree.MP_Node):
-    name = models.CharField(max_length=64, validators=[validators.UsernameValidator])
-
-    class Meta:
-        db_table = 'fleets'
-        ordering = ['name']
 
 
 class Journey(models.Model):
@@ -99,7 +117,7 @@ class Journey(models.Model):
 
     class Meta:
         db_table = 'journeys'
-        ordering = ['start_timestamp']
+        ordering = ['-start_timestamp']
 
     def __unicode__(self):
         return to_string(self)
@@ -116,7 +134,7 @@ class Position(models.Model):
 
     class Meta:
         db_table = 'positions'
-        ordering = ['timestamp']
+        ordering = ['-timestamp']
 
     def __unicode__(self):
         return to_string(self)

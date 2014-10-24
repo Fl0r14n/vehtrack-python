@@ -70,9 +70,10 @@ class Command(BaseCommand):
         if devices:
             for device in devices:
                 if GENERATE_JOURNEYS:
-                    self.journey = self.generate_journeys_for_device(device, start_date, stop_date)
+                    self.generate_journeys_for_device(device, start_date, stop_date)
 
-    def generate_admin_user(self):
+    @classmethod
+    def generate_admin_user(cls):
         L.info("Generating admin user========================================")
         admin = Account()
         admin.email = ADMIN_EMAIL + DOMAIN
@@ -83,7 +84,8 @@ class Command(BaseCommand):
         L.debug('Admin: {}'.format(admin))
         return admin
 
-    def generate_fleets(self):
+    @classmethod
+    def generate_fleets(cls):
 
         def _generate_fleet(root, depth=-1):
             sibling = 0
@@ -113,7 +115,8 @@ class Command(BaseCommand):
             Fleet.load_bulk(fleets)
         return fleets
 
-    def generate_users_for_fleets(self, fleets):
+    @classmethod
+    def generate_users_for_fleets(cls, fleets):
 
         def _generate_user_for_fleet(fleet, users, depth):
             L.debug('Fleet: {}'.format(fleet))
@@ -142,7 +145,8 @@ class Command(BaseCommand):
         _traverse_fleet_tree(fleets, users, depth)
         return users
 
-    def generate_devices_for_fleets(self, fleets):
+    @classmethod
+    def generate_devices_for_fleets(cls, fleets):
 
         def _generate_devices_for_fleet(fleet, devices):
             L.debug('Fleet: {}'.format(fleet))
@@ -170,7 +174,8 @@ class Command(BaseCommand):
         _traverse_fleet_tree(fleets, devices, depth)
         return devices
 
-    def generate_users(self):
+    @classmethod
+    def generate_users(cls):
         L.info("Generating users=============================================")
         users = []
         for i in range(TOTAL_USERS):
@@ -186,7 +191,8 @@ class Command(BaseCommand):
             users.append(user)
         return users
 
-    def generate_devices(self):
+    @classmethod
+    def generate_devices(cls):
         L.info("Generating devices===========================================")
         devices = []
         for i in range(TOTAL_DEVICES):
@@ -276,7 +282,8 @@ class Command(BaseCommand):
             journey.save()
         return journey
 
-    def _get_points_from_kml(self, kml):
+    @classmethod
+    def _get_points_from_kml(cls, kml):
         points = []
         attribute = str(kml.Document.Folder.Placemark.LineString.coordinates)
         for line in cStringIO.StringIO(attribute):
@@ -287,7 +294,8 @@ class Command(BaseCommand):
                 pass
         return points
 
-    def _trim_points(self, points):
+    @classmethod
+    def _trim_points(cls, points):
         total_points = random.randint(MIN_POSITIONS_JOURNEY, MAX_POSITIONS_JOURNEY)
         if len(points) > total_points:
             remove_step = len(points) / total_points
@@ -296,10 +304,12 @@ class Command(BaseCommand):
                     if i % remove_step > 0:
                         del point
 
-    def _calculate_distance(self, lat, lon):
+    @classmethod
+    def _calculate_distance(cls, lat, lon):
         return sqrt(pow((lat[0] - lon[0]) * 111.12, 2) + pow((lat[1] - lon[1]) * 100.7, 2))
 
-    def _generate_logs_for_journey(self, device):
+    @classmethod
+    def _generate_logs_for_journey(cls, device):
         L.info("Generating logs for device " + device.serial + "======")
         logs = []
         for i in range(random.randrange(MAX_LOGS_JOURNEY)):

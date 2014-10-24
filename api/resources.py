@@ -1,10 +1,11 @@
+from django.conf import settings
 from tastypie.resources import ModelResource
 from tastypie import fields
 from dao.models import Account, User, Device, Fleet, Journey, Position, Log
 from tastypie.paginator import Paginator
 from auth import AppAuthentication, AppAuthorization
 
-authentication = AppAuthentication('-Vehtrack')
+authentication = AppAuthentication(settings.DIGEST_AUTH_CUSTOM_HEADER)
 authorization = AppAuthorization()
 
 
@@ -15,6 +16,7 @@ class AccountResource(ModelResource):
         resource_name = 'account'
         authentication = authentication
         authorization = authorization
+        excludes = ['password']
 
 
 class UserResource(ModelResource):
@@ -24,6 +26,7 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'user'
         paginator_class = Paginator
+        excludes = ['password']
         authentication = authentication
         authorization = authorization
 

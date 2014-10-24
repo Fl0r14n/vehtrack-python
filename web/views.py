@@ -10,13 +10,17 @@ from api.auth import AppAuthentication
 def index(request):
     return render_to_response('index.html', {'DEBUG': settings.DEBUG}, RequestContext(request))
 
-auth = AppAuthentication('-Vehtrack')
+auth = AppAuthentication(settings.DIGEST_AUTH_CUSTOM_HEADER)
 
 
 def login(request):
     response = auth.is_authenticated(request)
     if response is True:
-        return render_json({'email': True})
+        account = request.user
+        return render_json({
+            'email': account.email,
+            'roles': account.roles,
+        })
     elif response is False:
         return render_json({'disabled': True}, 403)
     else:

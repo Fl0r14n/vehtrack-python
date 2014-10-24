@@ -77,6 +77,27 @@ controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', 
     });
 }]);
 
+controllers.controller('UserController', ['$scope', 'UserService', function($scope, userService) {
+    var self = this;
+
+    self.getUserDetail = function(email, callback) {
+        userService.id.get({
+            id: email
+        }, function(data) {
+            if(callback) {
+                callback(data);
+            }
+        });
+    }
+}]);
+
+controllers.controller('FleetController', ['$scope', 'FleetService', function ($scope, fleetService) {
+    var self = this;
+
+    self.getFleetsforUser = function(email, callback) {
+        //TODO
+    };
+}]);
 
 controllers.controller('DeviceController', ['$scope', 'DeviceService', function ($scope, deviceService) {
     var self = this;
@@ -139,4 +160,56 @@ controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyServic
         var startTimestamp = stopTimestamp -  604800000; //ms
         return self.getJourneysForDevice(deviceId, startTimestamp, stopTimestamp, callback);
     };
+}]);
+
+controllers.controller('PositionController', ['PositionService', function(positionService) {
+    var self = this;
+
+    self.getPositionsforJourney = function(journeyId, callback) {
+        positionService.q.get({
+            journey__id: journeyId
+        }, function(data) {
+            if(callback) {
+                callback(data);
+            }
+        });
+    };
+
+    self.getPositionsForDevice = function(deviceId, startTimestamp, stopTimestamp, callback) {
+        positionService.q.get({
+            device__id: deviceId,
+            timestamp__gte: startTimestamp,
+            timestamp__lte: stopTimestamp
+        }, function(data) {
+            if(callback) {
+                callback(data);
+            }
+        });
+    };
+}]);
+
+controllers.controller('LogController', ['LogService', function(logService) {
+    var self = this;
+
+    self.getLogsForJourney = function (journeyId, callback) {
+        logService.q.get({
+            journey__id: journeyId
+        }, function(data) {
+            if(callback) {
+                callback(data);
+            }
+        });
+    };
+
+    self.getLogsForDevice = function (deviceId, startTimestamp, stopTimestamp, callback) {
+        logService.q.get({
+            device__id: deviceId,
+            timestamp__gte: startTimestamp,
+            timestamp__lte: stopTimestamp
+        }, function(data) {
+            if(callback) {
+                callback(data);
+            }
+        });
+    }
 }]);

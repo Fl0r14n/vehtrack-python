@@ -88,6 +88,9 @@ STATIC_URL = '/static/'
 
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
+#DIGEST_AUTH_CUSTOM_HEADER = ''
+DIGEST_AUTH_CUSTOM_HEADER = '-Vehtrack'
+
 if DEBUG:
     #import django.utils.safestring
     #TEMPLATE_STRING_IF_INVALID = django.utils.safestring.mark_safe("")

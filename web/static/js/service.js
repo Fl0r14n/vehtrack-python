@@ -59,17 +59,6 @@ services.factory('DeviceService', function($resource) {
     }
 });
 
-services.factory('FleetService', function($resource) {
-    var url = services.endpoint('fleet');
-    return {
-        id: $resource(url+':id/', {id:'@id'}),
-        q: $resource(url, {
-            limit: '@limit',
-            offset: '@offset'
-        }, {'get': {method:'GET'}})
-    }
-});
-
 services.factory('JourneyService', function($resource) {
     var url = services.endpoint('journey');
     return {
@@ -92,7 +81,7 @@ services.factory('PositionService', function($resource) {
             limit: '@limit',
             offset: '@offset',
             device__id: '@device_id',
-            journey_id: '@journey_id',
+            journey__id: '@journey_id',
             timestamp__gte: '@start_timestamp',
             timestamp__lte: '@stop_timestamp'
         }, {'get': {method:'GET'}})
@@ -107,7 +96,7 @@ services.factory('LogService', function($resource) {
             limit: '@limit',
             offset: '@offset',
             device__id: '@device_id',
-            journey_id: '@journey_id',
+            journey__id: '@journey_id',
             timestamp__gte: '@start_timestamp',
             timestamp__lte: '@stop_timestamp',
             level: '@level'
