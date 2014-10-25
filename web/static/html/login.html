@@ -28,6 +28,13 @@
             </div>
         </form>
     </script>
-    <button class="btn btn-default" ng-if="loginCtrl.showLogin" ng-click="loginCtrl.login('sm')">Login</button>
-    <button class="btn btn-default" ng-if="!loginCtrl.showLogin" ng-click="loginCtrl.logout()">Logout</button>
+    <span ng-show="loginCtrl.loginName">Welcome <b>{{ loginCtrl.loginName }}</b>!</span>
+    <button class="btn btn-default" ng-if="loginCtrl.showLogin" ng-click="loginCtrl.login('sm')">
+        <span class="glyphicon glyphicon-user"></span>
+        Login
+    </button>
+    <button class="btn btn-default" ng-if="!loginCtrl.showLogin" ng-click="loginCtrl.logout()">
+        <span class="glyphicon glyphicon-user"></span>
+        Logout
+    </button>
 </div>

@@ -1,4 +1,6 @@
-<div class="header">
+<div class="header row" ng-controller="HeaderController as headerCtrl">
     <p>TODO Header</p>
-    <div ng-include="'/static/html/login.html'"></div>
+
+    <div class="pull-left" ng-include="'/static/html/navbar.html'"></div>
+    <div class="pull-right" ng-include="'/static/html/login.html'"></div>
 </div>

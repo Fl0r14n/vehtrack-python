@@ -1,0 +1,94 @@
+<div class="btn-group" ng-if="user!=null" ng-controller="NavbarController as navbarCtrl">
+    <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                ng-click="navbarCtrl.getDevices()">
+            Quick Menu
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header" role="presentation">Last day</li>
+            <li class="dropdown-submenu">
+                <a href="#">Journeys</a>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="device in navbarCtrl.devices" popover="{{ device.description }}"
+                        popover-popup-delay=1000 popover-trigger="mouseenter" popover-placement="right">
+                        <a href="" ng-click="navbarCtrl.lastDayJourneys(device.email)">{{ device.serial }}</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="divider" role="presentation"></li>
+
+            <li class="dropdown-header" role="presentation">Last week</li>
+            <li class="dropdown-submenu">
+                <a href="#">Journeys</a>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="device in navbarCtrl.devices" popover="{{ device.description }}"
+                        popover-popup-delay=1000 popover-trigger="mouseenter" popover-placement="right">
+                        <a href="" ng-click="navbarCtrl.lastWeekJourneys(device.email)">{{ device.serial }}</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="divider" role="presentation"></li>
+
+            <li class="dropdown-header" role="presentation">Last month</li>
+            <li class="dropdown-submenu">
+                <a href="#">Journeys</a>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="device in navbarCtrl.devices" popover="{{ device.description }}"
+                        popover-popup-delay=1000 popover-trigger="mouseenter" popover-placement="right">
+                        <a href="" ng-click="navbarCtrl.lastMonthJourneys(device.email)">{{ device.serial }}</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="divider" role="presentation"></li>
+
+            <li class="dropdown-header" role="presentation">Last 3 moths</li>
+            <li class="dropdown-submenu">
+                <a href="#">Journeys</a>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="device in navbarCtrl.devices" popover="{{ device.description }}"
+                        popover-trigger="mouseenter" popover-placement="right">
+                        <a href="" ng-click="navbarCtrl.last3MonthJourneys(device.email)">{{ device.serial }}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            Menu
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="">Journey</a></li>
+            <li><a href="">Position</a></li>
+            <li><a href="">Logs</a></li>
+            <li class="disabled"><a href="">Speed</a></li>
+            <li class="disabled"><a href="">Consumption</a></li>
+        </ul>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            Manage
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="">Profile</a></li>
+            <li><a href="">User</a></li>
+            <li><a href="">Fleets</a></li>
+        </ul>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            Admin
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="">Users</a></li>
+            <li><a href="">Devices</a></li>
+        </ul>
+    </div>
+</div>

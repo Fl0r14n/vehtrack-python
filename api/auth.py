@@ -37,7 +37,7 @@ class AppAuthentication(DigestAuthentication):
         return response
 
     def logout(self):
-        response = HttpResponse()
+        response = HttpResponse('{"logout": "success"}', content_type='application/json', status=201)
         return self._generate_header(response)
 
     # override this to set custom auth header to avoid browser login popup

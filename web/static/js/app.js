@@ -92,5 +92,5 @@ app.run(['dgAuthService', '$rootScope', '$timeout', '$log',  function(dgAuthServ
     $timeout(function() {
         //start late to allow the login controller to load
         dgAuthService.start();
-    }, 1000);
+    }, 2000);
 }]);

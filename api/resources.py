@@ -37,6 +37,7 @@ class DeviceResource(ModelResource):
         queryset = Device.objects.all()
         resource_name = 'device'
         paginator_class = Paginator
+        excludes = ['password']
         authentication = authentication
         authorization = authorization
 

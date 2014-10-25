@@ -60,14 +60,15 @@ class Fleet(mp_tree.MP_Node):
 
     @classmethod
     def get_fleet(cls, user):
-        if user.roles == ROLES.ADMIN:
+        role = int(user.roles)
+        if role == ROLES.ADMIN:
             #return all the root nodes wo children
             return Fleet.get_root_nodes()
-        elif user.roles == ROLES.FLEET_ADMIN:
+        elif role == ROLES.FLEET_ADMIN:
             #return the node + children
             parent = user.fleet
             return parent.get_tree(parent)
-        elif user.roles == ROLES.USER:
+        elif role == ROLES.USER:
             #has only one fleet
             return user.fleet
         else:

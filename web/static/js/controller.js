@@ -2,9 +2,61 @@
 
 var controllers = angular.module('controller', ['service']);
 
-controllers.controller('MainController', [function ($scope) {
+controllers.controller('MainController', ['$scope', function ($scope) {
+    $scope.user = null;
+
+    $scope.$on('LOGIN_SUCCESSFUL', function (event, data) {
+        $scope.user = data.data;
+    });
+
+    $scope.$on('LOGOUT_SUCCESSFUL', function (event, data) {
+        $scope.user = null;
+    });
+}]);
+
+controllers.controller('HeaderController', ['$scope', function ($scope) {
 
 }]);
+
+controllers.controller('NavbarController', ['$scope', 'DeviceService', function ($scope, deviceService) {
+    var self = this;
+    self.devices = null;
+    self.getDevices = function () {
+        if ($scope.user != null) {
+            var fleets = $scope.user.fleets;
+
+            var fleetIds = [];
+            for (var i = 0; i < fleets.length; i++) {
+                fleetIds.push(fleets[i].id);
+            }
+            deviceService.getDevicesForFleet(fleetIds, function (data) {
+                self.devices = data.objects;
+            });
+        }
+    };
+
+    self.lastDayJourneys = function (deviceId) {
+        console.log(deviceId);
+    };
+
+    self.lastWeekJourneys = function (deviceId) {
+
+    };
+
+    self.lastMonthJourneys = function (deviceId) {
+
+    };
+
+    self.last3MonthJourneys = function (deviceId) {
+
+    };
+
+}]);
+
+controllers.controller('FooterController', ['$scope', function ($scope) {
+
+}]);
+
 
 controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', function ($scope, $modal, dgAuthService) {
 
@@ -58,158 +110,56 @@ controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', 
         dgAuthService.signout();
     };
 
-    self.showLogin = true;
+    self.setLoginVisible = function () {
+        self.showLogin = true;
+        self.loginName = null;
+    };
+    self.setLoginVisible();
 
     $scope.$on('LOGIN_SUCCESSFUL', function (event, data) {
         self.showLogin = false;
+        self.loginName = data.data.name;
     });
 
     $scope.$on('LOGIN_REQUIRED', function (event, data) {
-        self.showLogin = true;
+        self.setLoginVisible();
     });
 
     $scope.$on('LOGOUT_SUCCESSFUL', function (event, data) {
-        self.showLogin = true;
+        self.setLoginVisible();
     });
 
     $scope.$on('LOGOUT_ERROR', function (event, data) {
-        self.showLogin = true;
+        self.setLoginVisible();
     });
 }]);
 
-controllers.controller('UserController', ['$scope', 'UserService', function($scope, userService) {
+controllers.controller('UserController', ['$scope', 'UserService', function ($scope, userService) {
     var self = this;
 
-    self.getUserDetail = function(email, callback) {
-        userService.id.get({
-            id: email
-        }, function(data) {
-            if(callback) {
-                callback(data);
-            }
-        });
-    }
 }]);
 
 controllers.controller('FleetController', ['$scope', 'FleetService', function ($scope, fleetService) {
     var self = this;
 
-    self.getFleetsforUser = function(email, callback) {
-        //TODO
-    };
 }]);
 
 controllers.controller('DeviceController', ['$scope', 'DeviceService', function ($scope, deviceService) {
     var self = this;
-    self.init = false;
-    self.devices = null;
 
-    $scope.$on('LOGIN_SUCCESSFUL', function (event, data) {
-        if (!self.init) {
-            self.init = true;
-            //TODO get for fleet
-            deviceService.q.get({}, function (data) {
-                self.devices = data.objects;
-            });
-        }
-    });
-
-    self.getDevicesForFleet = function(fleetId, active, callback) {
-        active = typeof active !== 'undefined' ? active : true;
-        deviceService.q.get({
-            fleet__id: fleetId,
-            active: active
-        }, function(data) {
-           if(callback) {
-               callback(data);
-           }
-        });
-    };
 }]);
 
-controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyService', function($scope, $filter, journeyService) {
+controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyService', function ($scope, $filter, journeyService) {
     var self = this;
-    self.init = false;
-    self.journeys = null;
 
-    $scope.$on('LOGIN_SUCCESSFUL', function(event, data) {
-        if(!self.init) {
-            self.init = true;
-            //get last week journeys for device
-            var deviceId = null;
-            self.lastWeekJourneysForDevice(deviceId, function(data) {
-                self.journeys = data.objects;
-            });
-        }
-    });
-
-    self.getJourneysForDevice = function(deviceId, startTimestamp, stopTimestamp, callback) {
-        journeyService.q.get({
-            device__id: deviceId,
-            start_timestamp__gte: startTimestamp,
-            stop_timestamp__lte: stopTimestamp
-        }, function(data) {
-            if(callback) {
-                callback(data);
-            }
-        });
-    };
-
-    self.lastWeekJourneysForDevice = function(deviceId, callback) {
-        var stopTimestamp = Date.now(); //ms
-        var startTimestamp = stopTimestamp -  604800000; //ms
-        return self.getJourneysForDevice(deviceId, startTimestamp, stopTimestamp, callback);
-    };
 }]);
 
-controllers.controller('PositionController', ['PositionService', function(positionService) {
+controllers.controller('PositionController', ['PositionService', function (positionService) {
     var self = this;
 
-    self.getPositionsforJourney = function(journeyId, callback) {
-        positionService.q.get({
-            journey__id: journeyId
-        }, function(data) {
-            if(callback) {
-                callback(data);
-            }
-        });
-    };
-
-    self.getPositionsForDevice = function(deviceId, startTimestamp, stopTimestamp, callback) {
-        positionService.q.get({
-            device__id: deviceId,
-            timestamp__gte: startTimestamp,
-            timestamp__lte: stopTimestamp
-        }, function(data) {
-            if(callback) {
-                callback(data);
-            }
-        });
-    };
 }]);
 
-controllers.controller('LogController', ['LogService', function(logService) {
+controllers.controller('LogController', ['LogService', function (logService) {
     var self = this;
 
-    self.getLogsForJourney = function (journeyId, callback) {
-        logService.q.get({
-            journey__id: journeyId
-        }, function(data) {
-            if(callback) {
-                callback(data);
-            }
-        });
-    };
-
-    self.getLogsForDevice = function (deviceId, startTimestamp, stopTimestamp, callback) {
-        logService.q.get({
-            device__id: deviceId,
-            timestamp__gte: startTimestamp,
-            timestamp__lte: stopTimestamp
-        }, function(data) {
-            if(callback) {
-                callback(data);
-            }
-        });
-    }
 }]);

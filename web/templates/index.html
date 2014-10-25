@@ -5,11 +5,10 @@
     <title>Vehtrack</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap-theme{% if not DEBUG %}.min{% endif %}.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/app.css"/>
 </head>
 <body ng-app="app">
-    <header ng-include="'{{ STATIC_URL }}html/header.html'"></header>
     <div ng-view></div>
-    <footer ng-include="'{{ STATIC_URL }}html/footer.html'"></footer>
 
     {#Libs#}
     <script src="{{ STATIC_URL }}lib/jquery/dist/jquery{% if not DEBUG %}.min{% endif %}.js"></script>
