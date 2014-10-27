@@ -5,22 +5,37 @@
     <title>Vehtrack</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap-theme{% if not DEBUG %}.min{% endif %}.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/angular-ui-grid/ui-grid{% if not DEBUG %}.min{% endif %}.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/angular-bootstrap-nav-tree/dist/abn_tree.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/app.css"/>
 </head>
 <body ng-app="app">
     <div ng-view></div>
 
     {#Libs#}
+    {# Jquery #}
     <script src="{{ STATIC_URL }}lib/jquery/dist/jquery{% if not DEBUG %}.min{% endif %}.js"></script>
+    {# Bootstrap #}
     <script src="{{ STATIC_URL }}lib/bootstrap/dist/js/bootstrap{% if not DEBUG %}.min{% endif %}.js"></script>
+    {# Angular #}
     <script src="{{ STATIC_URL }}lib/angular/angular{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-route/angular-route{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-resource/angular-resource{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap-tpls{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-touch/angular-touch{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-animate/angular-animate{% if not DEBUG %}.min{% endif %}.js"></script>
+    {# Angular digest auth #}
     <script src="{{ STATIC_URL }}lib/angular-md5/angular-md5{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-state-machine/dist/angular-state-machine{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-digest-auth/dist/angular-digest-auth{% if not DEBUG %}.min{% endif %}.js"></script>
+    {# Angular UI #}
+    <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap-tpls{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-ui-grid/ui-grid{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-bootstrap-nav-tree/dist/abn_tree_directive.js"></script>
+    {# Export #}
+    <script src="{{ STATIC_URL }}lib/pdfmake/build/pdfmake{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/pdfmake/build/vfs_fonts.js"></script>
+    <script src="{{ STATIC_URL }}lib/csv-js/csv.js"></script>
     {#Project#}
     <script src="{{ STATIC_URL }}js/directive.js"></script>
     <script src="{{ STATIC_URL }}js/filter.js"></script>

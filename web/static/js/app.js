@@ -1,6 +1,11 @@
 'use strict';
 
-var app = angular.module('app', ['controller', 'service', 'filter', 'directive', 'dgAuth', 'ngRoute', 'ui.bootstrap']);
+var app = angular.module('app', [
+    //internal
+    'controller', 'service', 'filter', 'directive',
+    //external
+    'dgAuth', 'ngRoute', 'ui.bootstrap', 'ui.grid'
+]);
 
 app.config(['$logProvider', function($logProvider) {
     $logProvider.debugEnabled(true);
