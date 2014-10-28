@@ -152,6 +152,14 @@ controllers.controller('DeviceController', ['$scope', 'DeviceService', function 
 controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyService', function ($scope, $filter, journeyService) {
     var self = this;
 
+    self.startDate = Date.now();
+    self.opened = false;
+    self.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        self.opened = true;
+    }
+
 }]);
 
 controllers.controller('PositionController', ['PositionService', function (positionService) {

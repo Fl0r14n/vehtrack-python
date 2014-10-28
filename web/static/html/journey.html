@@ -1,4 +1,4 @@
-<div class="journey">
+<div class="journey" ng-controller="JourneyController as journeyCtrl">
     <div class="row">
     <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
@@ -14,6 +14,18 @@
 
             <div class="collapse navbar-collapse" id="journey-navbar">
                 <ul class="nav navbar-nav">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+
+                            <p class="input-group">
+                                <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy" ng-model="journeyCtrl.startDate" is-open="journeyCtrl.opened" required>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="journeyCtrl.open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                    </form>
+
 
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
