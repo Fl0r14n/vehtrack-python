@@ -1,49 +1,64 @@
 <div class="journey" ng-controller="JourneyController as journeyCtrl">
     <div class="row">
-    <div class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#journey-navbar"></button>
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </div>
-            <a class="navbar-brand" href="">Options</a>
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#journey-navbar"></button>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </div>
+                <a class="navbar-brand" href="">Options</a>
 
-            <div class="collapse navbar-collapse" id="journey-navbar">
-                <ul class="nav navbar-nav">
-                    <form class="navbar-form navbar-left" role="search">
+                <div class="collapse navbar-collapse" id="journey-navbar">
+                    <div class="navbar-form" role="search">
+
                         <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Device:</div>
+                                <input class="form-control" type="text" ng-model="journeyCtrl.devices.selected"
+                                       typeahead="device for device in journeyCtrl.devices.list | filter:$viewValue | limitTo:8">
+                            </div>
+                        </div>
 
-                            <p class="input-group">
-                                <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy" ng-model="journeyCtrl.startDate" is-open="journeyCtrl.opened" required>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Start Date:</div>
+                                <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy"
+                                       ng-model="journeyCtrl.startDate.date" is-open="journeyCtrl.startDate.opened" required>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="journeyCtrl.startDate.open($event)"><i
+                                        class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Stop Date:</div>
+                                <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy"
+                                       ng-model="journeyCtrl.stopDate.date" is-open="journeyCtrl.stopDate.opened" required>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click="journeyCtrl.open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    <button type="button" class="btn btn-default" ng-click="journeyCtrl.stopDate.open($event)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </button>
                                 </span>
-                            </p>
+                            </div>
                         </div>
-                    </form>
 
+                        <button type="submit" class="btn btn-default" ng-click="journeyCtrl.submit()">Submit</button>
 
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-
-
-                </ul>
+                    </div>
+                </div>
             </div>
-
         </div>
+    </div>
 
-    </div>
-    </div>
     <div class="row">
-        <div class="grid" ui-grid="" ui-grid-cellNav ui-grid-edit ui-grid-resize-columns ui-grid-pinning ui-grid-selection></div>
+        <div class="grid" ui-grid="" ui-grid-cellNav ui-grid-edit ui-grid-resize-columns ui-grid-pinning
+             ui-grid-selection></div>
     </div>
 
 </div>
