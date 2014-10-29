@@ -53,6 +53,44 @@ controllers.controller('NavbarController', ['$scope', 'DeviceService', function 
 
 }]);
 
+controllers.controller('OptionsController', ['$scope', function($scope) {
+    var self = this;
+
+    self.devices = {
+        list: [],
+        selected: undefined
+    };
+
+    self.journeys = {
+        list: [],
+        selected: undefined
+    };
+
+    self.startDate = {
+        date: Date.now(),
+        opened: false,
+        toogle: function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            this.opened = !this.opened;
+        }
+    };
+
+    self.stopDate = {
+        date: Date.now(),
+        opened: false,
+        toogle: function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            this.opened = !this.opened;
+        }
+    };
+
+    self.submit = function () {
+        //TODO
+    }
+}]);
+
 controllers.controller('FooterController', ['$scope', function ($scope) {
 
 }]);
@@ -152,34 +190,7 @@ controllers.controller('DeviceController', ['$scope', 'DeviceService', function 
 controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyService', function ($scope, $filter, journeyService) {
     var self = this;
 
-    self.devices = {
-        list: [],
-        selected: undefined
-    };
 
-    self.startDate = {
-        date: Date.now(),
-        opened: false,
-        open: function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            this.opened = true;
-        }
-    };
-
-    self.stopDate = {
-        date: Date.now(),
-        opened: false,
-        open: function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            this.opened = true;
-        }
-    };
-
-    self.submit = function () {
-        //TODO
-    }
 }]);
 
 controllers.controller('PositionController', ['PositionService', function (positionService) {

@@ -13,35 +13,36 @@ directives.directive('uiTabList', function() {
         },
         controllerAs: 'tabsCtrl',
         controller: function($scope) {
-            var stacked = $scope.stacked,
-                justified = $scope.justified,
-                activeTab = null,
-                tabs = [];
+            var self = this;
+            self.stacked = $scope.stacked;
+            self.justified = $scope.justified;
+            self.activeTab = null;
+            self.tabs = [];
 
-            this.getTabs = function() {
-                return tabs;
+            self.getTabs = function() {
+                return self.tabs;
             };
 
-            this.isStacked = function() {
-                return stacked;
+            self.isStacked = function() {
+                return self.stacked;
             };
 
-            this.isJustified = function() {
-                return justified;
+            self.isJustified = function() {
+                return self.justified;
             };
 
-            this.addTab = function(tab) {
-                tabs.push(tab);
+            self.addTab = function(tab) {
+                self.tabs.push(tab);
             };
 
-            this.setActiveTab = function(tab) {
+            self.setActiveTab = function(tab) {
                 if(!angular.isUndefined(tab) && !tab.disabled) {
-                    activeTab = tab.id;
+                    self.activeTab = tab.id;
                 }
             };
 
-            this.isActiveTab = function(tab) {
-                return activeTab === tab.id && !tab.disabled;
+            self.isActiveTab = function(tab) {
+                return self.activeTab === tab.id && !tab.disabled;
             }
         },
         template: [
@@ -56,7 +57,7 @@ directives.directive('uiTabList', function() {
                         '</ul>',
                     '</div>',
                     '<div ng-class="{\'col-xs-9\': tabsCtrl.isStacked()}">',
-                        '<div class="tab-content col-xs-9"',
+                        '<div class="tab-content"',
                             '<div class="tab-pane fade" ng-repeat="tab in tabsCtrl.getTabs()" ng-class="{\'active in\': tabsCtrl.isActiveTab(tab)}" ng-show="tabsCtrl.isActiveTab(tab)">',
                                 '<ng-include src="tab.include" ng-if="tab.include"></ng-include>',
                                 '{{ tab.content }}',
