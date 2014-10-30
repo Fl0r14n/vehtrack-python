@@ -2,6 +2,21 @@
 
 var services = angular.module('service', ['ngResource']);
 
+services.factory('MessagingService', function($rootScope) {
+   return {
+       pub: function(id, args) {
+           $rootScope.$emit(id, args)
+       },
+       sub: function(scope, id, listener) {
+           //scope is the current scope, listener = function(event, data)
+            var unbind = $rootScope.$on(id, listener);
+            scope.$on('$destroy', unbind);
+       }
+   }
+});
+
+//------------------------------------------------------------------------
+
 services.api = '/api/v1/';
 
 services.endpoint = function (resource) {
