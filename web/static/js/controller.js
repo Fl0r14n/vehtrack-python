@@ -2,6 +2,14 @@
 
 var controllers = angular.module('controller', ['service']);
 
+controllers.controller('HeaderController', ['$scope', function ($scope) {
+
+}]);
+
+controllers.controller('FooterController', ['$scope', function ($scope) {
+
+}]);
+
 controllers.controller('MainController', ['$scope', function ($scope) {
     $scope.user = null;
 
@@ -14,87 +22,7 @@ controllers.controller('MainController', ['$scope', function ($scope) {
     });
 }]);
 
-controllers.controller('HeaderController', ['$scope', function ($scope) {
-
-}]);
-
-controllers.controller('NavbarController', ['$scope', 'DeviceService', function ($scope, deviceService) {
-    var self = this;
-    self.devices = null;
-    self.getDevices = function () {
-        if ($scope.user != null) {
-            var fleets = $scope.user.fleets;
-
-            var fleetIds = [];
-            for (var i = 0; i < fleets.length; i++) {
-                fleetIds.push(fleets[i].id);
-            }
-            deviceService.getDevicesForFleet(fleetIds, function (data) {
-                self.devices = data.objects;
-            });
-        }
-    };
-
-    self.lastDayJourneys = function (deviceId) {
-        console.log(deviceId);
-    };
-
-    self.lastWeekJourneys = function (deviceId) {
-
-    };
-
-    self.lastMonthJourneys = function (deviceId) {
-
-    };
-
-    self.last3MonthJourneys = function (deviceId) {
-
-    };
-
-}]);
-
-controllers.controller('OptionsController', ['$scope', function($scope) {
-    var self = this;
-
-    self.devices = {
-        list: [],
-        selected: undefined
-    };
-
-    self.journeys = {
-        list: [],
-        selected: undefined
-    };
-
-    self.startDate = {
-        date: Date.now(),
-        opened: false,
-        toogle: function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            this.opened = !this.opened;
-        }
-    };
-
-    self.stopDate = {
-        date: Date.now(),
-        opened: false,
-        toogle: function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            this.opened = !this.opened;
-        }
-    };
-
-    self.submit = function () {
-        //TODO
-    }
-}]);
-
-controllers.controller('FooterController', ['$scope', function ($scope) {
-
-}]);
-
+//-------------------------------------------------------------------------
 
 controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', function ($scope, $modal, dgAuthService) {
 
@@ -172,6 +100,93 @@ controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', 
     });
 }]);
 
+controllers.controller('NavbarController', ['$scope', 'DeviceService', function ($scope, deviceService) {
+    var self = this;
+    self.devices = null;
+    self.getDevices = function () {
+        if ($scope.user != null) {
+            var fleets = $scope.user.fleets;
+
+            var fleetIds = [];
+            for (var i = 0; i < fleets.length; i++) {
+                fleetIds.push(fleets[i].id);
+            }
+            deviceService.getDevicesForFleet(fleetIds, function (data) {
+                self.devices = data.objects;
+            });
+        }
+    };
+
+    self.lastDayJourneys = function (deviceId) {
+        console.log(deviceId);
+    };
+
+    self.lastWeekJourneys = function (deviceId) {
+
+    };
+
+    self.lastMonthJourneys = function (deviceId) {
+
+    };
+
+    self.last3MonthJourneys = function (deviceId) {
+
+    };
+
+}]);
+
+controllers.controller('OptionsController', ['$scope', function($scope) {
+    var self = this;
+
+    self.devices = {
+        show: false,
+        readonly: false,
+        list: [],
+        selected: undefined
+    };
+
+    self.journeys = {
+        show: false,
+        readonly: false,
+        list: [],
+        selected: undefined
+    };
+
+    self.startDate = {
+        show: false,
+        readonly: false,
+        date: Date.now(),
+        opened: false,
+        toogle: function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            this.opened = !this.opened;
+        }
+    };
+
+    self.stopDate = {
+        show: false,
+        readonly: false,
+        date: Date.now(),
+        opened: false,
+        toogle: function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            this.opened = !this.opened;
+        }
+    };
+
+    self.submit = function () {
+        //TODO
+    }
+}]);
+
+controllers.controller('TableController', ['$scope', function($scope) {
+
+}]);
+
+//-----------------------------------------------------------------------
+
 controllers.controller('UserController', ['$scope', 'UserService', function ($scope, userService) {
     var self = this;
 
@@ -189,7 +204,7 @@ controllers.controller('DeviceController', ['$scope', 'DeviceService', function 
 
 controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyService', function ($scope, $filter, journeyService) {
     var self = this;
-
+    self.initOptions()
 
 }]);
 

@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse" id="options-navbar">
                 <div class="navbar-form" role="search">
 
-                    <div class="form-group">
+                    <div class="form-group" ng-if="optionsCtrl.devices.show">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-screenshot"></i>
@@ -29,7 +29,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" ng-if="optionsCtrl.journeys.show">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-road"></i>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" ng-if="optionsCtrl.startDate.show">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-chevron-right"></i>
@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" ng-if="optionsCtrl.stopDate.show">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-chevron-left"></i>
