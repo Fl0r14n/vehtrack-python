@@ -4,7 +4,10 @@ var app = angular.module('app', [
     //internal
     'controller', 'service', 'filter', 'directive',
     //external
-    'dgAuth', 'ngRoute', 'ui.bootstrap', 'ui.grid'
+    'dgAuth',
+    'ngRoute',
+    'ui.bootstrap',
+    'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.pinning', 'ui.grid.selection'
 ]);
 
 app.config(['$logProvider', function($logProvider) {
@@ -49,25 +52,25 @@ app.config(['dgAuthServiceProvider', function(dgAuthServiceProvider) {
     dgAuthServiceProvider.callbacks.logout = app.logoutCallbacks;
 }]);
 
-app.run(['dgAuthService', '$rootScope', '$timeout', '$log',  function(dgAuthService, $rootScope, $timeout, $log) {
+app.run(['dgAuthService', '$rootScope', '$timeout', '$log', 'MessagingService',  function(dgAuthService, $rootScope, $timeout, $log, msgbus) {
 
     app.loginCallbacks.push(function () {
         return {
             successful: function (response) {
                 $log.debug('LOGIN_SUCCESSFUL');
-                $rootScope.$broadcast('LOGIN_SUCCESSFUL', response);
+                msgbus.pub('LOGIN_SUCCESSFUL', response)
             },
             error: function (response) {
                 $log.debug('LOGIN_ERROR');
-                $rootScope.$broadcast('LOGIN_ERROR', response);
+                msgbus.pub('LOGIN_ERROR', response);
             },
             required: function (response) {
                 $log.debug('LOGIN_REQUIRED');
-                $rootScope.$broadcast('LOGIN_REQUIRED', response);
+                msgbus.pub('LOGIN_REQUIRED', response);
             },
             limit: function (response) {
                 $log.debug('LOGIN_LIMIT');
-                $rootScope.$broadcast('LOGIN_LIMIT', response);
+                msgbus.pub('LOGIN_LIMIT', response);
             }
         };
     });
@@ -76,19 +79,19 @@ app.run(['dgAuthService', '$rootScope', '$timeout', '$log',  function(dgAuthServ
         return {
             successful: function (response) {
                 $log.debug('LOGOUT_SUCCESSFUL');
-                $rootScope.$broadcast('LOGOUT_SUCCESSFUL', response);
+                msgbus.pub('LOGOUT_SUCCESSFUL', response);
             },
             error: function (response) {
                 $log.debug('LOGOUT_ERROR');
-                $rootScope.$broadcast('LOGOUT_ERROR', response);
+                msgbus.pub('LOGOUT_ERROR', response);
             },
             required: function (response) {
                 $log.debug('LOGOUT_REQUIRED');
-                $rootScope.$broadcast('LOGOUT_REQUIRED', response);
+                msgbus.pub('LOGOUT_REQUIRED', response);
             },
             limit: function (response) {
                 $log.debug('LOGOUT_LIMIT');
-                $rootScope.$broadcast('LOGOUT_LIMIT', response);
+                msgbus.pub('LOGOUT_LIMIT', response);
             }
         };
     });

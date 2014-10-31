@@ -10,14 +10,14 @@ controllers.controller('FooterController', ['$scope', function ($scope) {
 
 }]);
 
-controllers.controller('MainController', ['$scope', function ($scope) {
+controllers.controller('MainController', ['$scope', 'MessagingService', function ($scope, msgbus) {
     $scope.user = null;
 
-    $scope.$on('LOGIN_SUCCESSFUL', function (event, data) {
+    msgbus.sub($scope, 'LOGIN_SUCCESSFUL', function (event, data) {
         $scope.user = data.data;
     });
 
-    $scope.$on('LOGOUT_SUCCESSFUL', function (event, data) {
+    msgbus.sub($scope, 'LOGOUT_SUCCESSFUL', function (event, data) {
         $scope.user = null;
     });
 }]);
@@ -135,7 +135,7 @@ controllers.controller('NavbarController', ['$scope', 'DeviceService', function 
 
 }]);
 
-controllers.controller('OptionsController', ['$scope', function($scope) {
+controllers.controller('OptionsController', ['$scope', function ($scope) {
     var self = this;
 
     self.devices = {
@@ -157,7 +157,7 @@ controllers.controller('OptionsController', ['$scope', function($scope) {
         readonly: false,
         date: Date.now(),
         opened: false,
-        toogle: function($event) {
+        toogle: function ($event) {
             $event.preventDefault();
             $event.stopPropagation();
             this.opened = !this.opened;
@@ -169,7 +169,7 @@ controllers.controller('OptionsController', ['$scope', function($scope) {
         readonly: false,
         date: Date.now(),
         opened: false,
-        toogle: function($event) {
+        toogle: function ($event) {
             $event.preventDefault();
             $event.stopPropagation();
             this.opened = !this.opened;
@@ -181,7 +181,58 @@ controllers.controller('OptionsController', ['$scope', function($scope) {
     }
 }]);
 
-controllers.controller('TableController', ['$scope', function($scope) {
+controllers.controller('TableController', ['$scope', '$http', function ($scope, $http) {
+    var self = this;
+
+    self.model = {
+        data: [],
+        enableColumnResizing: true,
+        enableFiltering: true,
+        getRowId: function (row) {
+            return row.id;
+        },
+        columnDefs: [],
+        addColumnDefinition: function (name, displayName, width, editable, template, relatedField) {
+            this.columnDefs.push({
+                name: name,
+                displayName: displayName,
+                width: width,
+                enableCellEdit: editable,
+                cellTemplate: template,
+                field: relatedField
+            })
+        }
+    };
+
+
+    //Test
+    self.model.columnDefs = [
+        { name: 'id', width: 50 },
+        { name: 'name', width: 100 },
+        { name: 'age', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age:{{COL_FIELD}}</span></div>'   },
+        { name: 'address.street', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Street:{{COL_FIELD}}</span></div>'   },
+        { name: 'address.city', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>City:{{COL_FIELD}}</span></div>'  },
+        { name: 'address.state', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>State:{{COL_FIELD}}</span></div>'  },
+        { name: 'address.zip', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Zip:{{COL_FIELD}}</span></div>'  },
+        { name: 'company', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Company:{{COL_FIELD}}</span></div>'  },
+        { name: 'email', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Email:{{COL_FIELD}}</span></div>'  },
+        { name: 'phone', width: 200, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Phone:{{COL_FIELD}}</span></div>'  },
+        { name: 'about', width: 300, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>AAbout:{{COL_FIELD}}</span></div>'  },
+        { name: 'friends[0].name', displayName: '1st friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend0:{{COL_FIELD}}</span></div>'  },
+        { name: 'friends[1].name', displayName: '2nd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend1:{{COL_FIELD}}</span></div>'  },
+        { name: 'friends[2].name', displayName: '3rd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend2:{{COL_FIELD}}</span></div>'  },
+        { name: 'agetemplate', field: 'age', width: 100, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age 2:{{COL_FIELD}}</span></div>' }
+    ];
+
+    $http.get('/static/data.json').success(function (data) {
+        var i=0;
+        data.forEach(function (row) {
+            row.name = row.name+ ' iter '+i;
+            row.id = i;
+            i++;
+            self.model.data.push(row);
+        })
+    })
 
 }]);
 
@@ -204,8 +255,6 @@ controllers.controller('DeviceController', ['$scope', 'DeviceService', function 
 
 controllers.controller('JourneyController', ['$scope', '$filter', 'JourneyService', function ($scope, $filter, journeyService) {
     var self = this;
-    self.initOptions()
-
 }]);
 
 controllers.controller('PositionController', ['PositionService', function (positionService) {
