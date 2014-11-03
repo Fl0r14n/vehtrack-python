@@ -127,22 +127,25 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         self._submit_JourneyQuery(tabId, device, 86400000);
     };
 
+    //TODO should be this week
     self.lastWeekJourneys = function (device) {
         var tabId = 'lastWeekJourneys_' + device.email;
         self._journeyTab(tabId, 'Last Week Journeys for ' + device.serial);
         self._submit_JourneyQuery(tabId, device, 604800000);
     };
 
+    //TODO should be this month
     self.lastMonthJourneys = function (device) {
         var tabId = 'lastMonthJourneys_' + device.email;
         self._journeyTab(tabId, 'Last Month Journeys for ' + device.serial);
-        self._submit_JourneyQuery(tabId, device, 18748800000);
+        self._submit_JourneyQuery(tabId, device, 2419200000);
     };
 
+    //TODO should be past 3 months
     self.last3MonthJourneys = function (device) {
         var tabId = 'last3MonthJourneys_' + device.email;
         self._journeyTab(tabId, 'Last 3 Month Journeys for ' + device.serial);
-        self._submit_JourneyQuery(tabId, device, 56246400000);
+        self._submit_JourneyQuery(tabId, device, 7257600000);
     };
 
     self.journeys = function (user) {
@@ -422,10 +425,15 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
         enableColumnResizing: true,
         enableCellEdit: false,
         enableFiltering: true,
+        enableGridMenu: true,
+        enableRowSelection: true,
+        enableSelectAll: true,
+        multiSelect: true,
+
+        columnDefs: [],
         getRowId: function (row) {
             return row.id;
         },
-        columnDefs: [],
         addColumnDefinition: function (name, displayName, width, editable, template, relatedField) {
             this.columnDefs.push({
                 name: name,
@@ -435,7 +443,18 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
                 cellTemplate: template,
                 field: relatedField
             })
-        }
+        },
+        onRegisterApi: function (gridApi) {
+            $scope.gridApi = gridApi;
+        },
+        exporterPdfDefaultStyle: {fontSize: 9},
+        exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+        exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+        //exporterPdfHeader: "My Header",
+        exporterPdfHeaderStyle: { fontSize: 22, bold: true },
+        exporterPdfOrientation: 'landscape',
+        exporterPdfPageSize: 'A4'
+        //exporterPdfMaxGridWidth: 500
     };
 
     msgbus.sub($scope, $scope.domain, 'TABLE_INIT', function (event, data) {

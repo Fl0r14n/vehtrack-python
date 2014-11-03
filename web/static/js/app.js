@@ -4,10 +4,12 @@ var app = angular.module('app', [
     //internal
     'controller', 'service', 'filter', 'directive',
     //external
-    'dgAuth',
     'ngRoute',
+    'ngTouch',
+    'ngAnimate',
+    'dgAuth',
     'ui.bootstrap',
-    'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.pinning', 'ui.grid.selection'
+    'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.moveColumns', 'ui.grid.resizeColumns', 'ui.grid.pinning', 'ui.grid.selection', 'ui.grid.exporter'
 ]);
 
 app.config(['$logProvider', function($logProvider) {
