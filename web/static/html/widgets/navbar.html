@@ -1,7 +1,7 @@
 <div class="btn-group" ng-if="user!=null" ng-controller="NavbarController as navbarCtrl">
     <div class="btn-group">
         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                ng-click="navbarCtrl.getDevices()">
+                ng-click="navbarCtrl.getDevices(user)">
             Quick Menu
             <span class="caret"></span>
         </button>

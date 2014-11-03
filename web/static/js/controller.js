@@ -103,8 +103,8 @@ controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', 
 controllers.controller('NavbarController', ['$scope', 'MessagingService', 'DeviceService', function ($scope, msgbus, deviceService) {
     var self = this;
     self.devices = null;
-    self.getDevices = function () {
-        if ($scope.user != null) {
+    self.getDevices = function (user, callback) {
+        if (user != null) {
             var fleets = $scope.user.fleets;
 
             var fleetIds = [];
@@ -113,11 +113,118 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
             }
             deviceService.getDevicesForFleet(fleetIds, function (data) {
                 self.devices = data.objects;
+                if (callback) {
+                    callback(self.devices);
+                    callback(self.devices);
+                }
             });
         }
     };
 
-    self._newJourneyTab = function (id, name, period) {
+    self.lastDayJourneys = function (device) {
+        var tabId = 'lastDayJourneys_' + device.email;
+        self._journeyTab(tabId, 'Last Day Journeys for ' + device.serial);
+        self._submit_JourneyQuery(tabId, device, 86400000);
+    };
+
+    self.lastWeekJourneys = function (device) {
+        var tabId = 'lastWeekJourneys_' + device.email;
+        self._journeyTab(tabId, 'Last Week Journeys for ' + device.serial);
+        self._submit_JourneyQuery(tabId, device, 604800000);
+    };
+
+    self.lastMonthJourneys = function (device) {
+        var tabId = 'lastMonthJourneys_' + device.email;
+        self._journeyTab(tabId, 'Last Month Journeys for ' + device.serial);
+        self._submit_JourneyQuery(tabId, device, 18748800000);
+    };
+
+    self.last3MonthJourneys = function (device) {
+        var tabId = 'last3MonthJourneys_' + device.email;
+        self._journeyTab(tabId, 'Last 3 Month Journeys for ' + device.serial);
+        self._submit_JourneyQuery(tabId, device, 56246400000);
+    };
+
+    self.journeys = function (user) {
+        var tabId = 'journey-tab';
+        self.getDevices(user);
+        self._journeyTab(tabId, 'Journeys');
+        self._setDefaultOptions(tabId);
+    };
+
+    self.positions = function (user) {
+        var tabId = 'position-tab';
+        self.getDevices(user);
+        var tab = {
+            id: tabId,
+            name: 'Positions',
+            active: true,
+            include: '/static/html/tabs/position.html'
+        };
+        self._newTab(tab);
+        self._setDefaultOptions(tabId);
+    };
+
+    self.logs = function (user) {
+        var tabId = 'log-tab';
+        self.getDevices(user);
+        var tab = {
+            id: tabId,
+            name: 'Logs',
+            active: true,
+            include: '/static/html/tabs/log.html'
+        };
+        self._newTab(tab);
+        self._setDefaultOptions(tabId);
+    };
+
+    self.profile = function (user) {
+        var tabId = 'profile-tab';
+        var tab = {
+            id: tabId,
+            name: 'Profile',
+            active: true,
+            include: '/static/html/tabs/user.html'
+        };
+        self._newTab(tab);
+    };
+
+    self.users = function (user) {
+        var tabId = 'user-tab';
+        var tab = {
+            id: tabId,
+            name: 'Users',
+            active: true,
+            include: '/static/html/tabs/user.html'
+        };
+        self._newTab(tab);
+    };
+
+    self.devices = function (user) {
+        var tabId = 'device-tab';
+        var tab = {
+            id: tabId,
+            name: 'Devices',
+            active: true,
+            include: '/static/html/tabs/device.html'
+        };
+        self._newTab(tab);
+    };
+
+    self.fleets = function (user) {
+        var tabId = 'fleet-tab';
+        var tab = {
+            id: tabId,
+            name: 'Fleets',
+            active: true,
+            include: '/static/html/tabs/fleet.html'
+        };
+        self._newTab(tab);
+    };
+
+    //----------------------------------------------------------
+
+    self._journeyTab = function (id, name, period) {
         var tab = {
             id: id,
             name: name,
@@ -125,14 +232,18 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
             include: '/static/html/tabs/journey.html'
         };
         self._newTab(tab);
-
     };
 
-    self._submit_JourneyQuery = function(tabId, device, period) {
+    self._newTab = function (tab) {
+        msgbus.pub($scope.domain, 'TAB_ADD', tab);
+        msgbus.pub($scope.domain, 'TAB_SELECT', tab);
+    };
+
+    self._submit_JourneyQuery = function (tabId, device, period) {
         msgbus.sub($scope, tabId, 'OPTIONS_ON_LOAD', function () {
             msgbus.pub(tabId, 'OPTIONS_INIT', {
                 devices: {
-                    selected: device.email,
+                    selected: device,
                     readonly: true
                 },
                 startDate: {
@@ -147,98 +258,22 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         });
     };
 
-    self._newTab = function (tab) {
-        msgbus.pub($scope.domain, 'TAB_ADD', tab);
-        msgbus.pub($scope.domain, 'TAB_SELECT', tab);
-    };
-
-    self.lastDayJourneys = function (device) {
-        var tabId = 'lastDayJourneys_' + device.email;
-        self._newJourneyTab(tabId, 'Last Day Journeys for ' + device.serial);
-        self._submit_JourneyQuery(tabId, device, 86400000);
-    };
-
-    self.lastWeekJourneys = function (device) {
-        var tabId = 'lastWeekJourneys_' + device.email;
-        self._newJourneyTab(tabId, 'Last Week Journeys for ' + device.serial);
-        self._submit_JourneyQuery(tabId, device, 604800000);
-    };
-
-    self.lastMonthJourneys = function (device) {
-        var tabId = 'lastMonthJourneys_' + device.email;
-        self._newJourneyTab(tabId, 'Last Month Journeys for ' + device.serial);
-        self._submit_JourneyQuery(tabId, device, 18748800000);
-    };
-
-    self.last3MonthJourneys = function (device) {
-        var tabId = 'last3MonthJourneys_' + device.email;
-        self._newJourneyTab(tabId, 'Last 3 Month Journeys for ' + device.serial);
-        self._submit_JourneyQuery(tabId, device, 56246400000);
-    };
-
-    self.journeys = function (user) {
-        self._newJourneyTab('journey-tab', 'Journeys');
-    };
-
-    self.positions = function (user) {
-        var tab = {
-            id: 'position-tab',
-            name: 'Positions',
-            active: true,
-            include: '/static/html/tabs/position.html'
-        };
-        self._newTab(tab);
-    };
-
-    self.logs = function (user) {
-        var tab = {
-            id: 'log-tab',
-            name: 'Logs',
-            active: true,
-            include: '/static/html/tabs/log.html'
-        };
-        self._newTab(tab);
-    };
-
-    self.profile = function (user) {
-        var tab = {
-            id: 'profile-tab',
-            name: 'Profile',
-            active: true,
-            include: '/static/html/tabs/user.html'
-        };
-        self._newTab(tab);
-    };
-
-    self.users = function (user) {
-        var tab = {
-            id: 'user-tab',
-            name: 'Users',
-            active: true,
-            include: '/static/html/tabs/user.html'
-        };
-        self._newTab(tab);
-    };
-
-    self.devices = function (user) {
-        var tab = {
-            id: 'device-tab',
-            name: 'Devices',
-            active: true,
-            include: '/static/html/tabs/device.html'
-        };
-        self._newTab(tab);
-    };
-
-    self.fleets = function (user) {
-        var tab = {
-            id: 'fleet-tab',
-            name: 'Fleets',
-            active: true,
-            include: '/static/html/tabs/fleet.html'
-        };
-        self._newTab(tab);
-    };
+    self._setDefaultOptions = function (tabId) {
+        msgbus.sub($scope, tabId, 'OPTIONS_ON_LOAD', function () {
+            msgbus.pub(tabId, 'OPTIONS_INIT', {
+                devices: {
+                    list: self.devices
+                },
+                journeys: {
+                    //it will be filled when search is executed
+                    readonly: true
+                },
+                startDate: {
+                    date: Date.now() - 86400000
+                }
+            });
+        });
+    }
 }]);
 
 controllers.controller('OptionsController', ['$scope', 'MessagingService', 'dateFilter', function ($scope, msgbus, dateFilter) {
@@ -268,7 +303,7 @@ controllers.controller('OptionsController', ['$scope', 'MessagingService', 'date
             $event.stopPropagation();
             this.opened = !this.opened;
         },
-        dateString: function() {
+        dateString: function () {
             return dateFilter(this.date, 'yyyy-MM-ddThh:mm:ss');
         }
     };
@@ -283,7 +318,7 @@ controllers.controller('OptionsController', ['$scope', 'MessagingService', 'date
             $event.stopPropagation();
             this.opened = !this.opened;
         },
-        dateString: function() {
+        dateString: function () {
             return dateFilter(this.date, 'yyyy-MM-ddThh:mm:ss');
         }
     };
@@ -404,16 +439,16 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
     };
 
     msgbus.sub($scope, $scope.domain, 'TABLE_INIT', function (event, data) {
-        if(!angular.isUndefined(data.data)) {
+        if (!angular.isUndefined(data.data)) {
             self.table.data = data.data;
         }
-        if(!angular.isUndefined(data.columnDefs)) {
+        if (!angular.isUndefined(data.columnDefs)) {
             self.table.columnDefs = data.columnDefs;
         }
-        if(!angular.isUndefined(data.enableColumnResizing)) {
+        if (!angular.isUndefined(data.enableColumnResizing)) {
             self.table.enableColumnResizing = data.enableColumnResizing;
         }
-        if(!angular.isUndefined(data.enableFiltering)) {
+        if (!angular.isUndefined(data.enableFiltering)) {
             self.table.enableFiltering = data.enableFiltering;
         }
     });
@@ -422,34 +457,34 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
 
     //Test----------------------------------------------------------------------------------------------
     /*
-    self.table.columnDefs = [
-        { name: 'id', width: 50 },
-        { name: 'name', width: 100 },
-        { name: 'age', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age:{{COL_FIELD}}</span></div>'   },
-        { name: 'address.street', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Street:{{COL_FIELD}}</span></div>'   },
-        { name: 'address.city', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>City:{{COL_FIELD}}</span></div>'  },
-        { name: 'address.state', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>State:{{COL_FIELD}}</span></div>'  },
-        { name: 'address.zip', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Zip:{{COL_FIELD}}</span></div>'  },
-        { name: 'company', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Company:{{COL_FIELD}}</span></div>'  },
-        { name: 'email', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Email:{{COL_FIELD}}</span></div>'  },
-        { name: 'phone', width: 200, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Phone:{{COL_FIELD}}</span></div>'  },
-        { name: 'about', width: 300, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>AAbout:{{COL_FIELD}}</span></div>'  },
-        { name: 'friends[0].name', displayName: '1st friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend0:{{COL_FIELD}}</span></div>'  },
-        { name: 'friends[1].name', displayName: '2nd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend1:{{COL_FIELD}}</span></div>'  },
-        { name: 'friends[2].name', displayName: '3rd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend2:{{COL_FIELD}}</span></div>'  },
-        { name: 'agetemplate', field: 'age', width: 100, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age 2:{{COL_FIELD}}</span></div>' }
-    ];
+     self.table.columnDefs = [
+     { name: 'id', width: 50 },
+     { name: 'name', width: 100 },
+     { name: 'age', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age:{{COL_FIELD}}</span></div>'   },
+     { name: 'address.street', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Street:{{COL_FIELD}}</span></div>'   },
+     { name: 'address.city', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>City:{{COL_FIELD}}</span></div>'  },
+     { name: 'address.state', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>State:{{COL_FIELD}}</span></div>'  },
+     { name: 'address.zip', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Zip:{{COL_FIELD}}</span></div>'  },
+     { name: 'company', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Company:{{COL_FIELD}}</span></div>'  },
+     { name: 'email', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Email:{{COL_FIELD}}</span></div>'  },
+     { name: 'phone', width: 200, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Phone:{{COL_FIELD}}</span></div>'  },
+     { name: 'about', width: 300, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>AAbout:{{COL_FIELD}}</span></div>'  },
+     { name: 'friends[0].name', displayName: '1st friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend0:{{COL_FIELD}}</span></div>'  },
+     { name: 'friends[1].name', displayName: '2nd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend1:{{COL_FIELD}}</span></div>'  },
+     { name: 'friends[2].name', displayName: '3rd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend2:{{COL_FIELD}}</span></div>'  },
+     { name: 'agetemplate', field: 'age', width: 100, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age 2:{{COL_FIELD}}</span></div>' }
+     ];
 
-    $http.get('/static/data.json').success(function (data) {
-        var i = 0;
-        data.forEach(function (row) {
-            row.name = row.name + ' iter ' + i;
-            row.id = i;
-            i++;
-            self.table.data.push(row);
-        })
-    })
-    */
+     $http.get('/static/data.json').success(function (data) {
+     var i = 0;
+     data.forEach(function (row) {
+     row.name = row.name + ' iter ' + i;
+     row.id = i;
+     i++;
+     self.table.data.push(row);
+     })
+     })
+     */
 }]);
 
 controllers.controller('MapController', ['$scope', 'MessagingService', function ($scope, msgbus) {
@@ -514,7 +549,7 @@ controllers.controller('JourneyController', ['$scope', 'MessagingService', 'Jour
     });
 
     msgbus.sub($scope, $scope.domain, 'OPTIONS_SUBMITTED', function (event, data) {
-        journeyService.getJourneysForDevice(data.devices.selected, data.startDate.dateString(), data.stopDate.dateString(), function(data) {
+        journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
             msgbus.pub($scope.domain, 'TABLE_INIT', {
                 data: data.objects
             });
@@ -522,7 +557,7 @@ controllers.controller('JourneyController', ['$scope', 'MessagingService', 'Jour
     });
 }]);
 
-controllers.controller('PositionController', ['$scope', 'MessagingService', 'PositionService', function ($scope, msgbus, positionService) {
+controllers.controller('PositionController', ['$scope', 'MessagingService', 'PositionService', 'JourneyService', function ($scope, msgbus, positionService, journeyService) {
     var self = this;
     $scope.domain = $scope.tabId;
     msgbus.sub($scope, $scope.domain, 'OPTIONS_ON_LOAD', function () {
@@ -541,9 +576,19 @@ controllers.controller('PositionController', ['$scope', 'MessagingService', 'Pos
             }
         });
     });
+    msgbus.sub($scope, $scope.domain, 'OPTIONS_SUBMITTED', function (event, data) {
+        journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
+            msgbus.pub($scope.domain, 'OPTIONS_INIT', {
+                journeys: {
+                    readonly: false,
+                    list: data.objects
+                }
+            });
+        });
+    });
 }]);
 
-controllers.controller('LogController', ['$scope', 'MessagingService', 'LogService', function ($scope, msgbus, logService) {
+controllers.controller('LogController', ['$scope', 'MessagingService', 'LogService', 'JourneyService', function ($scope, msgbus, logService, journeyService) {
     var self = this;
     $scope.domain = $scope.tabId;
     msgbus.sub($scope, $scope.domain, 'OPTIONS_ON_LOAD', function () {
@@ -567,10 +612,35 @@ controllers.controller('LogController', ['$scope', 'MessagingService', 'LogServi
             columnDefs: [
                 { name: 'id', width: 50 },
 
-                { name: 'timestamp', displayName: 'Timestamp', width: 150 },
-                { name: 'level', displayName: 'Level', width: 150 },
-                { name: 'message', displayName: 'Message', width: 150 },
+                { name: 'timestamp', displayName: 'Timestamp', width: 200 },
+                { name: 'level', displayName: 'Level', width: 100 },
+                { name: 'message', displayName: 'Message', width: 300 },
             ]
         });
+    });
+    msgbus.sub($scope, $scope.domain, 'OPTIONS_SUBMITTED', function (event, data) {
+        console.log(data.journeys.selected);
+        if (!angular.isDefined(data.journeys.selected)) {
+            journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
+                console.log(data.objects);
+                msgbus.pub($scope.domain, 'OPTIONS_INIT', {
+                    journeys: {
+                        readonly: false,
+                        list: data.objects
+                    }
+                });
+            });
+            logService.getLogsForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
+                msgbus.pub($scope.domain, 'TABLE_INIT', {
+                    data: data.objects
+                });
+            });
+        } else {
+            logService.getLogsForJourney(data.journeys.selected.id, function (data) {
+                msgbus.pub($scope.domain, 'TABLE_INIT', {
+                    data: data.objects
+                });
+            });
+        }
     });
 }]);

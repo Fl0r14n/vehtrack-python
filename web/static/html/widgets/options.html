@@ -25,7 +25,7 @@
                                 <!--Device:-->
                             </div>
                             <input class="form-control" type="text" ng-model="optionsCtrl.devices.selected" ng-readonly="optionsCtrl.devices.readonly"
-                                   typeahead="device for device in optionsCtrl.devices.list | filter:$viewValue | limitTo:8">
+                                   typeahead="device as device.serial for device in optionsCtrl.devices.list | filter:{serial:$viewValue} | limitTo:8">
                         </div>
                     </div>
 
@@ -36,7 +36,7 @@
                                 <!--Journey:-->
                             </div>
                             <input class="form-control" type="text" ng-model="optionsCtrl.journeys.selected" ng-readonly="optionsCtrl.journeys.readonly"
-                                   typeahead="device for device in optionsCtrl.journeys.list | filter:$viewValue | limitTo:8">
+                                   typeahead="journey as journey.start_timestamp for journey in optionsCtrl.journeys.list | filter:{start_timestamp:$viewValue} | limitTo:8">
                         </div>
                     </div>
 

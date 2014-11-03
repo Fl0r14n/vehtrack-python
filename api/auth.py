@@ -128,7 +128,7 @@ class AppAuthorization(Authorization):
             DELETE_LIST: (ROLES.ADMIN,),
             DELETE_DETAIL: (ROLES.ADMIN,),
         },
-        Position: {
+        Log: {
             READ_LIST: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
             READ_DETAIL: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
             CREATE_LIST: (ROLES.ADMIN, ROLES.DEVICE),
