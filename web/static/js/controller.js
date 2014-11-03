@@ -12,12 +12,13 @@ controllers.controller('FooterController', ['$scope', function ($scope) {
 
 controllers.controller('MainController', ['$scope', 'MessagingService', function ($scope, msgbus) {
     $scope.user = null;
+    $scope.domain = msgbus.DEFAULT_DOMAIN;
 
-    msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGIN_SUCCESSFUL', function (event, data) {
+    msgbus.sub($scope, $scope.domain, 'LOGIN_SUCCESSFUL', function (event, data) {
         $scope.user = data.data;
     });
 
-    msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGOUT_SUCCESSFUL', function (event, data) {
+    msgbus.sub($scope, $scope.domain, 'LOGOUT_SUCCESSFUL', function (event, data) {
         $scope.user = null;
     });
 }]);
@@ -37,6 +38,7 @@ controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', 
                 //object of functions that will be passed to modal controller as args
             },
             controller: function ($scope, $modalInstance) {
+                $scope.domain = msgbus.DEFAULT_DOMAIN;
                 $scope.isFailedLogin = false;
                 $scope.isLimitLogin = false;
 
@@ -49,17 +51,17 @@ controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', 
                     $modalInstance.dismiss('cancel');
                 };
 
-                msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGIN_SUCCESSFUL', function (event, data) {
+                msgbus.sub($scope, $scope.domain, 'LOGIN_SUCCESSFUL', function (event, data) {
                     $scope.isFailedLogin = false;
                     $scope.isLimitLogin = false;
                     $modalInstance.close();
                 });
 
-                msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGIN_ERROR', function (event, data) {
+                msgbus.sub($scope, $scope.domain, 'LOGIN_ERROR', function (event, data) {
                     $scope.isFailedLogin = true;
                 });
 
-                msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGIN_LIMIT', function (event, data) {
+                msgbus.sub($scope, $scope.domain, 'LOGIN_LIMIT', function (event, data) {
                     $scope.isLimitLogin = true;
                 });
             }
@@ -82,20 +84,20 @@ controllers.controller('LoginController', ['$scope', '$modal', 'dgAuthService', 
     };
     self.setLoginVisible();
 
-    msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGIN_SUCCESSFUL', function (event, data) {
+    msgbus.sub($scope, $scope.domain, 'LOGIN_SUCCESSFUL', function (event, data) {
         self.showLogin = false;
         self.loginName = data.data.name;
     });
 
-    msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGIN_REQUIRED', function (event, data) {
+    msgbus.sub($scope, $scope.domain, 'LOGIN_REQUIRED', function (event, data) {
         self.setLoginVisible();
     });
 
-    msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGOUT_SUCCESSFUL', function (event, data) {
+    msgbus.sub($scope, $scope.domain, 'LOGOUT_SUCCESSFUL', function (event, data) {
         self.setLoginVisible();
     });
 
-    msgbus.sub($scope, msgbus.DEFAULT_DOMAIN, 'LOGOUT_ERROR', function (event, data) {
+    msgbus.sub($scope, $scope.domain, 'LOGOUT_ERROR', function (event, data) {
         self.setLoginVisible();
     });
 }]);
@@ -429,7 +431,7 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
         enableRowSelection: true,
         enableSelectAll: true,
         multiSelect: true,
-
+        externalScope: {},
         columnDefs: [],
         getRowId: function (row) {
             return row.id;
@@ -463,6 +465,9 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
         }
         if (!angular.isUndefined(data.columnDefs)) {
             self.table.columnDefs = data.columnDefs;
+        }
+        if (!angular.isUndefined(data.externalScope)) {
+            self.table.externalScope = data.externalScope;
         }
         if (!angular.isUndefined(data.enableColumnResizing)) {
             self.table.enableColumnResizing = data.enableColumnResizing;
@@ -508,6 +513,13 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
 
 controllers.controller('MapController', ['$scope', 'MessagingService', function ($scope, msgbus) {
     var self = this;
+    self.map = {
+        center: {
+            latitude: 45,
+            longitude: -73
+        },
+        zoom: 8
+    }
 }]);
 
 //-----------------------------------------------------------------------
@@ -548,9 +560,29 @@ controllers.controller('JourneyController', ['$scope', 'MessagingService', 'Jour
     });
     msgbus.sub($scope, $scope.domain, 'TABLE_ON_LOAD', function () {
         msgbus.pub($scope.domain, 'TABLE_INIT', {
+            externalScope: {
+                showPositions: function (journeyId) {
+                    var tab = {
+                        id: 'positions_journey_' + journeyId,
+                        name: 'Positions for journey',
+                        active: true,
+                        include: '/static/html/tabs/position.html'
+                    };
+                    msgbus.pub(msgbus.DEFAULT_DOMAIN, 'TAB_ADD', tab);
+                    msgbus.pub(msgbus.DEFAULT_DOMAIN, 'TAB_SELECT', tab);
+                },
+                showLogs: function (journeyId) {
+                    var tab = {
+                        id: 'logs_journey_' + journeyId,
+                        name: 'Logs for Journey',
+                        active: true,
+                        include: '/static/html/tabs/log.html'
+                    };
+                    msgbus.pub(msgbus.DEFAULT_DOMAIN, 'TAB_ADD', tab);
+                    msgbus.pub(msgbus.DEFAULT_DOMAIN, 'TAB_SELECT', tab);
+                }
+            },
             columnDefs: [
-                { name: 'id', width: 50 },
-
                 { name: 'start_latitude', displayName: 'Start Latitude', width: 150 },
                 { name: 'start_longitude', displayName: 'Start Longitude', width: 150 },
                 { name: 'start_timestamp', displayName: 'Start Timestamp', width: 150 },
@@ -562,10 +594,13 @@ controllers.controller('JourneyController', ['$scope', 'MessagingService', 'Jour
                 { name: 'distance', displayName: 'Distance', width: 100 },
                 { name: 'average_speed', displayName: 'Average Speed', width: 150 },
                 { name: 'maximum_speed', displayName: 'Maximum Speed', width: 150 },
-                { name: 'duration', displayName: 'Duration', width: 100 }
+                { name: 'duration', displayName: 'Duration', width: 100 },
+
+                { name: 'id', displayName: '', width: 100, enableFiltering: false, cellTemplate: '<button class="btn primary glyphicon glyphicon-eye-open" ng-click="getExternalScopes().showPositions({{COL_FIELD}})"></button><button class="btn primary glyphicon glyphicon-exclamation-sign" ng-click="getExternalScopes().showLogs({{COL_FIELD}})"></button>'}
             ]
         });
-    });
+    })
+    ;
 
     msgbus.sub($scope, $scope.domain, 'OPTIONS_SUBMITTED', function (event, data) {
         journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
@@ -574,7 +609,8 @@ controllers.controller('JourneyController', ['$scope', 'MessagingService', 'Jour
             });
         });
     });
-}]);
+}])
+;
 
 controllers.controller('PositionController', ['$scope', 'MessagingService', 'PositionService', 'JourneyService', function ($scope, msgbus, positionService, journeyService) {
     var self = this;
@@ -597,6 +633,7 @@ controllers.controller('PositionController', ['$scope', 'MessagingService', 'Pos
     });
     msgbus.sub($scope, $scope.domain, 'OPTIONS_SUBMITTED', function (event, data) {
         journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
+            console.log(data.objects);
             msgbus.pub($scope.domain, 'OPTIONS_INIT', {
                 journeys: {
                     readonly: false,
@@ -629,8 +666,6 @@ controllers.controller('LogController', ['$scope', 'MessagingService', 'LogServi
     msgbus.sub($scope, $scope.domain, 'TABLE_ON_LOAD', function () {
         msgbus.pub($scope.domain, 'TABLE_INIT', {
             columnDefs: [
-                { name: 'id', width: 50 },
-
                 { name: 'timestamp', displayName: 'Timestamp', width: 200 },
                 { name: 'level', displayName: 'Level', width: 100 },
                 { name: 'message', displayName: 'Message', width: 300 },

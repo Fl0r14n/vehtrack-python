@@ -2,7 +2,9 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vehtrack</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/normalize.css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap-theme{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/angular-ui-grid/ui-grid{% if not DEBUG %}.min{% endif %}.css"/>
@@ -36,6 +38,9 @@
     <script src="{{ STATIC_URL }}lib/pdfmake/build/pdfmake{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/pdfmake/build/vfs_fonts.js"></script>
     <script src="{{ STATIC_URL }}lib/csv-js/csv.js"></script>
+    {# Angular Google Maps #}
+    <script src="{{ STATIC_URL }}lib/lodash/dist/lodash{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-google-maps/dist/angular-google-maps{% if not DEBUG %}.min{% endif %}.js"></script>
     {#Project#}
     <script src="{{ STATIC_URL }}js/directive.js"></script>
     <script src="{{ STATIC_URL }}js/filter.js"></script>

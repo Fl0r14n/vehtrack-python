@@ -27,6 +27,8 @@
     "angular-ui-grid": "~3.0.0-rc.12",
     "pdfmake": "~0.1.13",
     "csv-js": "*",
-    "angular-bootstrap-nav-tree": "*"
+    "angular-bootstrap-nav-tree": "*",
+    "angular-google-maps": "#master",
+    "normalize.css": "~3.0.2"
   }
 }

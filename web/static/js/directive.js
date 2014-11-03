@@ -64,11 +64,11 @@ directives.directive('uiTabList', function() {
 
             //events ------------------------------
 
-            msgbus.sub($scope, $scope.domain, 'TAB_ADD', function(event, data) {
+            msgbus.sub($scope, $scope.$parent.domain, 'TAB_ADD', function(event, data) {
                 self.addTab(data);
             });
 
-            msgbus.sub($scope, $scope.domain, 'TAB_SELECT', function(event, data) {
+            msgbus.sub($scope, $scope.$parent.domain, 'TAB_SELECT', function(event, data) {
                 self.setActiveTab(data);
             })
 

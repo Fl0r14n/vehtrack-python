@@ -9,14 +9,16 @@ var app = angular.module('app', [
     'ngAnimate',
     'dgAuth',
     'ui.bootstrap',
-    'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.moveColumns', 'ui.grid.resizeColumns', 'ui.grid.pinning', 'ui.grid.selection', 'ui.grid.exporter'
+    'google-maps'.ns(),
+    'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.pinning', 'ui.grid.selection', 'ui.grid.exporter'
+    //'ui.grid.moveColumns'
 ]);
 
-app.config(['$logProvider', function($logProvider) {
+app.config(['$logProvider', function ($logProvider) {
     $logProvider.debugEnabled(true);
 }]);
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: '/static/html/main.html',
         controller: 'MainController'
@@ -25,15 +27,24 @@ app.config(['$routeProvider', function($routeProvider) {
     });
 }]);
 
-app.config(['$resourceProvider', function($resourceProvider) {
+app.config(['$resourceProvider', function ($resourceProvider) {
     //!do not remove tailing / from urls
     $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
 
+app.config(['GoogleMapApiProvider'.ns(), function (GoogleMapApi) {
+    GoogleMapApi.configure({
+        key: 'AIzaSyDaGxMxpzdfIC3evAwuxd_E2Y7H0H_EMw0',
+        v: '3.17',
+        libraries: 'weather,geometry,visualization'
+    });
+}]);
+
+
 app.loginCallbacks = [];
 app.logoutCallbacks = [];
 
-app.config(['dgAuthServiceProvider', function(dgAuthServiceProvider) {
+app.config(['dgAuthServiceProvider', function (dgAuthServiceProvider) {
     //number of allowed login attempts
     dgAuthServiceProvider.setLimit(5);
     //custom header to avoid the browser form
@@ -54,7 +65,7 @@ app.config(['dgAuthServiceProvider', function(dgAuthServiceProvider) {
     dgAuthServiceProvider.callbacks.logout = app.logoutCallbacks;
 }]);
 
-app.run(['$timeout', '$log', 'MessagingService', 'dgAuthService', function($timeout, $log, msgbus, dgAuthService) {
+app.run(['$timeout', '$log', 'MessagingService', 'dgAuthService', function ($timeout, $log, msgbus, dgAuthService) {
 
     app.loginCallbacks.push(function () {
         return {
@@ -99,7 +110,7 @@ app.run(['$timeout', '$log', 'MessagingService', 'dgAuthService', function($time
     });
 
     //start digest auth service
-    $timeout(function() {
+    $timeout(function () {
         //start late to allow the login controller to load
         dgAuthService.start();
     }, 2000);
