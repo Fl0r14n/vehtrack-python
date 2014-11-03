@@ -2,17 +2,18 @@
 
 var services = angular.module('service', ['ngResource']);
 
-services.factory('MessagingService', function($rootScope) {
-   return {
-       pub: function(id, args) {
-           $rootScope.$emit(id, args)
-       },
-       sub: function(scope, id, listener) {
-           //scope is the current scope, listener = function(event, data)
-            var unbind = $rootScope.$on(id, listener);
+services.factory('MessagingService', function ($rootScope) {
+    return {
+        DEFAULT_DOMAIN: '',
+        pub: function (domain, path, args) {
+            $rootScope.$emit(domain + ':' + path, args)
+        },
+        sub: function (scope, domain, path, listener) {
+            //scope is the current scope, listener = function(event, data)
+            var unbind = $rootScope.$on(domain + ':' + path, listener);
             scope.$on('$destroy', unbind);
-       }
-   }
+        }
+    }
 });
 
 //------------------------------------------------------------------------

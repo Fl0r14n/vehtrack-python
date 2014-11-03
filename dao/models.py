@@ -35,6 +35,7 @@ class Account(models.Model):
 
 class User(Account):
     name = models.CharField(max_length=64, validators=[validators.UsernameValidator])
+    #photo =
 
     fleet = models.ForeignKey('Fleet')
 

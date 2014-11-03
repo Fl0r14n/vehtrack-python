@@ -24,7 +24,7 @@
                                 <i class="glyphicon glyphicon-screenshot"></i>
                                 <!--Device:-->
                             </div>
-                            <input class="form-control" type="text" ng-model="optionsCtrl.devices.selected"
+                            <input class="form-control" type="text" ng-model="optionsCtrl.devices.selected" ng-readonly="optionsCtrl.devices.readonly"
                                    typeahead="device for device in optionsCtrl.devices.list | filter:$viewValue | limitTo:8">
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                                 <i class="glyphicon glyphicon-road"></i>
                                 <!--Journey:-->
                             </div>
-                            <input class="form-control" type="text" ng-model="optionsCtrl.journeys.selected"
+                            <input class="form-control" type="text" ng-model="optionsCtrl.journeys.selected" ng-readonly="optionsCtrl.journeys.readonly"
                                    typeahead="device for device in optionsCtrl.journeys.list | filter:$viewValue | limitTo:8">
                         </div>
                     </div>
@@ -46,11 +46,11 @@
                                 <i class="glyphicon glyphicon-chevron-right"></i>
                                 <!--Start Date:-->
                             </div>
-                            <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy"
+                            <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy" ng-readonly="optionsCtrl.startDate.readonly"
                                    ng-model="optionsCtrl.startDate.date" is-open="optionsCtrl.startDate.opened"
                                    required>
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default"
+                                <button type="button" class="btn btn-default" ng-disabled="optionsCtrl.startDate.readonly"
                                         ng-click="optionsCtrl.startDate.toogle($event)">
                                     <i class="glyphicon glyphicon-calendar"></i>
                                 </button>
@@ -64,11 +64,11 @@
                                 <i class="glyphicon glyphicon-chevron-left"></i>
                                 <!--Stop Date:-->
                             </div>
-                            <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy"
+                            <input class="form-control" type="text" datepicker-popup="dd.MM.yyyy" ng-readonly="optionsCtrl.stopDate.readonly"
                                    ng-model="optionsCtrl.stopDate.date" is-open="optionsCtrl.stopDate.opened"
                                    required>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default"
+                                    <button type="button" class="btn btn-default" ng-disabled="optionsCtrl.startDate.readonly"
                                             ng-click="optionsCtrl.stopDate.toogle($event)">
                                         <i class="glyphicon glyphicon-calendar"></i>
                                     </button>
@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-default" ng-click="journeyCtrl.submit()">
+                    <button type="submit" class="btn btn-default" ng-click="optionsCtrl.submit()">
                         <i class="glyphicon glyphicon-ok"></i>
                         <!--Submit-->
                     </button>

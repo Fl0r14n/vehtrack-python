@@ -1,6 +1,6 @@
-<div class="device" ng-controller="DeviceController as ctrl">
+<div class="device" ng-controller="DeviceController as deviceCtrl">
     <ul>
-        <li ng-repeat="device in ctrl.devices">
+        <li ng-repeat="device in deviceCtrl.devices">
             {{ device.serial }} | {{device.email}}
         </li>
     </ul>

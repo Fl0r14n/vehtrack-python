@@ -1,5 +1,14 @@
 <div class="row" ng-controller="TableController as tableCtrl">
     <div class="row">
-        <div class="grid" ui-grid="tableCtrl.model" ui-grid-cellNav ui-grid-edit ui-grid-resize-columns ui-grid-pinning ui-grid-selection></div>
+        <div class="grid" ui-grid="tableCtrl.table"
+             ui-grid
+             ui-grid-cellnav
+             ui-grid-edit
+             ui-grid-resize-columns
+             ui-grid-auto-resize
+             ui-grid-pinning
+             ui-grid-selection
+             ui-grid-exporter
+             ></div>
     </div>
 </div>

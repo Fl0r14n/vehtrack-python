@@ -9,13 +9,15 @@ directives.directive('uiTabList', function() {
         transclude: true,
         scope: {
             stacked: '@',
-            justified: '@'
+            justified: '@',
+            closable: '@'
         },
         controllerAs: 'tabsCtrl',
-        controller: function($scope) {
+        controller: ['$scope', 'MessagingService', function($scope, msgbus) {
             var self = this;
             self.stacked = $scope.stacked;
             self.justified = $scope.justified;
+            self.closable = $scope.closable;
             self.activeTab = null;
             self.tabs = [];
 
@@ -31,7 +33,17 @@ directives.directive('uiTabList', function() {
                 return self.justified;
             };
 
+            self.isClosable = function() {
+                return self.closable;
+            };
+
             self.addTab = function(tab) {
+                for(var i=0; i<self.tabs.length; i++) {
+                    if(self.tabs[i].id === tab.id) {
+                        self.setActiveTab(self.tabs[i]);
+                        return;
+                    }
+                }
                 self.tabs.push(tab);
             };
 
@@ -43,22 +55,38 @@ directives.directive('uiTabList', function() {
 
             self.isActiveTab = function(tab) {
                 return self.activeTab === tab.id && !tab.disabled;
-            }
-        },
+            };
+
+            self.closeTab = function(tab) {
+                var index = self.tabs.indexOf(tab);
+                self.tabs.splice(index, 1);
+            };
+
+            //events ------------------------------
+
+            msgbus.sub($scope, $scope.domain, 'TAB_ADD', function(event, data) {
+                self.addTab(data);
+            });
+
+            msgbus.sub($scope, $scope.domain, 'TAB_SELECT', function(event, data) {
+                self.setActiveTab(data);
+            })
+
+        }],
         template: [
             '<div class="ui-tabs"',
                 '<div class="tabbable">',
                     '<ng-transclude></ng-transclude>',
                     '<div ng-class="{\'col-xs-3\': tabsCtrl.isStacked()}">',
                         '<ul class="nav nav-tabs" ng-class="{\'nav-stacked nav-pills\': tabsCtrl.isStacked(), \'nav-justified\': tabsCtrl.isJustified()}">',
-                            '<li ng-repeat="tab in tabsCtrl.getTabs()" ng-class="{\'active\': tabsCtrl.isActiveTab(tab), \'disabled\': tab.disabled}" ng-click="tabsCtrl.setActiveTab(tab)" ng-init="tabsCtrl.setActiveTab(tabsCtrl.tabs[0])">',
-                                '<a><i ng-if="tab.icon" class="{{ tab.icon }}"></i>{{ tab.name }}</a>',
+                            '<li ng-repeat="tab in tabsCtrl.getTabs()" ng-class="{\'active\': tabsCtrl.isActiveTab(tab), \'disabled\': tab.disabled}" ng-click="tabsCtrl.setActiveTab(tab)">',
+                                '<a><i ng-if="tab.icon" class="{{ tab.icon }}"></i>{{ tab.name }}<button ng-if="tabsCtrl.isClosable()" class="close" ng-click="tabsCtrl.closeTab(tab)">&times;</button></a>',
                             '</li>',
                         '</ul>',
                     '</div>',
                     '<div ng-class="{\'col-xs-9\': tabsCtrl.isStacked()}">',
                         '<div class="tab-content"',
-                            '<div class="tab-pane fade" ng-repeat="tab in tabsCtrl.getTabs()" ng-class="{\'active in\': tabsCtrl.isActiveTab(tab)}" ng-show="tabsCtrl.isActiveTab(tab)">',
+                            '<div class="tab-pane fade" ng-repeat="tab in tabsCtrl.getTabs()" ng-class="{\'active in\': tabsCtrl.isActiveTab(tab)}" ng-show="tabsCtrl.isActiveTab(tab)" ng-init="tabId=tab.id">',
                                 '<ng-include src="tab.include" ng-if="tab.include"></ng-include>',
                                 '{{ tab.content }}',
                             '</div>',
