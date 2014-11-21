@@ -35,8 +35,11 @@ app.config(['$resourceProvider', function ($resourceProvider) {
 app.config(['uiGmapGoogleMapApiProvider', function (uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyDaGxMxpzdfIC3evAwuxd_E2Y7H0H_EMw0',
+        //v: 'exp',
         v: '3.17',
-        libraries: 'weather,geometry,visualization'
+        libraries: 'weather,geometry,visualization,places',
+        sensor: 'false',
+        language: 'en'
     });
 }]);
 
