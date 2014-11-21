@@ -9,9 +9,9 @@ var app = angular.module('app', [
     'ngAnimate',
     'dgAuth',
     'ui.bootstrap',
-    'google-maps'.ns(),
-    'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.pinning', 'ui.grid.selection', 'ui.grid.exporter'
-    //'ui.grid.moveColumns'
+    'uiGmapgoogle-maps',
+    'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.pinning', 'ui.grid.selection',
+    'ui.grid.exporter', 'ui.grid.moveColumns'
 ]);
 
 app.config(['$logProvider', function ($logProvider) {
@@ -32,8 +32,8 @@ app.config(['$resourceProvider', function ($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
 
-app.config(['GoogleMapApiProvider'.ns(), function (GoogleMapApi) {
-    GoogleMapApi.configure({
+app.config(['uiGmapGoogleMapApiProvider', function (uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyDaGxMxpzdfIC3evAwuxd_E2Y7H0H_EMw0',
         v: '3.17',
         libraries: 'weather,geometry,visualization'
