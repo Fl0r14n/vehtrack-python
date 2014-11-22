@@ -478,37 +478,6 @@ controllers.controller('TableController', ['$scope', 'MessagingService', '$http'
     });
 
     msgbus.pub($scope.domain, 'TABLE_ON_LOAD', {});
-
-    //Test----------------------------------------------------------------------------------------------
-    /*
-     self.table.columnDefs = [
-     { name: 'id', width: 50 },
-     { name: 'name', width: 100 },
-     { name: 'age', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age:{{COL_FIELD}}</span></div>'   },
-     { name: 'address.street', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Street:{{COL_FIELD}}</span></div>'   },
-     { name: 'address.city', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>City:{{COL_FIELD}}</span></div>'  },
-     { name: 'address.state', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>State:{{COL_FIELD}}</span></div>'  },
-     { name: 'address.zip', width: 50, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Zip:{{COL_FIELD}}</span></div>'  },
-     { name: 'company', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Company:{{COL_FIELD}}</span></div>'  },
-     { name: 'email', width: 100, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Email:{{COL_FIELD}}</span></div>'  },
-     { name: 'phone', width: 200, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Phone:{{COL_FIELD}}</span></div>'  },
-     { name: 'about', width: 300, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>AAbout:{{COL_FIELD}}</span></div>'  },
-     { name: 'friends[0].name', displayName: '1st friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend0:{{COL_FIELD}}</span></div>'  },
-     { name: 'friends[1].name', displayName: '2nd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend1:{{COL_FIELD}}</span></div>'  },
-     { name: 'friends[2].name', displayName: '3rd friend', width: 150, enableCellEdit: true, cellTemplate: '<div class="ui-grid-cell-contents"><span>Friend2:{{COL_FIELD}}</span></div>'  },
-     { name: 'agetemplate', field: 'age', width: 100, cellTemplate: '<div class="ui-grid-cell-contents"><span>Age 2:{{COL_FIELD}}</span></div>' }
-     ];
-
-     $http.get('/static/data.json').success(function (data) {
-     var i = 0;
-     data.forEach(function (row) {
-     row.name = row.name + ' iter ' + i;
-     row.id = i;
-     i++;
-     self.table.data.push(row);
-     })
-     })
-     */
 }]);
 
 controllers.controller('MapController', ['$scope', 'MessagingService', function ($scope, msgbus) {
@@ -519,145 +488,83 @@ controllers.controller('MapController', ['$scope', 'MessagingService', function 
             longitude: -118.24104309082031
         },
         zoom: 13,
-        showWeather: true,
-        options: {}
+        options: {
+            streetViewControl: true,
+            panControl: false,
+            maxZoom: 20,
+            minZoom: 3
+        }
     };
     //to show the weather this is a bug
     self.show = false;
-    self.markers = [
-        {
-            idKey: 0,
-            show: true,
-            latitude: 34.04924594193164,
-            longitude: -118.24104309082031,
-            coords: {
-                latitude: 34.04924594193164,
-                longitude: -118.24104309082031
-            },
-            title: 'some marker',
-            icon: '/img/marker.jpg',
-            onClick: function () {
-                this.show = !this.show;
-            }
-        },
-        {
-            idKey: 1,
-            show: true,
-            coords: {
-                latitude: 33,
-                longitude: -117
-            },
-            latitude: 33,
-            longitude: -117,
-            title: 'some marker1',
-            icon: '/img/marker.jpg',
-            onClick: function () {
-                this.show = !this.show;
-            }
-        }
-    ];
-    self.polylines = [
 
-        {
-            id: 1,
-            path: [
-                {
-                    latitude: 45,
-                    longitude: -74
+    self.markers = [];
+    self.polylines = [];
+
+    self.guid = function () {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    };
+
+    self.addMarkers = function (markersArray) {
+        var _markers = [];
+        for (var i=0; i<markersArray.length; i++) {
+            _markers.push({
+                id: self.guid(),
+                show: false,
+                onClick: function() {
+                    this.show = !this.show;
                 },
-                {
-                    latitude: 30,
-                    longitude: -89
-                },
-                {
-                    latitude: 37,
-                    longitude: -122
-                },
-                {
-                    latitude: 60,
-                    longitude: -95
-                }
-            ],
+                latitude: markersArray[i].latitude,
+                longitude: markersArray[i].longitude,
+                title: markersArray[i].title,
+                icon: markersArray[i].icon,
+                events: markersArray[i].events
+            });
+        }
+        self.markers = self.markers.concat(_markers);
+    };
+
+
+    self.addPolyline = function (coordsArray) {
+        self.polylines.push({
+            id: self.guid(),
+            path: coordsArray,
             stroke: {
                 color: '#6060FB',
                 weight: 3
             },
-            editable: true,
-            draggable: true,
+            editable: false,
+            draggable: false,
             geodesic: true,
-            visible: true,
-            icons: [
-                {
-                    icon: {
-                        //path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW
-                    },
-                    offset: '25px',
-                    repeat: '50px'
-                }
-            ]
-        },
-        {
-            id: 2,
-            path: [
-                {
-                    latitude: 47,
-                    longitude: -74
-                },
-                {
-                    latitude: 32,
-                    longitude: -89
-                },
-                {
-                    latitude: 39,
-                    longitude: -122
-                },
-                {
-                    latitude: 62,
-                    longitude: -95
-                }
-            ],
-            stroke: {
-                color: '#6060FB',
-                weight: 3
-            },
-            editable: true,
-            draggable: true,
-            geodesic: true,
-            visible: true,
-            icons: [
-                {
-                    icon: {
-                        //path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW
-                    },
-                    offset: '25px',
-                    repeat: '50px'
-                }
-            ]
-        },
-        /*
-         {
-         id: 3,
-         path: google.maps.geometry.encoding.decodePath("uowfHnzb}Uyll@i|i@syAcx}Cpj[_wXpd}AhhCxu[ria@_{AznyCnt^|re@nt~B?m|Awn`G?vk`RzyD}nr@uhjHuqGrf^ren@"),
-         stroke: {
-         color: '#4EAE47',
-         weight: 3
-         },
-         editable: false,
-         draggable: false,
-         geodesic: false,
-         visible: true,
-         icons: [
-         {
-         icon: {
-         //path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW
-         },
-         offset: '25px',
-         repeat: '50px'
-         }
-         ]
-         }
-         */
-    ];
+            visible: true
+        });
+    };
+
+    msgbus.sub($scope, $scope.domain, 'MAP_INIT', function (event, data) {
+        //clear stuff first
+        self.markers = [];
+        self.polylines = [];
+        if (!angular.isUndefined(data.center)) {
+            self.map.center = data.center;
+        }
+        if (!angular.isUndefined(data.zoom)) {
+            self.map.zoom = data.zoom;
+        }
+        if (!angular.isUndefined(data.options)) {
+            self.map.options = data.options;
+        }
+    });
+
+    msgbus.sub($scope, $scope.domain, 'MAP_ADD_MARKERS', function (event, data) {
+        self.addMarkers(data);
+    });
+
+    msgbus.sub($scope, $scope.domain, 'MAP_ADD_POLYLINE', function (event, data) {
+        self.addPolyline(data)
+    });
+
+    msgbus.pub($scope.domain, 'MAP_ON_LOAD', {});
+
 }]);
 
 //-----------------------------------------------------------------------
@@ -770,8 +677,8 @@ controllers.controller('PositionController', ['$scope', 'MessagingService', 'Pos
         });
     });
     msgbus.sub($scope, $scope.domain, 'OPTIONS_SUBMITTED', function (event, data) {
+        //get journeys list
         journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
-            console.log(data.objects);
             msgbus.pub($scope.domain, 'OPTIONS_INIT', {
                 journeys: {
                     readonly: false,
@@ -779,6 +686,52 @@ controllers.controller('PositionController', ['$scope', 'MessagingService', 'Pos
                 }
             });
         });
+
+        if (!angular.isDefined(data.journeys.selected)) {
+            positionService.getPositionsForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
+                var payload = data.objects;
+                if (payload.length > 0) {
+                    //TODO set center map and zoom fit
+                    msgbus.pub($scope.domain, 'MAP_INIT', {
+                        center: {
+                            latitude: payload[0].latitude,
+                            longitude: payload[0].longitude
+                        }
+                    });
+                    msgbus.pub($scope.domain, 'MAP_ADD_POLYLINE', data.objects);
+                }
+            });
+        } else {
+            var selectedJourney = data.journeys.selected;
+            positionService.getPositionsforJourney(data.journeys.selected.id, function (data) {
+                var payload = data.objects;
+                if (payload.length > 0) {
+                    //TODO set center map and zoom fit
+                    msgbus.pub($scope.domain, 'MAP_INIT', {
+                        center: {
+                            latitude: payload[0].latitude,
+                            longitude: payload[0].longitude
+                        }
+                    });
+                    var markers = [
+                        {
+                            latitude: selectedJourney.start_latitude,
+                            longitude: selectedJourney.start_longitude,
+                            title: selectedJourney.start_timestamp+'<br/> dst: '+selectedJourney.distance+'m<br/> dur:'+selectedJourney.duration+'s'
+                            //TODO start icon
+                        },
+                        {
+                            latitude: selectedJourney.stop_latitude,
+                            longitude: selectedJourney.stop_longitude,
+                            title: selectedJourney.stop_timestamp+'<br/> avg: '+selectedJourney.average_speed+'km/h<br/> max: '+selectedJourney.maximum_speed+'km/h'
+                            //TODO stop icon
+                        }
+                    ];
+                    msgbus.pub($scope.domain, 'MAP_ADD_MARKERS', markers);
+                    msgbus.pub($scope.domain, 'MAP_ADD_POLYLINE', payload);
+                }
+            });
+        }
     });
 }]);
 
@@ -814,7 +767,6 @@ controllers.controller('LogController', ['$scope', 'MessagingService', 'LogServi
         console.log(data.journeys.selected);
         if (!angular.isDefined(data.journeys.selected)) {
             journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
-                console.log(data.objects);
                 msgbus.pub($scope.domain, 'OPTIONS_INIT', {
                     journeys: {
                         readonly: false,
