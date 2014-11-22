@@ -123,41 +123,41 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         }
     };
 
-    self.lastDayJourneys = function (device) {
+    self.lastDayJourneysTab = function (device) {
         var tabId = 'lastDayJourneys_' + device.email;
         self._journeyTab(tabId, 'Last Day Journeys for ' + device.serial);
         self._submit_JourneyQuery(tabId, device, 86400000);
     };
 
     //TODO should be this week
-    self.lastWeekJourneys = function (device) {
+    self.lastWeekJourneysTab = function (device) {
         var tabId = 'lastWeekJourneys_' + device.email;
         self._journeyTab(tabId, 'Last Week Journeys for ' + device.serial);
         self._submit_JourneyQuery(tabId, device, 604800000);
     };
 
     //TODO should be this month
-    self.lastMonthJourneys = function (device) {
+    self.lastMonthJourneysTab = function (device) {
         var tabId = 'lastMonthJourneys_' + device.email;
         self._journeyTab(tabId, 'Last Month Journeys for ' + device.serial);
         self._submit_JourneyQuery(tabId, device, 2419200000);
     };
 
     //TODO should be past 3 months
-    self.last3MonthJourneys = function (device) {
+    self.last3MonthJourneysTab = function (device) {
         var tabId = 'last3MonthJourneys_' + device.email;
         self._journeyTab(tabId, 'Last 3 Month Journeys for ' + device.serial);
         self._submit_JourneyQuery(tabId, device, 7257600000);
     };
 
-    self.journeys = function (user) {
+    self.journeysTab = function (user) {
         var tabId = 'journey-tab';
         self.getDevices(user);
         self._journeyTab(tabId, 'Journeys');
         self._setDefaultOptions(tabId);
     };
 
-    self.positions = function (user) {
+    self.positionsTab = function (user) {
         var tabId = 'position-tab';
         self.getDevices(user);
         var tab = {
@@ -170,7 +170,7 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         self._setDefaultOptions(tabId);
     };
 
-    self.logs = function (user) {
+    self.logsTab = function (user) {
         var tabId = 'log-tab';
         self.getDevices(user);
         var tab = {
@@ -183,7 +183,7 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         self._setDefaultOptions(tabId);
     };
 
-    self.profile = function (user) {
+    self.profileTab = function (user) {
         var tabId = 'profile-tab';
         var tab = {
             id: tabId,
@@ -194,7 +194,7 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         self._newTab(tab);
     };
 
-    self.users = function (user) {
+    self.usersTab = function (user) {
         var tabId = 'user-tab';
         var tab = {
             id: tabId,
@@ -205,7 +205,7 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         self._newTab(tab);
     };
 
-    self.devices = function (user) {
+    self.devicesTab = function (user) {
         var tabId = 'device-tab';
         var tab = {
             id: tabId,
@@ -216,7 +216,7 @@ controllers.controller('NavbarController', ['$scope', 'MessagingService', 'Devic
         self._newTab(tab);
     };
 
-    self.fleets = function (user) {
+    self.fleetsTab = function (user) {
         var tabId = 'fleet-tab';
         var tab = {
             id: tabId,
@@ -507,11 +507,11 @@ controllers.controller('MapController', ['$scope', 'MessagingService', function 
 
     self.addMarkers = function (markersArray) {
         var _markers = [];
-        for (var i=0; i<markersArray.length; i++) {
+        for (var i = 0; i < markersArray.length; i++) {
             _markers.push({
                 id: self.guid(),
                 show: false,
-                onClick: function() {
+                onClick: function () {
                     this.show = !this.show;
                 },
                 latitude: markersArray[i].latitude,
@@ -562,9 +562,6 @@ controllers.controller('MapController', ['$scope', 'MessagingService', function 
     msgbus.sub($scope, $scope.domain, 'MAP_ADD_POLYLINE', function (event, data) {
         self.addPolyline(data)
     });
-
-    msgbus.pub($scope.domain, 'MAP_ON_LOAD', {});
-
 }]);
 
 //-----------------------------------------------------------------------
@@ -717,13 +714,13 @@ controllers.controller('PositionController', ['$scope', 'MessagingService', 'Pos
                         {
                             latitude: selectedJourney.start_latitude,
                             longitude: selectedJourney.start_longitude,
-                            title: selectedJourney.start_timestamp+'<br/> dst: '+selectedJourney.distance+'m<br/> dur:'+selectedJourney.duration+'s'
+                            title: selectedJourney.start_timestamp + '<br/> dst: ' + selectedJourney.distance + 'm<br/> dur:' + selectedJourney.duration + 's'
                             //TODO start icon
                         },
                         {
                             latitude: selectedJourney.stop_latitude,
                             longitude: selectedJourney.stop_longitude,
-                            title: selectedJourney.stop_timestamp+'<br/> avg: '+selectedJourney.average_speed+'km/h<br/> max: '+selectedJourney.maximum_speed+'km/h'
+                            title: selectedJourney.stop_timestamp + '<br/> avg: ' + selectedJourney.average_speed + 'km/h<br/> max: ' + selectedJourney.maximum_speed + 'km/h'
                             //TODO stop icon
                         }
                     ];
@@ -764,16 +761,15 @@ controllers.controller('LogController', ['$scope', 'MessagingService', 'LogServi
         });
     });
     msgbus.sub($scope, $scope.domain, 'OPTIONS_SUBMITTED', function (event, data) {
-        console.log(data.journeys.selected);
-        if (!angular.isDefined(data.journeys.selected)) {
-            journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
-                msgbus.pub($scope.domain, 'OPTIONS_INIT', {
-                    journeys: {
-                        readonly: false,
-                        list: data.objects
-                    }
-                });
+        journeyService.getJourneysForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
+            msgbus.pub($scope.domain, 'OPTIONS_INIT', {
+                journeys: {
+                    readonly: false,
+                    list: data.objects
+                }
             });
+        });
+        if (!angular.isDefined(data.journeys.selected)) {
             logService.getLogsForDevice(data.devices.selected.serial, data.startDate.dateString(), data.stopDate.dateString(), function (data) {
                 msgbus.pub($scope.domain, 'TABLE_INIT', {
                     data: data.objects
