@@ -4,6 +4,7 @@ var directives = angular.module('directive', []);
 
 directives.directive('uiTabList', function() {
     return {
+	require: '^compileItem',
         restrict: 'E',
         replace: true,
         transclude: true,
@@ -88,7 +89,7 @@ directives.directive('uiTabList', function() {
                         '<div class="tab-content"',
                             '<div class="tab-pane fade" ng-repeat="tab in tabsCtrl.getTabs()" ng-class="{\'active in\': tabsCtrl.isActiveTab(tab)}" ng-show="tabsCtrl.isActiveTab(tab)" ng-init="tabId=tab.id">',
                                 '<ng-include src="tab.include" ng-if="tab.include"></ng-include>',
-                                '{{ tab.content }}',
+                                '<compile-item html="tab.content"></compile-item>',
                             '</div>',
                         '</div>',
                     '</div>',
@@ -133,6 +134,20 @@ directives.directive('uiTab', function() {
             }
         }
     }
+});
+
+directives.directive('compileItem', function($compile) {
+    return {
+        restrict: 'E',
+        scope: {
+            html: '='
+        },
+        transclude: true,
+        link: function(scope, element, attrs) {
+            element.html(scope.html).show();
+            $compile(element.contents())(scope);
+        }
+    };
 });
 
 directives.directive('uiAlert', function() {
