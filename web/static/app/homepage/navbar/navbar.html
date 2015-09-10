@@ -1,0 +1,22 @@
+<div class="btn-group" ng-controller="navbarController as ctrl">
+
+    <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'disabled': ctrl.isDisabledMenuItems()}">
+            Menu
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" >
+            <li><a href=""  ng-click="ctrl.journeysTab()">Journey</a></li>
+            <li><a href="" ng-click="ctrl.positionsTab()">Position</a></li>
+            <li><a href="" ng-click="ctrl.logsTab()">Logs</a></li>
+            <li class="disabled"><a href="">Speed</a></li>
+            <li class="disabled"><a href="">Consumption</a></li>
+        </ul>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-default" type="button" ng-click="ctrl.toogleManager()">
+            <i class="fa" ng-class="ctrl.toogleManagerVal"></i>
+        </button>
+    </div>
+</div>

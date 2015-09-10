@@ -1,0 +1,25 @@
+<div id="map_canvas" class="map row center-block" ng-controller="mapController as ctrl">
+    <ui-gmap-google-map center="ctrl.map.center"
+                        pan="ctrl.map.pan"
+                        zoom="ctrl.map.zoom"
+                        options="ctrl.map.options">
+
+        <data-ui-gmap-layer namespace="weather" type="WeatherLayer" show="ctrl.weather"></data-ui-gmap-layer>
+
+        <ui-gmap-polylines models="ctrl.polylines" path="'path'"
+                           stroke="'stroke'"
+                           visible="visible"
+                           geodesic="'geodesic'"
+                           fit="'false'"
+                           editable="'editable'"
+                           draggable="'draggable'"
+                           icons="'icons'"></ui-gmap-polylines>
+
+        <ui-gmap-markers doCluster="true" models="ctrl.markers" coords="'self'" icon="'icon'" click="onClick">
+            <ui-gmap-windows show="show">
+                <div ng-non-bindable>{{title}}</div>
+            </ui-gmap-windows>
+        </ui-gmap-markers>
+
+    </ui-gmap-google-map>
+</div>

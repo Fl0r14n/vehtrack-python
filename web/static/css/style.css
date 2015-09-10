@@ -1,0 +1,31 @@
+.header {
+    margin-bottom: 5px;
+}
+.fleet-grid {
+    min-width: 200px;
+    min-height: 200px;
+}
+.device-grid {
+    min-width: 200px;
+    min-height: 200px;
+}
+.user-grid {
+    min-width: 200px;
+    min-height: 200px;
+}
+.fleet {
+    margin-bottom: 5px;
+}
+.angular-google-map-container {
+    width: 100%;
+    //width: 90vw;
+    height: 70vh;
+    padding-left: 40px;
+    padding-right: 40px;
+    border: 1px solid;
+    border-color: gray;
+}
+
+.navbar {
+    margin-bottom: 0px;
+}

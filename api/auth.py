@@ -1,192 +1,77 @@
-from django.conf import settings
-from tastypie.authentication import DigestAuthentication
-from tastypie.authorization import Authorization
-from tastypie.exceptions import Unauthorized
-from tastypie.http import HttpUnauthorized, HttpResponse
-import uuid
-import hmac
-import time
-try:
-    from hashlib import sha1
-except ImportError:
-    import sha
-    sha1 = sha.sha
-try:
-    import python_digest
-except ImportError:
-    python_digest = None
-from dao.models import *
+import logging
+
+from django.contrib.auth.models import AnonymousUser
+from django.utils import timezone
+
+from tastypie.authentication import Authentication
+
+from oauth2_provider.models import AccessToken
+
+# stolen from piston
+class OAuthError(RuntimeError):
+    """Generic exception class."""
+    def __init__(self, message='OAuth error occured.'):
+        self.message = message
 
 
-class AppAuthentication(DigestAuthentication):
+class OAuth20Authentication(Authentication):
+    """
+    OAuth authenticator. 
+    This Authentication method checks for a provided HTTP_AUTHORIZATION
+    and looks up to see if this is a valid OAuth Access Token
+    """
+    def __init__(self, realm='API'):
+        self.realm = realm
 
-    def __init__(self, auth_header='', **kwargs):
-        super(AppAuthentication, self).__init__(**kwargs)
-        self.auth_header = 'WWW-Authenticate'+auth_header
+    def is_authenticated(self, request, **kwargs):
+        """
+        Verify 2-legged oauth request. Parameters accepted as
+        values in "Authorization" header, or as a GET request
+        or in a POST body.
+        """
+        logging.info("OAuth20Authentication")
 
-    def _generate_header(self, response):
-        new_uuid = uuid.uuid4()
-        opaque = hmac.new(str(new_uuid).encode('utf-8'), digestmod=sha1).hexdigest()
-        response[self.auth_header] = python_digest.build_digest_challenge(
-            timestamp=time.time(),
-            secret=getattr(settings, 'SECRET_KEY', ''),
-            realm=self.realm,
-            opaque=opaque,
-            stale=False
-        )
-        return response
-
-    def logout(self):
-        response = HttpResponse('{"logout": "success"}', content_type='application/json', status=201)
-        return self._generate_header(response)
-
-    # override this to set custom auth header to avoid browser login popup
-    def _unauthorized(self):
-        response = HttpUnauthorized()
-        return self._generate_header(response)
-
-    def get_user(self, username):
         try:
-            account = Account.objects.get(email=username)
-        except (Account.DoesNotExist, Account.MultipleObjectsReturned):
+            key = request.GET.get('oauth_consumer_key')
+            if not key:
+                key = request.POST.get('oauth_consumer_key')
+            if not key:
+                auth_header_value = request.META.get('HTTP_AUTHORIZATION')
+                if auth_header_value:
+                    key = auth_header_value.split(' ')[1]
+            if not key:
+                logging.error('OAuth20Authentication. No consumer_key found.')
+                return None
+            """
+            If verify_access_token() does not pass, it will raise an error
+            """
+            token = verify_access_token(key)
+
+            # If OAuth authentication is successful, set the request user to the token user for authorization
+            request.user = token.user
+
+            # If OAuth authentication is successful, set oauth_consumer_key on request in case we need it later
+            request.META['oauth_consumer_key'] = key
+            return True
+        except KeyError, e:
+            logging.exception("Error in OAuth20Authentication.")
+            request.user = AnonymousUser()
             return False
-        return account
+        except Exception, e:
+            logging.exception("Error in OAuth20Authentication.")
+            return False
+        return True
 
-    def get_key(self, user):
-        if user:
-            return user.password
-        return False
+def verify_access_token(key):
+    # Check if key is in AccessToken key
+    try:
+        token = AccessToken.objects.get(token=key)
 
-    def check_active(self, user):
-        if user:
-            return user.active
-        return False
+        # Check if token has expired
+        if token.expires < timezone.now():
+            raise OAuthError('AccessToken has expired.')
+    except AccessToken.DoesNotExist, e:
+        raise OAuthError("AccessToken not found at all.")
 
-
-class AppAuthorization(Authorization):
-
-    READ_LIST, READ_DETAIL, CREATE_LIST, CREATE_DETAIL, UPDATE_LIST, UPDATE_DETAIL, DELETE_LIST, DELETE_DETAIL = range(8)
-
-    AUTHORIZATION_MATRIX = {
-        Account: {
-            READ_LIST: (ROLES.ADMIN,),
-            READ_DETAIL: (ROLES.ADMIN,),
-            CREATE_LIST: (ROLES.ADMIN,),
-            CREATE_DETAIL: (ROLES.ADMIN,),
-            UPDATE_LIST: (ROLES.ADMIN,),
-            UPDATE_DETAIL: (ROLES.ADMIN,),
-            DELETE_LIST: (ROLES.ADMIN,),
-            DELETE_DETAIL: (ROLES.ADMIN,),
-        },
-        User: {
-            READ_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            READ_DETAIL: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            CREATE_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            CREATE_DETAIL: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            UPDATE_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            UPDATE_DETAIL: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            DELETE_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            DELETE_DETAIL: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-        },
-        Fleet: {
-            READ_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            READ_DETAIL: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            CREATE_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            CREATE_DETAIL: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            UPDATE_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            UPDATE_DETAIL: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            DELETE_LIST: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-            DELETE_DETAIL: (ROLES.ADMIN, ROLES.FLEET_ADMIN),
-        },
-        Device: {
-            READ_LIST: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            READ_DETAIL: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            CREATE_LIST: (ROLES.ADMIN,),
-            CREATE_DETAIL: (ROLES.ADMIN,),
-            UPDATE_LIST: (ROLES.ADMIN,),
-            UPDATE_DETAIL: (ROLES.ADMIN,),
-            DELETE_LIST: (ROLES.ADMIN,),
-            DELETE_DETAIL: (ROLES.ADMIN,),
-        },
-        Journey: {
-            READ_LIST: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            READ_DETAIL: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            CREATE_LIST: (ROLES.ADMIN,),
-            CREATE_DETAIL: (ROLES.ADMIN, ROLES.DEVICE),
-            UPDATE_LIST: (ROLES.ADMIN,),
-            UPDATE_DETAIL: (ROLES.ADMIN,),
-            DELETE_LIST: (ROLES.ADMIN,),
-            DELETE_DETAIL: (ROLES.ADMIN,),
-        },
-        Position: {
-            READ_LIST: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            READ_DETAIL: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            CREATE_LIST: (ROLES.ADMIN, ROLES.DEVICE),
-            CREATE_DETAIL: (ROLES.ADMIN, ROLES.DEVICE),
-            UPDATE_LIST: (ROLES.ADMIN,),
-            UPDATE_DETAIL: (ROLES.ADMIN,),
-            DELETE_LIST: (ROLES.ADMIN,),
-            DELETE_DETAIL: (ROLES.ADMIN,),
-        },
-        Log: {
-            READ_LIST: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            READ_DETAIL: (ROLES.ADMIN, ROLES.USER, ROLES.FLEET_ADMIN),
-            CREATE_LIST: (ROLES.ADMIN, ROLES.DEVICE),
-            CREATE_DETAIL: (ROLES.ADMIN, ROLES.DEVICE),
-            UPDATE_LIST: (ROLES.ADMIN,),
-            UPDATE_DETAIL: (ROLES.ADMIN,),
-            DELETE_LIST: (ROLES.ADMIN,),
-            DELETE_DETAIL: (ROLES.ADMIN,),
-        }
-    }
-
-    def base_check(self, object_list, bundle):
-        request = bundle.request
-        model_class = object_list.model
-        if not model_class or not getattr(model_class, '_meta', None):
-            raise ValueError('Not a model')
-        if not hasattr(request, 'user'):
-            raise Unauthorized('User is not logged in!')
-        if not hasattr(request.user, 'roles'):
-            raise Unauthorized('User has no roles')
-        #model class is the type of object to be returned along with user's role
-        return model_class, request.user.roles
-
-    def check_permissions(self, object_list, bundle, permission):
-        model_class, roles = self.base_check(object_list, bundle)
-        if int(roles) in self.AUTHORIZATION_MATRIX[model_class][permission]:
-            return True
-        else:
-            raise Unauthorized('Not enough roles!')
-
-    def read_list(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.READ_LIST):
-            return object_list
-
-    def read_detail(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.READ_DETAIL):
-            return True
-
-    def create_list(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.CREATE_LIST):
-            return object_list
-
-    def create_detail(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.CREATE_DETAIL):
-            return True
-
-    def update_list(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
-            return object_list
-
-    def update_detail(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
-            return True
-
-    def delete_list(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
-            return object_list
-
-    def delete_detail(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
-            return True
+    logging.info('Valid access')
+    return token

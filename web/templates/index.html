@@ -4,48 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vehtrack</title>
+    <base href="/"></base>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/normalize.css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap-theme{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/angular-ui-grid/ui-grid{% if not DEBUG %}.min{% endif %}.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/angular-bootstrap-nav-tree/dist/abn_tree.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/font-awesome/css/font-awesome{% if not DEBUG %}.min{% endif %}.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css"/>
 </head>
-<body ng-app="app">
-    <div ng-view></div>
+<body ng-app="vehtrack" ng-init="config={static_url:'{{ STATIC_URL }}', http_host:'{{ http_host }}', client_id: '{{ client_id }}', auth_path: '{{ auth_path }}', profile_uri: '{{ profile_uri}}', revoke_token_path: '{{ revoke_token_path }}', logout_path: '{{ logout_path }}'}">
+    <div ng-include="'{{STATIC_URL}}app/homepage/homepage.html'"></div>
 
     {#Libs#}
     {# Jquery #}
     <script src="{{ STATIC_URL }}lib/jquery/dist/jquery{% if not DEBUG %}.min{% endif %}.js"></script>
     {# Bootstrap #}
-    <script src="{{ STATIC_URL }}lib/bootstrap/dist/js/bootstrap{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/bootstrap/js/dropdown.js"></script>
+    <script src="{{ STATIC_URL }}lib/bootstrap/js/collapse.js"></script>
     {# Angular #}
     <script src="{{ STATIC_URL }}lib/angular/angular{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-route/angular-route{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-resource/angular-resource{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-touch/angular-touch{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-sanitize/angular-sanitize{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-animate/angular-animate{% if not DEBUG %}.min{% endif %}.js"></script>
-    {# Angular digest auth #}
-    <script src="{{ STATIC_URL }}lib/angular-md5/angular-md5{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-state-machine/dist/angular-state-machine{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-digest-auth/dist/angular-digest-auth{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-touch/angular-touch{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/angular-resource/angular-resource{% if not DEBUG %}.min{% endif %}.js"></script>
+    {# OAuth2 #}
+    <script src="{{ STATIC_URL }}lib/oauth-ng/dist/oauth-ng{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/ngStorage/ngStorage{% if not DEBUG %}.min{% endif %}.js"></script>
     {# Angular UI #}
-    <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-bootstrap/ui-bootstrap-tpls{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-ui-grid/ui-grid{% if not DEBUG %}.min{% endif %}.js"></script>
-    <script src="{{ STATIC_URL }}lib/angular-bootstrap-nav-tree/dist/abn_tree_directive.js"></script>
     {# Export #}
     <script src="{{ STATIC_URL }}lib/pdfmake/build/pdfmake{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/pdfmake/build/vfs_fonts.js"></script>
     <script src="{{ STATIC_URL }}lib/csv-js/csv.js"></script>
     {# Angular Google Maps #}
-    <script src="{{ STATIC_URL }}lib/lodash/dist/lodash{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}lib/lodash/lodash{% if not DEBUG %}.min{% endif %}.js"></script>
     <script src="{{ STATIC_URL }}lib/angular-google-maps/dist/angular-google-maps{% if not DEBUG %}.min{% endif %}.js"></script>
     {#Project#}
-    <script src="{{ STATIC_URL }}js/directive.js"></script>
-    <script src="{{ STATIC_URL }}js/filter.js"></script>
-    <script src="{{ STATIC_URL }}js/service.js"></script>
-    <script src="{{ STATIC_URL }}js/controller.js"></script>
-    <script src="{{ STATIC_URL }}js/app.js"></script>
+    <script src="{{ STATIC_URL }}app/app{% if not DEBUG %}.min{% endif %}.js"></script>    
+    {#Utils#}
+    <script src="{{ STATIC_URL }}app/utils/utils.config{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/utils/utils.directive{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/utils/utils.filter{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/utils/utils.service{% if not DEBUG %}.min{% endif %}.js"></script>
+    {#Auth#}
+    <script src="{{ STATIC_URL }}app/auth/auth{% if not DEBUG %}.min{% endif %}.js"></script>
+    {#Homepage#}
+    <script src="{{ STATIC_URL }}app/homepage/homepage{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/device/device{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/fleet/fleet{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/footer/footer{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/header/header{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/journey/journey{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/log/log{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/navbar/navbar{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/position/position{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/homepage/user/user{% if not DEBUG %}.min{% endif %}.js"></script>
+    {# Widgets #}
+    <script src="{{ STATIC_URL }}app/widget/map/map{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/widget/options/options{% if not DEBUG %}.min{% endif %}.js"></script>
+    <script src="{{ STATIC_URL }}app/widget/table/table{% if not DEBUG %}.min{% endif %}.js"></script>
 </body>
 </html>

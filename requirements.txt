@@ -1,14 +1,15 @@
 #framework
 django
 django-treebeard
-
+django-extensions
+werkzeug
 #db
 #psycopg2
 
 #rest
-django-tastypie -e git+https://github.com/django-tastypie/django-tastypie#egg=TastyPie
-defusedxml
-python-digest
+django-oauth-toolkit
+django-cors-headers
+-e git+https://github.com/django-tastypie/django-tastypie#egg=TastyPie
 
 #debug
 ipdb

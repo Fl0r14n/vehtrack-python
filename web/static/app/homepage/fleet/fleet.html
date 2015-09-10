@@ -1,0 +1,169 @@
+<div class="fleet row " ng-controller="fleetController as fleet" ng-show="fleet.isManagerVisible">
+    <div class="col-md-4">
+        <div class="fleet-grid" ui-grid="fleet.fleet_grid" ui-grid-selection ui-grid-tree-view ui-grid-edit></div>
+        <script type="text/ng-template" id="fleet_add_button.html">
+            <button class="btn primary fa fa-plus" ng-class="{'disabled': grid.selection.lastSelectedRow == null}" ng-click="grid.appScope.addFleet(grid.selection.lastSelectedRow.entity)"></button>
+        </script>
+        <script type="text/ng-template" id="fleet_remove_button.html">
+            <button class="btn primary fa fa-remove" ng-class="{'disabled': row.entity.$$treeLevel === 0}" ng-click="grid.appScope.removeFleet(row.entity)"></button>
+        </script>
+    </div>
+    <div class="col-md-4">
+        <div class="user-grid" ui-grid="fleet.user_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit></div>
+        <script type="text/ng-template" id="user_add_button.html">
+            <button class="btn primary fa fa-user-plus" ng-class="{'disabled': grid.appScope.isSelectedRootFleet()}" ng-click="grid.appScope.addUserToFleet()"></button>
+        </script>
+        <script type="text/ng-template" id="user_remove_button.html">
+            <button class="btn primary fa fa-user-times" ng-class="{'disabled': grid.appScope.isSelectedRootFleet()}" ng-click="grid.appScope.removeUserFromFleet(row.entity)"></button>
+        </script>
+    </div>
+    <div class="col-md-4">
+        <div class="device-grid" ui-grid="fleet.device_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit></div>
+        <script type="text/ng-template" id="show_journey_button.html">
+            <button class="btn primary fa fa-road fa-lg" ng-click="grid.appScope.showJourney(row.entity)"></button>
+        </script>
+        <script type="text/ng-template" id="device_add_button.html">
+            <button class="btn primary fa fa-plus" ng-class="{'disabled': grid.appScope.isSelectedRootFleet()}" ng-click="grid.appScope.addDeviceToFleet()"></button>
+        </script>
+        <script type="text/ng-template" id="device_remove_button.html">
+            <button class="btn primary fa fa-remove" ng-class="{'disabled': grid.appScope.isSelectedRootFleet()}" ng-click="grid.appScope.removeDeviceFromFleet(row.entity)"></button>
+        </script>
+    </div>
+
+
+
+    <script type="text/ng-template" id="remove_device.html">
+        <div class="modal-body">
+            <div class="form-group">
+                 <div class="h5">
+                    Remove device <b>{{device.serial}}</b> from fleet <b>{{fleet.label}}</b>?
+                 </div>
+            </div>
+            <div class="form-group">
+                <ui-alert show="error.show" type="danger" show-close="true">{{error.text}}</ui-alert>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="remove_user.html">
+        <div class="modal-body">
+            <div class="form-group">
+                <div class="h5">
+                    Remove user <b>{{user.name}}</b> from fleet <b>{{fleet.label}}</b>?
+                </div>
+            </div>
+            <div class="form-group">
+                <ui-alert show="error.show" type="danger" show-close="true">{{error.text}}</ui-alert>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="remove_fleet.html">
+        <div class="modal-body">
+            <div class="form-group">
+                <div class="h5">
+                    Remove fleet <b>{{fleet.label}}</b>?
+                </div>
+            </div>
+            <div class="form-group">
+                <ui-alert show="error.show" type="danger" show-close="true">{{error.text}}</ui-alert>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="add_device.html">
+        <div class="modal-header">
+            <button class="close" type="button" ng-click="cancel()">&times;</button>
+            <div class="h5">Add device to <b>{{fleet.label}}</b></div>
+        </div>
+        <div class="modal-body">
+            <form name="form">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-car"></i>
+                        </div>
+                        <input name="deviceName" class="form-control" type="text" ng-model="devices.selected" ng-readonly="devices.readonly"
+                               typeahead="device as device.serial for device in devices.list | filter:{serial:$viewValue} | limitTo:8" required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="ok()" ng-disabled="form.deviceName.$error.required">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <ui-alert show="error.show" type="danger" show-close="true">{{error.text}}</ui-alert>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="add_user.html">
+        <div class="modal-header">
+            <button class="close" type="button" ng-click="cancel()">&times;</button>
+            <div class="h5">Add user to <b>{{fleet.label}}</b></div>
+        </div>
+        <div class="modal-body">
+            <form name="form">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <input name="username" class="form-control" type="text" ng-model="users.selected" ng-readonly="users.readonly"
+                               typeahead="user as user.name for user in users.list | filter:{name:$viewValue} | limitTo:8" required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="ok()" ng-disabled="form.username.$error.required">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <ui-alert show="error.show" type="danger" show-close="true">{{error.text}}</ui-alert>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="add_fleet.html">
+        <div class="modal-header">
+            <button class="close" type="button" ng-click="cancel()">&times;</button>
+            <div class="h5">Add fleet to <b>{{fleet.label}}</b></div>
+        </div>
+        <div class="modal-body">
+            <form name="form">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-building"></i>
+                        </div>
+                        <input name="fleetName" class="form-control" type="text"  ng-model="new_fleet.name" ng-readonly="new_fleet.readonly" minlength="3" required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="ok()" ng-disabled="form.fleetName.$error.required || form.fleetName.$error.minlength">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <ui-alert show="error.show" type="danger" show-close="true">{{error.text}}</ui-alert>
+                </div>
+            </form>
+        </div>
+    </script>
+
+</div>

@@ -1,7 +1,8 @@
 from django.db import models
-from treebeard import mp_tree
 from utils.choice import Choices
+from mptt.models import MPTTModel, TreeForeignKey
 import validators
+from auth_server.models import Account
 
 
 def to_string(self):
@@ -12,38 +13,48 @@ def to_string(self):
             result += '({} : {}), '.format(k, d[k])
     return result + '}\n'
 
-ROLES = Choices(
-    ADMIN=(0, 'ADMIN'),
-    FLEET_ADMIN=(1, 'FLEET_ADMIN'),
-    USER=(2, 'USER'),
-    DEVICE=(4, 'DEVICE'),
-)
 
-
-class Account(models.Model):
-    email = models.EmailField(max_length=40, primary_key=True)
-    password = models.CharField(max_length=128)
-    active = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField(auto_now=True)
-    roles = models.CharField(max_length=1, choices=ROLES)
+class Fleet(MPTTModel):
+    name = models.CharField(max_length=64, validators=[validators.UsernameValidator])
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
 
     class Meta:
-        db_table = 'accounts'
-        ordering = ['-last_login', 'active', 'email', 'created']
+        db_table = 'fleets'
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def get_fleet(cls, user):
+        role = user.role
+        if role:
+            if role.name == 'ADMIN':
+                #return all the root nodes wo children
+                return Fleet.get_root_nodes()
+            elif role.name == 'FLEET_ADMIN':
+                #return the node + children
+                parent = user.fleet
+                return parent.get_tree(parent)
+            elif role.name == 'USER':
+                #has only one fleet
+                return user.fleet
+        return None
 
 
 class User(Account):
     name = models.CharField(max_length=64, validators=[validators.UsernameValidator])
     #photo =
 
-    fleet = models.ForeignKey('Fleet')
+    fleets = models.ManyToManyField('Fleet')
 
     class Meta:
         db_table = 'users'
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return to_string(self)
 
     @classmethod
@@ -52,33 +63,8 @@ class User(Account):
         return User.objects.filter(fleet__in=fleet.get_descendants())
 
 
-class Fleet(mp_tree.MP_Node):
-    name = models.CharField(max_length=64, validators=[validators.UsernameValidator])
-
-    class Meta:
-        db_table = 'fleets'
-        ordering = ['name']
-
-    @classmethod
-    def get_fleet(cls, user):
-        role = int(user.roles)
-        if role == ROLES.ADMIN:
-            #return all the root nodes wo children
-            return Fleet.get_root_nodes()
-        elif role == ROLES.FLEET_ADMIN:
-            #return the node + children
-            parent = user.fleet
-            return parent.get_tree(parent)
-        elif role == ROLES.USER:
-            #has only one fleet
-            return user.fleet
-        else:
-            #no use for devices
-            return None
-
-
 class Device(Account):
-    serial = models.CharField(max_length=30)
+    serial = models.CharField(max_length=30, unique=True, db_index=True)
     type = models.CharField(max_length=30)  #equipment type
     description = models.CharField(max_length=256, default='', blank=True)
     phone = models.CharField(max_length=12, default='', blank=True, validators=[validators.PhoneValidator])
@@ -88,13 +74,13 @@ class Device(Account):
     imsi = models.CharField(max_length=15, default='', blank=True, validators=[validators.IMSIValidator])
     msisdn = models.CharField(max_length=14, default='', blank=True, validators=[validators.MSISDNValidator])
 
-    fleet = models.ForeignKey('Fleet')
+    fleets = models.ManyToManyField('Fleet')
 
     class Meta:
         db_table = 'devices'
         ordering = ['serial']
 
-    def __unicode__(self):
+    def __str__(self):
         return to_string(self)
 
     @classmethod
@@ -121,7 +107,7 @@ class Journey(models.Model):
         db_table = 'journeys'
         ordering = ['-start_timestamp']
 
-    def __unicode__(self):
+    def __str__(self):
         return to_string(self)
 
 
@@ -138,7 +124,7 @@ class Position(models.Model):
         db_table = 'positions'
         ordering = ['-timestamp']
 
-    def __unicode__(self):
+    def __str__(self):
         return to_string(self)
 
 
@@ -162,5 +148,5 @@ class Log(models.Model):
         db_table = 'logs'
         ordering = ['-timestamp']
 
-    def __unicode__(self):
+    def __str__(self):
         return to_string(self)
