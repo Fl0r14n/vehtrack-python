@@ -1,14 +1,12 @@
 #framework
-django<1.7
+django
 django-treebeard
 
 #db
-psycopg2
-south
-django-clear-cache
+#psycopg2
 
 #rest
-django-tastypie
+django-tastypie -e git+https://github.com/django-tastypie/django-tastypie#egg=TastyPie
 defusedxml
 python-digest
 

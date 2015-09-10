@@ -22,14 +22,13 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     #'django.contrib.admin',
-    #'django.contrib.auth',
-    #'django.contrib.contenttypes',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     #'django.contrib.sessions',
     #'django.contrib.messages',
     'django.contrib.staticfiles',
     'tastypie',
     'treebeard',
-    'south',
     'dao',
     'api',
     'web',
@@ -57,14 +56,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'vehtrack.sqlite3'),
     },
-    'postgres': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'vehtrack',
-        'USER': 'postgres',
-        'PASSWORD': 'sergtsop',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    #'postgres': {
+    #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #    'NAME': 'vehtrack',
+    #    'USER': 'postgres',
+    #    'PASSWORD': 'sergtsop',
+    #    'HOST': 'localhost',
+    #    'PORT': '5432',
+    #}
 }
 
 # Internationalization

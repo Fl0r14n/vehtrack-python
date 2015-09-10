@@ -560,7 +560,7 @@ controllers.controller('MapController', ['$scope', 'MessagingService', function 
     });
 
     msgbus.sub($scope, $scope.domain, 'MAP_ADD_POLYLINE', function (event, data) {
-        self.addPolyline(data)
+        self.addPolyline(data);
     });
 }]);
 
