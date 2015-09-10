@@ -27,7 +27,7 @@ angular.module('auth').controller('authController', function($scope, config, $ht
     }
 
     $scope.$on('oauth:authorized', function(event, token) {
-        setToken(token)
+        setToken(token);
     });
 
     $scope.$on('oauth:loggedOut', function(event, token) {

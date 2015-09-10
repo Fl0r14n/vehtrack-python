@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
-from auth_server.views import role_check, oauth_check
+from auth_server.views import role_check
 from django.utils.decorators import method_decorator
 from dao.models import Device, User, Fleet
 import json

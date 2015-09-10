@@ -11,7 +11,7 @@ from pykml import parser
 from django.core.management.base import BaseCommand
 
 from dao.models import *
-from auth_server.models import Account, AccountRole
+from auth_server.models import AccountRole
 
 L = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations
 from oauth2_provider.models import Application
 
 def create_oauth_application(apps, schema_editor):

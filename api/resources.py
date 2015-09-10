@@ -2,15 +2,17 @@ from tastypie.resources import ModelResource
 from tastypie import fields
 from dao.models import User, Device, Fleet, Journey, Position, Log
 from tastypie.paginator import Paginator
-from auth import OAuth20Authentication
-from tastypie.authorization import DjangoAuthorization
-from tastypie.authentication import Authentication
+from auth import OAuth20Authentication, VehtrackAuthorization
+# from tastypie.authorization import DjangoAuthorization
+# from tastypie.authentication import Authentication
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 authentication = OAuth20Authentication()
 #authentication = Authentication()
+authorization = VehtrackAuthorization()
 
 class FleetResource(ModelResource):
+    # not exposed as endpoint but needed for filtering
 
     class Meta:
         queryset = Fleet.objects.all()
@@ -20,7 +22,6 @@ class FleetResource(ModelResource):
             'id': ALL
         }
         authentication = authentication
-        authorization = DjangoAuthorization()
 
 
 class UserResource(ModelResource):
@@ -37,7 +38,7 @@ class UserResource(ModelResource):
         }
         excludes = ['password', 'is_admin']
         authentication = authentication
-        authorization = DjangoAuthorization()
+        authorization = authorization
 
     def dehydrate_fleets(self, bundle):
 
@@ -88,7 +89,7 @@ class DeviceResource(ModelResource):
             'fleets': ALL_WITH_RELATIONS
         }
         authentication = authentication
-        authorization = DjangoAuthorization()
+        authorization = authorization
 
     def dehydrate(self, bundle):
         # does not work from excludes
@@ -109,7 +110,7 @@ class JourneyResource(ModelResource):
         resource_name = 'journey'
         paginator_class = Paginator
         authentication = authentication
-        authorization = DjangoAuthorization()
+        authorization = authorization
         filtering = {
             'id': ALL,
             'device': ALL_WITH_RELATIONS,
@@ -128,7 +129,7 @@ class PositionResource(ModelResource):
         resource_name = 'position'
         paginator_class = Paginator
         authentication = authentication
-        authorization = DjangoAuthorization()
+        authorization = authorization
         filtering = {
             'device': ALL_WITH_RELATIONS,
             'journey': ALL_WITH_RELATIONS,
@@ -146,7 +147,7 @@ class LogResource(ModelResource):
         resource_name = 'log'
         paginator_class = Paginator
         authentication = authentication
-        authorization = DjangoAuthorization()
+        authorization = authorization
         filtering = {
             'device': ALL_WITH_RELATIONS,
             'journey': ALL_WITH_RELATIONS,

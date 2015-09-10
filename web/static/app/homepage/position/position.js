@@ -45,6 +45,7 @@ angular.module('homepage.positions').controller('positionController', function($
     var self = this;
     self.options_url = config.get('static_url')+'app/widget/options/options.html';
     self.map_url = config.get('static_url')+'app/widget/map/map.html';
+    self.gmap_icons_url = 'http://maps.google.com/mapfiles/kml/paddle/';
     $scope.domain = $scope.tabId;
 
     messagingService.sub($scope, $scope.domain, 'OPTIONS_ON_LOAD', function (event, options) {
@@ -78,13 +79,13 @@ angular.module('homepage.positions').controller('positionController', function($
                                 latitude: selectedJourney.start_latitude,
                                 longitude: selectedJourney.start_longitude,
                                 title: selectedJourney.start_timestamp + '<br/> dst: ' + selectedJourney.distance + 'm<br/> dur:' + selectedJourney.duration + 's',
-                                icon: 'http://maps.google.com/mapfiles/kml/paddle/go.png'
+                                icon: self.gmap_icons_url + 'go.png'
                             },
                             {
                                 latitude: selectedJourney.stop_latitude,
                                 longitude: selectedJourney.stop_longitude,
                                 title: selectedJourney.stop_timestamp + '<br/> avg: ' + selectedJourney.average_speed + 'km/h<br/> max: ' + selectedJourney.maximum_speed + 'km/h',
-                                icon: 'http://maps.google.com/mapfiles/kml/paddle/stop.png'
+                                icon: self.gmap_icons_url + 'stop.png'
                             }
                         ];
                         messagingService.pub($scope.domain, 'MAP_ADD_MARKERS', markers);

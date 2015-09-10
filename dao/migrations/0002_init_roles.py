@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations
 
 def init_roles(apps, schema_editor):
     account_role = apps.get_model('auth_server', 'AccountRole')

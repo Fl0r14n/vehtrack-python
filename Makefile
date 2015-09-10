@@ -12,7 +12,7 @@ bootstrap:
 		bower install
 
 test:
-	$(MANAGE_PATH) test dao api web
+	$(MANAGE_PATH) test dao api web auth_server
 
 runserver:
-	$(MANAGE_PATH) runserver
+	$(MANAGE_PATH) runserver_plus
