@@ -3,6 +3,8 @@ django
 django-treebeard
 django-extensions
 werkzeug
+django-mptt
+django-mptt-admin
 
 # db
 #psycopg2
