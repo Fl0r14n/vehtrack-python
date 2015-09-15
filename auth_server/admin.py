@@ -5,6 +5,7 @@ from forms import AccountCreationForm, AccountChangeForm
 from django.contrib.auth.admin import UserAdmin
 
 
+@admin.register(Account)
 class AdminAccount(UserAdmin):
     form = AccountChangeForm
     add_form = AccountCreationForm
@@ -33,5 +34,4 @@ class AdminAccount(UserAdmin):
         else:
             return ['last_login', 'created', ]
 
-admin.site.register(Account, AdminAccount)
 admin.site.unregister(Group)
