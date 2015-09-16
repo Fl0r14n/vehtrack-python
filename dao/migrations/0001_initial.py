@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
             name='Log',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
+                ('timestamp', models.DateTimeField()),
                 ('level', models.CharField(default=3, max_length=1, choices=[(3, b'DEBUG'), (2, b'INFO'), (1, b'WARN'), (0, b'ERROR')])),
                 ('message', models.TextField(default=b'', max_length=2048, blank=True)),
                 ('device', models.ForeignKey(to='dao.Device')),
@@ -92,7 +92,7 @@ class Migration(migrations.Migration):
                 ('latitude', models.FloatField()),
                 ('longitude', models.FloatField()),
                 ('timestamp', models.DateTimeField()),
-                ('speed', models.FloatField()),
+                ('speed', models.FloatField(default=0.0, blank=True)),
                 ('device', models.ForeignKey(to='dao.Device')),
                 ('journey', models.ForeignKey(to='dao.Journey', null=True)),
             ],

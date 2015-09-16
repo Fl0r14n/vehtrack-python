@@ -108,14 +108,16 @@ class Journey(models.Model):
         ordering = ['-start_timestamp']
 
     def __str__(self):
-        return to_string(self)
+        return '{:%Y-%m-%d %H:%M:%S} ({:.5f}, {:.5f}) -> {:%Y-%m-%d %H:%M:%S} ({:.5f}, {:.5f})'.format(
+            self.start_timestamp, self.start_latitude, self.start_longitude,
+            self.stop_timestamp, self.stop_latitude, self.stop_longitude, )
 
 
 class Position(models.Model):
     latitude = models.FloatField() #gg.ggggg
     longitude = models.FloatField() #gg.ggggg
     timestamp = models.DateTimeField() #ms
-    speed = models.FloatField()
+    speed = models.FloatField(default=0.0, blank=True)
 
     journey = models.ForeignKey(Journey, null=True)
     device = models.ForeignKey(Device)
@@ -137,7 +139,7 @@ LEVEL = Choices(
 
 
 class Log(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True) #ms
+    timestamp = models.DateTimeField() #ms
     level = models.CharField(max_length=1, choices=LEVEL, default=LEVEL.DEBUG)
     message = models.TextField(max_length=2048, default='', blank=True)
 

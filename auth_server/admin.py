@@ -11,8 +11,8 @@ class AdminAccount(UserAdmin):
     add_form = AccountCreationForm
 
     list_display = ('email', 'role', 'is_active', 'last_login', 'created')
-    list_filter = ('email', 'role', 'is_active', 'last_login', 'created')
-    search_fields = ('email', 'role', 'is_active')
+    list_filter = ('role', 'is_active', )
+    search_fields = ('email', 'last_login', 'created', )
     ordering = ('email',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
