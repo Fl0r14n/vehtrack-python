@@ -66,18 +66,17 @@ class OAuth20Authentication(Authentication):
             return False
         return True
 
+
 def verify_access_token(key):
     # Check if key is in AccessToken key
     try:
         token = AccessToken.objects.get(token=key)
-
         # Check if token has expired
         if token.expires < timezone.now():
             raise OAuthError('AccessToken has expired.')
     except AccessToken.DoesNotExist:
         raise OAuthError("AccessToken not found at all.")
-
-    logging.info('Valid access')
+    # logging.info('Valid access')
     return token
 
 
@@ -153,7 +152,7 @@ class VehtrackAuthorization(Authorization):
             raise Unauthorized('User is not logged in!')
         if not hasattr(request.user, 'role'):
             raise Unauthorized('User has no role')
-        #model class is the type of object to be returned along with user's role
+        # model class is the type of object to be returned along with user's role
         return model_class, request.user.role
 
     def check_permissions(self, object_list, bundle, permission):
@@ -168,6 +167,10 @@ class VehtrackAuthorization(Authorization):
             return object_list
 
     def read_detail(self, object_list, bundle):
+        # if we got here through FK
+        if bundle.request.method == 'POST':
+            return True
+
         if self.check_permissions(object_list, bundle, self.READ_DETAIL):
             return True
 
@@ -180,17 +183,21 @@ class VehtrackAuthorization(Authorization):
             return True
 
     def update_list(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
+        if self.check_permissions(object_list, bundle, self.UPDATE_LIST):
             return object_list
 
     def update_detail(self, object_list, bundle):
+        # if we get here through FK
+        if bundle.request.method == 'POST':
+            return True
+
         if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
             return True
 
     def delete_list(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
+        if self.check_permissions(object_list, bundle, self.DELETE_LIST):
             return object_list
 
     def delete_detail(self, object_list, bundle):
-        if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
+        if self.check_permissions(object_list, bundle, self.DELETE_DETAIL):
             return True

@@ -10,12 +10,12 @@
                            stroke="'stroke'"
                            visible="visible"
                            geodesic="'geodesic'"
-                           fit="'false'"
+                           fit="false"
                            editable="'editable'"
                            draggable="'draggable'"
                            icons="'icons'"></ui-gmap-polylines>
 
-        <ui-gmap-markers doCluster="true" models="ctrl.markers" coords="'self'" icon="'icon'" click="onClick">
+        <ui-gmap-markers doCluster="true" models="ctrl.markers" coords="'self'" icon="'icon'" options="'options'" click="onClick">
             <ui-gmap-windows show="show">
                 <div ng-non-bindable>{{title}}</div>
             </ui-gmap-windows>

@@ -55,7 +55,8 @@ angular.module('widget.map').controller('mapController', function ($scope, messa
                 longitude: markersArray[i].longitude,
                 title: markersArray[i].title,
                 icon: markersArray[i].icon,
-                events: markersArray[i].events
+                events: markersArray[i].events,
+                options: markersArray[i].options
             });
         }
         self.markers = self.markers.concat(_markers);

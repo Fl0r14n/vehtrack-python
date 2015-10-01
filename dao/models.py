@@ -3,6 +3,7 @@ from utils.choice import Choices
 from mptt.models import MPTTModel, TreeForeignKey
 import validators
 from auth_server.models import Account
+from math import pi,sqrt,sin,cos,atan2
 
 
 def to_string(self):
@@ -106,6 +107,24 @@ class Journey(models.Model):
     class Meta:
         db_table = 'journeys'
         ordering = ['-start_timestamp']
+
+    def save(self, *args, **kwargs):
+        self.distance, miles = self._haversine(
+            self.start_latitude, self.start_longitude, self.stop_latitude, self.stop_longitude)
+        self.duration = (self.stop_timestamp - self.start_timestamp).microseconds
+        super(Journey, self).save(*args, **kwargs)
+
+
+    def _haversine(self, start_lat, start_log, stop_lat, stop_lon):
+        degree_to_rad = float(pi / 180.0)
+        d_lat = (stop_lat - start_lat) * degree_to_rad
+        d_long = (stop_lon - start_log) * degree_to_rad
+        a = pow(sin(d_lat / 2), 2) + cos(start_lat * degree_to_rad) *\
+            cos(stop_lat * degree_to_rad) * pow(sin(d_long / 2), 2)
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        km = 6367 * c
+        mi = 3956 * c
+        return km, mi
 
     def __str__(self):
         return '{:%Y-%m-%d %H:%M:%S} ({:.5f}, {:.5f}) -> {:%Y-%m-%d %H:%M:%S} ({:.5f}, {:.5f})'.format(

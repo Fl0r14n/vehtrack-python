@@ -111,6 +111,7 @@ class JourneyResource(ModelResource):
         paginator_class = Paginator
         authentication = authentication
         authorization = authorization
+        always_return_data = True
         filtering = {
             'id': ALL,
             'device': ALL_WITH_RELATIONS,
