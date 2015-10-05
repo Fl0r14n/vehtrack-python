@@ -3,12 +3,9 @@ from tastypie import fields
 from dao.models import User, Device, Fleet, Journey, Position, Log
 from tastypie.paginator import Paginator
 from auth import OAuth20Authentication, VehtrackAuthorization
-# from tastypie.authorization import DjangoAuthorization
-# from tastypie.authentication import Authentication
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 authentication = OAuth20Authentication()
-#authentication = Authentication()
 authorization = VehtrackAuthorization()
 
 class FleetResource(ModelResource):

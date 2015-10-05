@@ -168,7 +168,7 @@ class VehtrackAuthorization(Authorization):
 
     def read_detail(self, object_list, bundle):
         # if we got here through FK
-        if bundle.request.method == 'POST':
+        if bundle.request.method in ('POST', 'PATCH', ):
             return True
 
         if self.check_permissions(object_list, bundle, self.READ_DETAIL):
@@ -188,7 +188,7 @@ class VehtrackAuthorization(Authorization):
 
     def update_detail(self, object_list, bundle):
         # if we get here through FK
-        if bundle.request.method == 'POST':
+        if bundle.request.method in ('POST', 'PATCH', ):
             return True
 
         if self.check_permissions(object_list, bundle, self.UPDATE_DETAIL):
