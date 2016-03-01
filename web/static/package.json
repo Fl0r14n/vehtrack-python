@@ -1,0 +1,15 @@
+{
+    "devDependencies": {
+        "gulp": "*",
+        "gulp-bower": "*",
+        "gulp-ng-annotate": "*",
+        "gulp-notify": "*",
+        "gulp-rename": "*",
+        "gulp-uglify": "*",
+        "gulp-watch": "*",
+        "gulp-cssmin": "*"
+    },
+    "scripts": {
+        "gulp": "gulp"
+    }
+}

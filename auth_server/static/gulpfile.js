@@ -8,7 +8,7 @@ var bower = require('gulp-bower');
 var rename = require('gulp-rename');
 
 var paths = {
-    scripts: ['app/**/*.js', '!app/**/*.min.js'],
+    scripts: ['js/**/*.js', '!js/**/*.min.js'],
     images: ['img/**/*'],
     css: ['css/**/*.css', '!css/**/*.min.css']
 };
@@ -18,7 +18,7 @@ gulp.task('jsmin', function() {
         .pipe(ngAnnotate())
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
-        .pipe(gulp.dest('app'))
+        .pipe(gulp.dest('js'))
         .pipe(notify({message: 'Uglify complete'}));
 });
 

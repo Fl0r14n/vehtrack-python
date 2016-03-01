@@ -1,0 +1,24 @@
+{
+    "name": "vehtrack",
+    "version": "0.0.0",
+    "authors": [
+        "Florian Chis <florian.chis@gmail.com>"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "lib",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bootstrap": "*",
+        "angular": "*",
+        "font-awesome": "*",
+        "ng-backstretch": "*",
+        "html5shiv": "*",
+        "respond": "*"
+    }
+}

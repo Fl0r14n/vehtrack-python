@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap-theme{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/angular-ui-grid/ui-grid{% if not DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/font-awesome/css/font-awesome{% if not DEBUG %}.min{% endif %}.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style{% if not DEBUG %}.min{% endif %}.css"/>
 </head>
 <body ng-app="vehtrack" ng-init="config={static_url:'{{ STATIC_URL }}', http_host:'{{ http_host }}', client_id: '{{ client_id }}', auth_path: '{{ auth_path }}', profile_uri: '{{ profile_uri}}', revoke_token_path: '{{ revoke_token_path }}', logout_path: '{{ logout_path }}'}">
     <div ng-include="'{{STATIC_URL}}app/homepage/homepage.html'"></div>

@@ -17,7 +17,7 @@ class AccountManager(BaseUserManager):
 
     def _create_user(self, email, password, is_admin, **extra_fields):
         if not email:
-            raise ValueError('User must have an email address!  ')
+            raise ValueError('User must have an email address!')
         user = self.model(email=self.normalize_email(email), is_admin=is_admin, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)

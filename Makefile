@@ -1,15 +1,22 @@
 .PHONY: clean-pyc
 MANAGE_PATH=python ./manage.py
-STATIC_PATH=./web/static
+STATIC_PATH_WEB=./web/static
+CD_BACK=../../
+STATIC_PATH_WEB=./auth_server/static
 
 clean-pyc:
 	find . -name '*.pyc' | xargs rm
 
-bootstrap:
+dependencies:
 	./dependencies.sh
+
+bootstrap:	
 	pip install -r requirements.txt
-	cd $(STATIC_PATH); \
-		bower install
+	cd $(STATIC_PATH_WEB); \
+		npm update && npm run gulp -- build
+	cd CD_BACK
+	cd $(STATIC_PATH_AUTH); \
+		npm update && npm run gulp -- build
 
 test:
 	$(MANAGE_PATH) test dao api web auth_server
