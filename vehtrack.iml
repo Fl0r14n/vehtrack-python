@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="django" name="Django">
+      <configuration>
+        <option name="rootFolder" value="$MODULE_DIR$/api" />
+        <option name="settingsModule" value="settings.py" />
+        <option name="manageScript" value="manage.py" />
+        <option name="environment" value="&lt;map/&gt;" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/web/static/app/auth" />
+        <option value="$MODULE_DIR$/web/static/app/widget/map" />
+        <option value="$MODULE_DIR$/web/static/app/widget/table" />
+        <option value="$MODULE_DIR$/web/static/app/widget/options" />
+        <option value="$MODULE_DIR$/web/static/app/homepage" />
+        <option value="$MODULE_DIR$/web/static/app/homepage/log" />
+        <option value="$MODULE_DIR$/web/static/app/homepage/fleet" />
+        <option value="$MODULE_DIR$/web/static/app/homepage/footer" />
+        <option value="$MODULE_DIR$/web/static/app/homepage/header" />
+        <option value="$MODULE_DIR$/web/static/app/homepage/navbar" />
+        <option value="$MODULE_DIR$/web/static/app/homepage/journey" />
+        <option value="$MODULE_DIR$/web/static/app/homepage/position" />
+        <option value="$MODULE_DIR$/web/static/lib/csv-js" />
+        <option value="$MODULE_DIR$/web/static/lib/lodash/perf" />
+        <option value="$MODULE_DIR$/web/static/lib/lodash/test" />
+        <option value="$MODULE_DIR$/web/static/lib/lodash/vendor/firebug-lite/skin/xp" />
+        <option value="$MODULE_DIR$/web/static/lib/oauth-ng/dist/views/templates" />
+        <option value="$MODULE_DIR$/web/static/lib/jsrsasign" />
+        <option value="$MODULE_DIR$/web/static/lib/jsrsasign/api" />
+        <option value="$MODULE_DIR$/web/static/lib/jsrsasign/api/symbols" />
+        <option value="$MODULE_DIR$/web/static/lib/jsrsasign/api/symbols/src" />
+        <option value="$MODULE_DIR$/web/static/lib/jsrsasign/test" />
+        <option value="$MODULE_DIR$/web/static/lib/jsrsasign/mobile" />
+        <option value="$MODULE_DIR$/web/static/lib/jsrsasign/sample" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp/node_modules/vinyl-fs/node_modules/defaults/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/jsbn" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/redeyed/examples/browser" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/cli-width/coverage/lcov-report" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/cli-width/coverage/lcov-report/cli-width" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/node-uuid/test" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/lib" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/dist/cjs" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/dist/cjs/handlebars" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/dist/cjs/handlebars/compiler" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/spec" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/spec/env" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/sprintf-js/demo" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/inquirer/node_modules/cli-width/coverage/lcov-report" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/inquirer/node_modules/cli-width/coverage/lcov-report/cli-width" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-bower/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-watch/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-watch/node_modules/chokidar/node_modules/fsevents/node_modules/jsbn" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-watch/node_modules/chokidar/node_modules/fsevents/node_modules/node-uuid/test" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-watch/node_modules/chokidar/node_modules/fsevents/node_modules/node-pre-gyp/lib/util/nw-pre-gyp" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-watch/node_modules/vinyl-file/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-notify/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-notify/node_modules/node-notifier/node_modules/cli-usage/node_modules/marked-terminal/node_modules/cardinal/node_modules/redeyed/examples/browser" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-uglify/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-uglify/node_modules/uglify-js/tools" />
+        <option value="$MODULE_DIR$/web/static/node_modules/gulp-ng-annotate/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/web/templates" />
+        <option value="$MODULE_DIR$/auth_server/static/lib/respond/cross-domain" />
+        <option value="$MODULE_DIR$/auth_server/static/lib/ng-backstretch/demo" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp/node_modules/vinyl-fs/node_modules/defaults/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/jsbn" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/redeyed/examples/browser" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/cli-width/coverage/lcov-report" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/cli-width/coverage/lcov-report/cli-width" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/node-uuid/test" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/lib" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/dist/cjs" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/dist/cjs/handlebars" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/dist/cjs/handlebars/compiler" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/spec" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/handlebars/coverage/lcov-report/spec/env" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/bower/lib/node_modules/sprintf-js/demo" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/inquirer/node_modules/cli-width/coverage/lcov-report" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/inquirer/node_modules/cli-width/coverage/lcov-report/cli-width" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-bower/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-watch/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-watch/node_modules/chokidar/node_modules/fsevents/node_modules/jsbn" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-watch/node_modules/chokidar/node_modules/fsevents/node_modules/node-uuid/test" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-watch/node_modules/chokidar/node_modules/fsevents/node_modules/node-pre-gyp/lib/util/nw-pre-gyp" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-watch/node_modules/vinyl-file/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-notify/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-notify/node_modules/node-notifier/node_modules/cli-usage/node_modules/marked-terminal/node_modules/cardinal/node_modules/redeyed/examples/browser" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-uglify/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-uglify/node_modules/uglify-js/tools" />
+        <option value="$MODULE_DIR$/auth_server/static/node_modules/gulp-ng-annotate/node_modules/gulp-util/node_modules/vinyl/node_modules/clone" />
+        <option value="$MODULE_DIR$/auth_server/templates/registration" />
+      </list>
+    </option>
+  </component>
+</module>

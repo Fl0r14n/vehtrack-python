@@ -4,7 +4,6 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -13,8 +12,6 @@ SECRET_KEY = '%@77y4nx_=tklkr=l63#wcej%i-v%xb4re@vzy@q%*e=dg_lxi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -72,12 +69,12 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.static',
             ],
+            'debug': True,
         },
     },
 ]
 
 WSGI_APPLICATION = 'vehtrack.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -97,7 +94,6 @@ DATABASES = {
     # }
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -111,7 +107,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -119,16 +114,15 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'auth_server.Account'
 
-#LOGIN_URL = r'^login/$'
+# LOGIN_URL = r'^login/$'
 
 CORS_ORIGIN_ALLOW_ALL = True
-
 
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
 if DEBUG:
-    #import django.utils.safestring
-    #TEMPLATE_STRING_IF_INVALID = django.utils.safestring.mark_safe("")
+    # import django.utils.safestring
+    # TEMPLATE_STRING_IF_INVALID = django.utils.safestring.mark_safe("")
     TASTYPIE_FULL_DEBUG = True
 
 if 'test' in sys.argv:
@@ -152,7 +146,7 @@ LOGGING = {
     'handlers': {
         'null': {
             'level': 'DEBUG',
-            'class': 'django.utils.log.NullHandler',
+            'class': 'logging.NullHandler',
         },
         'console_info': {
             'level': 'INFO',

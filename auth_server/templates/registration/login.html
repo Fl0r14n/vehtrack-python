@@ -1,87 +1,112 @@
+{% load settings_tag %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Vehtrack Login</title>
-        <!-- CSS -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
-        <link rel="stylesheet" href="{{STATIC_URL}}lib/bootstrap/dist/css/bootstrap{% if not DEBUG %}.min{% endif %}.css">                
-        <link rel="stylesheet" href="{{STATIC_URL}}lib/font-awesome/css/font-awesome{% if not DEBUG %}.min{% endif %}.css">
-        <link rel="stylesheet" href="{{STATIC_URL}}css/form-elements{% if not DEBUG %}.min{% endif %}.css">
-        <link rel="stylesheet" href="{{STATIC_URL}}css/style{% if not DEBUG %}.min{% endif %}.css">
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vehtrack Login</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet"
+          href="{{ STATIC_URL }}lib/bootstrap/dist/css/bootstrap{% if not "DEBUG"|settings_value %}.min{% endif %}.css">
+    <link rel="stylesheet"
+          href="{{ STATIC_URL }}lib/font-awesome/css/font-awesome{% if not "DEBUG"|settings_value %}.min{% endif %}.css">
+    <link rel="stylesheet"
+          href="{{ STATIC_URL }}css/form-elements{% if not "DEBUG"|settings_value %}.min{% endif %}.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style{% if not "DEBUG"|settings_value %}.min{% endif %}.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
             <script src="{{STATIC_URL}}lib/html5shiv/dist/html5shiv.min.js"></script>
             <script src="{{STATIC_URL}}lib/respond/dist/respond.min.js"></script>            
         <![endif]-->
-        <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="{{STATIC_URL}}ico/favicon.png">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{STATIC_URL}}ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{STATIC_URL}}ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{STATIC_URL}}ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="{{STATIC_URL}}ico/apple-touch-icon-57-precomposed.png">
-    </head>
-    <body ng-app="vehtrackLogin">
-        <div backstretch backstretch-images="'{{STATIC_URL}}img/background_login.jpg'">
-            <!-- Top content -->
-            <div class="top-content" ng-controller="loginController">
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="{{ STATIC_URL }}ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+          href="{{ STATIC_URL }}ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"
+          href="{{ STATIC_URL }}ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}ico/apple-touch-icon-57-precomposed.png">
+</head>
+<body ng-app="vehtrackLogin">
+<div backstretch backstretch-images="'{{ STATIC_URL }}img/background_login.jpg'">
+    <!-- Top content -->
+    <div class="top-content" ng-controller="loginController">
 
-                <div class="inner-bg">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-8 col-sm-offset-2 text">
-                                <h1><strong>Vehtrack</strong> Login</h1>
-                                <div class="description">
-                                    <p>Login into your vehtrack account.</p>
-                                </div>
-                            </div>
+        <div class="inner-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 text">
+                        <h1><strong>Vehtrack</strong> Login</h1>
+                        <div class="description">
+                            <p>Login into your vehtrack account.</p>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6 col-sm-offset-3 form-box">
-                                <div class="form-top">
-                                    <div class="form-top-left">
-                                        <h3>Login</h3>
-                                        <p>Enter your email and password to log on:</p>
-                                    </div>
-                                    <div class="form-top-right">
-                                        <i class="fa fa-lock"></i>
-                                    </div>
-                                </div>
-                                <div class="form-bottom">
-                                    <form role="form" action="{{ app_path}}" method="post" class="login-form">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="next" value="{{ next}}" />
-                                        <div class="form-group input-error">
-                                            <label class="sr-only" for="form-username">Email</label>
-                                            <input focus type="email" name="form-username" placeholder="Email..." class="form-username form-control" id="form-username" required>
-                                        </div>
-                                        <div class="form-group input-error">
-                                            <label class="sr-only" for="form-password">Password</label>
-                                            <input type="password" name="form-password" placeholder="Password..." class="form-password form-control" id="form-password" required>
-                                        </div>
-                                        <button type="submit" class="btn">Sign in!</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>                       
                     </div>
-                </div>            
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3 form-box">
+                        <div class="form-top">
+                            <div class="form-top-left">
+                                <h3>Login</h3>
+                                <p>Enter your email and password to log on:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-lock"></i>
+                            </div>
+
+                        </div>
+                        <div class="form-bottom">
+                            <form role="form" name="loginForm" action="{{ app_path }}" method="post" class="login-form">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {% for error in form.non_field_errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group has-feedback" ng-class="{'has-warning': loginForm.{{ form.username.html_name }}.$dirty && loginForm.{{ form.username.html_name }}.$invalid, 'has-success': loginForm.{{ form.username.html_name }}.$valid}">
+                                    <label class="sr-only"
+                                           for="{{ form.username.html_name }}">{{ form.username.label }}</label>
+                                    <input focus type="email"
+                                           name="{{ form.username.html_name }}"
+                                           placeholder="{{ form.username.label }}..." class="form-username form-control"
+                                           ng-model="form.username"
+                                           required>
+                                </div>
+                                <div class="form-group has-feedback" ng-class="{'has-warning': loginForm.{{ form.password.html_name }}.$dirty && form.{{ form.password.html_name }}.$invalid, 'has-success': loginForm.{{ form.password.html_name }}.$valid}">
+                                    <label class="sr-only"
+                                           for="{{ form.password.html_name }}">{{ form.password.label }}</label>
+                                    <input type="password"
+                                           name="{{ form.password.html_name }}"
+                                           placeholder="{{ form.password.label }}..." class="form-password form-control"
+                                           ng-model="form.password"
+                                           required>
+                                </div>
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ next }}"/>
+                                <button type="submit" class="btn">Sign in!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Javascript -->
-        <script src="{{STATIC_URL}}lib/angular/angular{% if not DEBUG %}.min{% endif %}.js"></script>
-        <script src="{{STATIC_URL}}lib/ng-backstretch/dist/ng-backstretch{% if not DEBUG %}.min{% endif %}.js"></script>
-        <script src="{{STATIC_URL}}js/login{% if not DEBUG %}.min{% endif %}.js"></script>
-        <!--[if lt IE 10]>
+    </div>
+</div>
+<!-- Javascript -->
+<script src="{{ STATIC_URL }}lib/angular/angular{% if not "DEBUG"|settings_value %}.min{% endif %}.js"></script>
+<script src="{{ STATIC_URL }}lib/ng-backstretch/dist/ng-backstretch{% if not "DEBUG"|settings_value %}.min{% endif %}.js"></script>
+<script src="{{ STATIC_URL }}js/login{% if not "DEBUG"|settings_value %}.min{% endif %}.js"></script>
+<!--[if lt IE 10]>
         <script type="text/javascript">
             $(document).ready(function() {
-                $(".form-username").val("Email...");
-                $(".form-password").val("Password...");
+                $(".form-username").val("{{form.username.label}}...");
+                $(".form-password").val("{{form.password.label}}...");
             });
         </script>
         <![endif]-->
-    </body>
+</body>
 </html>

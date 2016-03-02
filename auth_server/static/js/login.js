@@ -3,7 +3,10 @@
 'use strict';
 
 angular.module('vehtrackLogin', ['ng-backstretch', 'utils']).controller('loginController', function($scope) {
-    
+    $scope.form = {
+        username: '',
+        password: ''
+    }
 });
 
 angular.module('utils', []).directive('focus', function ($timeout) {    
