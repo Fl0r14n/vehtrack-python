@@ -8,7 +8,7 @@ angular.module('widget.options', ['utils', 'ui.bootstrap']).config(function() {
 angular.module('widget.options').controller('optionController', function($scope, dateFilter, messagingService) {
     var self = this;
 
-
+    self.isCollapsed = false;
 
     self.devices = {
         show: false,

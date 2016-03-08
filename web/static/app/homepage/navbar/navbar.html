@@ -1,11 +1,11 @@
 <div class="btn-group" ng-controller="navbarController as ctrl">
 
-    <div class="btn-group">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'disabled': ctrl.isDisabledMenuItems()}">
+    <div class="btn-group" uib-dropdown>
+        <button class="btn btn-default dropdown-toggle" type="button" uib-dropdown-toggle ng-class="{'disabled': ctrl.isDisabledMenuItems()}">
             Menu
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu" >
+        <ul class="dropdown-menu" uib-dropdown-menu>
             <li><a href=""  ng-click="ctrl.journeysTab()">Journey</a></li>
             <li><a href="" ng-click="ctrl.positionsTab()">Position</a></li>
             <li><a href="" ng-click="ctrl.logsTab()">Logs</a></li>
