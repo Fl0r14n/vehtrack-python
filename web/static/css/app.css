@@ -24,6 +24,8 @@
 .fleet {
     margin-bottom: 5px;
 }
+
+
 .angular-google-map-container {
     width: 100%;
     //width: 90vw;
@@ -36,4 +38,49 @@
 
 .navbar {
     margin-bottom: 0px;
+}
+
+.btn-fleet-add,
+.btn-fleet-remove,
+.btn-device-add,
+.btn-device-remove {
+    margin-left: 1px;
+    margin-top: 1px;
+}
+
+.btn-user-add,
+.btn-user-remove,
+.btn-journey {
+    margin-left: 1px;
+    margin-top: 1px;
+    margin-right: 1px;
+    width: 95%;
+}
+
+.btn-navbar-toogle {
+    margin-left: 15px;
+}
+
+.separator {
+    padding: 3px;
+}
+
+.btn-options {
+    margin-right: 15px;
+}
+
+.ui-grid-tree-header-row {
+    font-weight: normal;
+}
+
+.nav-tabs .active {
+    background-image: linear-gradient(to bottom, #fff 0%, #eaeaea 100%);
+    font-weight: bold;
+    color: inherit;
+    border: 2px solid #ddd;
+}
+
+.nav-tabs .disabled {
+    background-image: linear-gradient(to bottom, #fff 0%, #f8f8f8 100%);
+    color: inherit;
 }

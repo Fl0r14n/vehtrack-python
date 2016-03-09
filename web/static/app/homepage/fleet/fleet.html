@@ -2,31 +2,35 @@
     <div class="col-md-4">
         <div class="fleet-grid" ui-grid="fleet.fleet_grid" ui-grid-selection ui-grid-tree-view ui-grid-edit></div>
         <script type="text/ng-template" id="fleet_add_button.html">
-            <button class="btn primary fa fa-plus" ng-disabled="grid.selection.lastSelectedRow == null" ng-click="grid.appScope.addFleet(grid.selection.lastSelectedRow.entity)"></button>
+            <button class="btn primary fa fa-plus btn-fleet-add" ng-disabled="grid.selection.lastSelectedRow == null" ng-click="grid.appScope.addFleet(grid.selection.lastSelectedRow.entity)"></button>
         </script>
         <script type="text/ng-template" id="fleet_remove_button.html">
-            <button class="btn primary fa fa-remove" ng-disabled="row.entity.$$treeLevel === 0" ng-click="grid.appScope.removeFleet(row.entity)"></button>
+            <button class="btn primary fa fa-remove btn-fleet-remove" ng-disabled="row.entity.$$treeLevel === 0" ng-click="grid.appScope.removeFleet(row.entity)"></button>
         </script>
+    </div>
+    <div class="visible-sm visible-xs separator">
     </div>
     <div class="col-md-4">
         <div class="user-grid" ui-grid="fleet.user_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit></div>
         <script type="text/ng-template" id="user_add_button.html">
-            <button class="btn primary fa fa-user-plus" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.addUserToFleet()"></button>
+            <button class="btn primary fa fa-user-plus btn-user-add" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.addUserToFleet()"></button>
         </script>
         <script type="text/ng-template" id="user_remove_button.html">
-            <button class="btn primary fa fa-user-times" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.removeUserFromFleet(row.entity)"></button>
+            <button class="btn primary fa fa-user-times btn-user-remove" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.removeUserFromFleet(row.entity)"></button>
         </script>
+    </div>
+    <div class="visible-sm visible-xs separator">
     </div>
     <div class="col-md-4">
         <div class="device-grid" ui-grid="fleet.device_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit></div>
         <script type="text/ng-template" id="show_journey_button.html">
-            <button class="btn primary fa fa-road fa-lg" ng-click="grid.appScope.showJourney(row.entity)"></button>
+            <button class="btn primary fa fa-road btn-journey" ng-click="grid.appScope.showJourney(row.entity)"></button>
         </script>
         <script type="text/ng-template" id="device_add_button.html">
-            <button class="btn primary fa fa-plus" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.addDeviceToFleet()"></button>
+            <button class="btn primary fa fa-plus btn-device-add" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.addDeviceToFleet()"></button>
         </script>
         <script type="text/ng-template" id="device_remove_button.html">
-            <button class="btn primary fa fa-remove" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.removeDeviceFromFleet(row.entity)"></button>
+            <button class="btn primary fa fa-remove btn-device-remove" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.removeDeviceFromFleet(row.entity)"></button>
         </script>
     </div>
 
