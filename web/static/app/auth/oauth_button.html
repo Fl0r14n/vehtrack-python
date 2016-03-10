@@ -1,5 +1,5 @@
-<a class="oauth" href="">
+<a class="oauth pull-right" href="">
     <span class="logged-out" ng-show="show == 'logged-out'" ng-click="login()" >{{text}}</span>
-    <span class="logged-in"  ng-show="show == 'logged-in'"  ng-click="logout()">Logout {{profile.email}}</span>
+    <span class="logged-in"  ng-show="show == 'logged-in'"  ng-click="logout()">Logout <strong>{{profile.email}}</strong></span>
     <span class="denied"     ng-show="show == 'denied'"     ng-click="login()">Access denied. Try again.</span>
 </a>

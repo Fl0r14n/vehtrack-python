@@ -2,8 +2,25 @@
     <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
 
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed pull-left btn-navbar-toogle"
+                        ng-click="ctrl.isCollapsed = !ctrl.isCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand navbar-toogle pull-right btn-options visible-xs"
+                   ng-click="ctrl.submit.trigger()"
+                   ng-if="ctrl.submit.show">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <!--Options-->
+                </a>
+            </div>
+
             <div class="collapse navbar-collapse pull-left" uib-collapse="ctrl.isCollapsed">
-                <div class="navbar-form" role="search">
+                <div class="navbar-form">
 
                     <div class="form-group" ng-if="ctrl.devices.show">
                         <div class="input-group">
@@ -11,7 +28,8 @@
                                 <i class="fa fa-car"></i>
                                 <!--Device:-->
                             </div>
-                            <input class="form-control" type="text" ng-model="ctrl.devices.selected" ng-readonly="ctrl.devices.readonly"
+                            <input class="form-control" type="text" ng-model="ctrl.devices.selected"
+                                   ng-readonly="ctrl.devices.readonly"
                                    uib-typeahead="device as device.serial for device in ctrl.devices.list | filter:{serial:$viewValue} | limitTo:8">
                         </div>
                     </div>
@@ -22,7 +40,8 @@
                                 <i class="fa fa-road"></i>
                                 <!--Journey:-->
                             </div>
-                            <input class="form-control" type="text" ng-model="ctrl.journeys.selected" ng-readonly="ctrl.journeys.readonly"
+                            <input class="form-control" type="text" ng-model="ctrl.journeys.selected"
+                                   ng-readonly="ctrl.journeys.readonly"
                                    uib-typeahead="journey as journey.start_timestamp for journey in ctrl.journeys.list | filter:{start_timestamp:$viewValue} | limitTo:8">
                         </div>
                     </div>
@@ -33,7 +52,8 @@
                                 <i class="fa fa-forward"></i>
                                 <!--Start Date:-->
                             </div>
-                            <input class="form-control" type="text" uib-datepicker-popup="dd.MM.yyyy" ng-readonly="ctrl.startDate.readonly"
+                            <input class="form-control" type="text" uib-datepicker-popup="dd.MM.yyyy"
+                                   ng-readonly="ctrl.startDate.readonly"
                                    ng-model="ctrl.startDate.date" is-open="ctrl.startDate.opened"
                                    required>
                             <span class="input-group-btn">
@@ -51,7 +71,8 @@
                                 <i class="fa fa-backward"></i>
                                 <!--Stop Date:-->
                             </div>
-                            <input class="form-control" type="text" uib-datepicker-popup="dd.MM.yyyy" ng-readonly="ctrl.stopDate.readonly"
+                            <input class="form-control" type="text" uib-datepicker-popup="dd.MM.yyyy"
+                                   ng-readonly="ctrl.stopDate.readonly"
                                    ng-model="ctrl.stopDate.date" is-open="ctrl.stopDate.opened"
                                    required>
                                 <span class="input-group-btn">
@@ -62,22 +83,14 @@
                                 </span>
                         </div>
                     </div>
+
+                    <div class="form-group" ng-if="ctrl.submit.show">
+                        <a class="navbar-brand btn-options visible-sm visible-md visible-lg" href="" ng-click="ctrl.submit.trigger()">
+                            <i class="glyphicon glyphicon-search"></i>
+                            <!--Options-->
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="navbar-header">
-
-                <button type="button" class="navbar-toggle collapsed pull-left btn-navbar-toogle" ng-click="ctrl.isCollapsed = !ctrl.isCollapsed">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <a class="navbar-brand pull-right btn-options"  href="" ng-click="ctrl.submit.trigger()" ng-if="ctrl.submit.show">
-                    <i class="glyphicon glyphicon-search"></i>
-                    <!--Options-->
-                </a>
             </div>
 
         </div>

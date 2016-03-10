@@ -1,14 +1,17 @@
 .header {
     margin-bottom: 5px;
 }
+
 .fleet-grid {
     min-width: 200px;
     min-height: 200px;
 }
+
 .device-grid {
     min-width: 200px;
     min-height: 200px;
 }
+
 .user-grid {
     min-width: 200px;
     min-height: 200px;
@@ -25,10 +28,9 @@
     margin-bottom: 5px;
 }
 
-
 .angular-google-map-container {
     width: 100%;
-    //width: 90vw;
+/ / width: 90 vw;
     height: 70vh;
     padding-left: 40px;
     padding-right: 40px;
@@ -66,10 +68,11 @@
 }
 
 .btn-options {
+    margin-left: 5px !important;
     margin-right: 15px;
 }
 
-.ui-grid-tree-header-row {
+.ui-grid-cell-contents {
     font-weight: normal;
 }
 
@@ -83,4 +86,18 @@
 .nav-tabs .disabled {
     background-image: linear-gradient(to bottom, #fff 0%, #f8f8f8 100%);
     color: inherit;
+}
+
+.navbar-collapse.in {
+    overflow-y: inherit;
+}
+
+.oauth {
+    color: inherit;
+}
+
+@media screen and (min-width: 432px) {
+    .oauth {
+        margin-top: 7px;
+    }
 }
