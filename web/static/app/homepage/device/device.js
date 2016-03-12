@@ -5,7 +5,7 @@
 angular.module('homepage.devices', ['utils']).config(function() {
 });
 
-angular.module('homepage.devices').factory('deviceService', function (restResource) {
+angular.module('homepage.devices').factory('deviceService', function (restResource, config) {
     var $resource = restResource.$resource;
     var url = restResource.endpoint('device');
     return {
@@ -20,7 +20,8 @@ angular.module('homepage.devices').factory('deviceService', function (restResour
         }, {'get': {method: 'GET'}}),
         getDevicesForFleet: function (fleetIds, callback) {
             this.q.get({
-                fleets__id__in: fleetIds
+                fleets__id__in: fleetIds,
+                limit: config.get('device_page_limit')
             }, function (data) {
                 if (callback) {
                     callback(data);

@@ -5,7 +5,7 @@
 angular.module('homepage.positions', ['utils', 'widget.options', 'widget.map']).config(function() {
 });
 
-angular.module('homepage.positions').factory('positionService', function (restResource) {
+angular.module('homepage.positions').factory('positionService', function (restResource, config) {
     var $resource = restResource.$resource;
     var url = restResource.endpoint('position');
     return {
@@ -20,7 +20,8 @@ angular.module('homepage.positions').factory('positionService', function (restRe
         }, {'get': {method: 'GET'}}),
         getPositionsforJourney: function (journeyId, callback) {
             this.q.get({
-                journey__id: journeyId
+                journey__id: journeyId,
+                limit: config.get('position_page_limit')
             }, function (data) {
                 if (callback) {
                     callback(data);
@@ -31,7 +32,8 @@ angular.module('homepage.positions').factory('positionService', function (restRe
             this.q.get({
                 device__serial: deviceSerial,
                 timestamp__gte: startTimestamp,
-                timestamp__lte: stopTimestamp
+                timestamp__lte: stopTimestamp,
+                limit: config.get('position_page_limit')
             }, function (data) {
                 if (callback) {
                     callback(data);

@@ -5,7 +5,7 @@
 angular.module('homepage.users', ['utils']).config(function() {
 });
 
-angular.module('homepage.users').factory('userService', function (restResource) {
+angular.module('homepage.users').factory('userService', function (restResource, config) {
     var $resource = restResource.$resource;
     var url = restResource.endpoint('user');
     return {
@@ -20,7 +20,8 @@ angular.module('homepage.users').factory('userService', function (restResource) 
         }, {'get': {method: 'GET'}}),
         getUserDetail: function (email, callback) {
             this.id.get({
-                email: email
+                email: email,
+                limit: config.get('user_page_limit')
             }, function (data) {
                 if (callback) {
                     callback(data);
@@ -29,7 +30,8 @@ angular.module('homepage.users').factory('userService', function (restResource) 
         },
         getUsersForFleet: function(fleetId, callback) {
             this.q.get({
-                fleets__id: fleetId
+                fleets__id: fleetId,
+                limit: config.get('user_page_limit')
             }, function(data) {
                 if(callback) {
                     callback(data);

@@ -11,7 +11,8 @@ angular.module('homepage', [
     'homepage.journeys',
     'homepage.logs',
     'homepage.positions',
-    'homepage.users'
+    'homepage.users',
+    'ngLoadingSpinner'
 ]).config(function () {
 });
 

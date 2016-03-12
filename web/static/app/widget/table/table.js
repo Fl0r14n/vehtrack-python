@@ -5,7 +5,8 @@
 angular.module('widget.table', ['utils',
     'ui.grid', 'ui.grid.cellNav', 'ui.grid.edit', 'ui.grid.resizeColumns',
     'ui.grid.pinning', 'ui.grid.selection',
-    'ui.grid.exporter', 'ui.grid.moveColumns']).config(function() {
+    'ui.grid.exporter', 'ui.grid.moveColumns',
+    'ui.grid.infiniteScroll']).config(function() {
 });
 
 angular.module('widget.table').controller('tableController', function($scope, messagingService) {
@@ -22,6 +23,9 @@ angular.module('widget.table').controller('tableController', function($scope, me
         multiSelect: true,
         externalScope: {},
         columnDefs: [],
+        infiniteScrollRowsFromEnd: 40,
+        infiniteScrollUp: true,
+        infiniteScrollDown: true,
         getRowId: function (row) {
             return row.id;
         },
@@ -37,6 +41,8 @@ angular.module('widget.table').controller('tableController', function($scope, me
         },
         onRegisterApi: function (gridApi) {
             $scope.gridApi = gridApi;
+            gridApi.infiniteScroll.on.needLoadMoreData($scope, null);
+            gridApi.infiniteScroll.on.needLoadMoreDataTop($scope, null);
         },
         exporterPdfDefaultStyle: {fontSize: 9},
         exporterPdfTableStyle: {margin: [30, 30, 30, 30]},

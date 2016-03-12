@@ -8,16 +8,27 @@ angular.module('homepage.fleets', [
 ]).config(function () {
 });
 
-angular.module('homepage.fleets').factory('fleetService', function (restResource) {
+angular.module('homepage.fleets').factory('fleetService', function (restResource, config) {
     var $resource = restResource.$resource;
     var url = restResource.endpoint('fleet');
     return {
-        id: $resource(url + ':id/', {id: '@id'}, {
+        id: $resource(url + ':id/', {
+            id: '@id',
+            limit: config.get('fleet_page_limit')
+        }, {
             //also define update method
             'update': {method: 'PUT'}
         }),
-        user: $resource(url + ':id/user/:email/', {id: '@id', email: '@email'}),
-        device: $resource(url + ':id/device/:email/', {id: '@id', email: '@email'}),
+        user: $resource(url + ':id/user/:email/', {
+            id: '@id',
+            email: '@email',
+            limit: config.get('user_page_limit')
+        }),
+        device: $resource(url + ':id/device/:email/', {
+            id: '@id',
+            email: '@email',
+            limit: config.get('device_page_limit')
+        }),
         q: $resource(url, {
             name: '@name'
         }, {'get': {method: 'GET'}})

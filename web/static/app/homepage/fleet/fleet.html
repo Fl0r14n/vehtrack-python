@@ -11,7 +11,7 @@
     <div class="visible-sm visible-xs separator">
     </div>
     <div class="col-md-4">
-        <div class="user-grid" ui-grid="fleet.user_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit></div>
+        <div class="user-grid" ui-grid="fleet.user_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit ui-grid-infinite-scroll></div>
         <script type="text/ng-template" id="user_add_button.html">
             <button class="btn primary fa fa-user-plus btn-user-add" ng-disabled="grid.appScope.isNotSelectedRootFleet()" ng-click="grid.appScope.addUserToFleet()"></button>
         </script>
@@ -22,7 +22,7 @@
     <div class="visible-sm visible-xs separator">
     </div>
     <div class="col-md-4">
-        <div class="device-grid" ui-grid="fleet.device_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit></div>
+        <div class="device-grid" ui-grid="fleet.device_grid" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-edit ui-grid-infinite-scroll></div>
         <script type="text/ng-template" id="show_journey_button.html">
             <button class="btn primary fa fa-road btn-journey" ng-click="grid.appScope.showJourney(row.entity)"></button>
         </script>

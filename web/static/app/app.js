@@ -19,5 +19,11 @@ angular.module('vehtrack').run(function($rootScope, config) {
         config.set('profile_uri', $rootScope.config.profile_uri);
         config.set('revoke_token_path', $rootScope.config.revoke_token_path);
         config.set('logout_path', $rootScope.config.logout_path);
+        config.set('fleet_page_limit', 10000);
+        config.set('user_page_limit', 10000);
+        config.set('device_page_limit', 10000);
+        config.set('journey_page_limit', 1);
+        config.set('position_page_limit', 10000);
+        config.set('log_page_limit', 1);
     });
 });

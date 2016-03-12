@@ -5,7 +5,7 @@
 angular.module('homepage.logs', ['utils', 'widget.options', 'widget.table']).config(function() {
 });
 
-angular.module('homepage.logs').factory('logService', function (restResource) {
+angular.module('homepage.logs').factory('logService', function (restResource, config) {
     var $resource = restResource.$resource;
     var url = restResource.endpoint('log');
     return {
@@ -21,7 +21,8 @@ angular.module('homepage.logs').factory('logService', function (restResource) {
         }, {'get': {method: 'GET'}}),
         getLogsForJourney: function (journeyId, callback) {
             this.q.get({
-                journey__id: journeyId
+                journey__id: journeyId,
+                limit: config.get('log_page_limit')
             }, function (data) {
                 if (callback) {
                     callback(data);

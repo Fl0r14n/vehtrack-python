@@ -5,7 +5,7 @@
 angular.module('homepage.journeys', ['utils', 'widget.options', 'widget.table']).config(function() {
 });
 
-angular.module('homepage.journeys').factory('journeyService', function (restResource) {
+angular.module('homepage.journeys').factory('journeyService', function (restResource, config) {
     var $resource = restResource.$resource;
     var url = restResource.endpoint('journey');
     return {
@@ -21,7 +21,8 @@ angular.module('homepage.journeys').factory('journeyService', function (restReso
             this.q.get({
                 device__serial: deviceSerial,
                 start_timestamp__gte: startTimestamp,
-                stop_timestamp__lte: stopTimestamp
+                stop_timestamp__lte: stopTimestamp,
+                limit: config.get('journey_page_limit')
             }, function (data) {
                 if (callback) {
                     callback(data);
