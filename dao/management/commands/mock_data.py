@@ -259,6 +259,7 @@ class Command(BaseCommand):
             log.level = LEVEL.get_label(random.randrange(len(LEVEL)))[0]
             log.message = 'Message: {}'.format(LEVEL.get_label(log.level)[1])
             log.journey = journey
+            log.timestamp = journey.start_timestamp
             logs.append(log)
         if WRITE_TO_DATABASE:
             Log.objects.bulk_create(logs)
