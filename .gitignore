@@ -55,7 +55,7 @@ target/
 
 #IDEA
 .idea/
-/nbproject
+nbproject/
 *.iml
 
 #node
