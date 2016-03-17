@@ -6,7 +6,7 @@ angular.module('vehtrackLogin', ['ng-backstretch', 'utils']).controller('loginCo
     $scope.form = {
         username: '',
         password: ''
-    }
+    };
 });
 
 angular.module('utils', []).directive('focus', function ($timeout) {    
