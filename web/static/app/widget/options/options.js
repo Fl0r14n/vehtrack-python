@@ -42,7 +42,7 @@ angular.module('widget.options').controller('optionController', function($scope,
     self.stopDate = {
         show: false,
         readonly: false,
-        date: Date.now(),
+        date: Date.now() + 86400000,
         opened: false,
         toogle: function ($event) {
             $event.preventDefault();
